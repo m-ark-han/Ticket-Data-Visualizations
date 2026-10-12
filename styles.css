@@ -11,3 +11,26 @@
 @media(max-width:1000px){.site-header{padding-inline:24px;gap:16px}.site-header nav{gap:16px}.section-shell{width:min(100% - 48px,1200px)}.hero{gap:20px}.hero h1{font-size:clamp(3rem,5vw,4.5rem)}.stat-grid>div{padding-inline:16px}.figure-grid{grid-template-columns:repeat(2,1fr)}.methods-grid{gap:50px}}
 @media(max-width:760px){.site-header{height:65px}.site-header nav{display:none}.header-link{margin-left:auto}.section-shell{width:calc(100% - 36px)}.hero{display:block;padding-block:52px}.hero h1{font-size:3.25rem}.hero-visual{height:270px;margin-top:40px}.hero-readout{top:20px;right:20px}.stat-grid{grid-template-columns:repeat(2,1fr);row-gap:24px;padding-block:25px}.stat-grid>div:nth-child(2){border:0}.stat-grid>div:nth-child(3){padding-left:0}.narrative,.figure-section{padding-block:65px}.insight-grid{grid-template-columns:1fr}.insight-card{min-height:0}.explore-section{padding-block:65px}.explore-heading{display:block}.live-badge{display:inline-block;margin-top:3px}.explorer-layout{grid-template-columns:1fr}.filter-panel{position:static;display:grid;grid-template-columns:repeat(2,1fr);gap:0 15px}.filter-title,.filter-help{grid-column:1/-1}.filtered-stats{gap:6px}.filtered-stats>div{padding:12px;min-height:88px}.filtered-stats strong{font-size:19px}.lower-grid{grid-template-columns:1fr}.map-wrap{height:340px}.figure-toolbar{align-items:stretch;flex-direction:column}.search-wrap input{width:100%}.figure-grid{grid-template-columns:1fr}.methods-grid{grid-template-columns:1fr;gap:45px}.footer-inner{padding-block:25px;display:block}.footer-inner p{margin:18px 0}.modal-top h2{font-size:15px}.modal-bottom{display:block}.modal-bottom p:last-child{margin-top:6px}}
 @media(max-width:430px){.brand{font-size:16px}.brand-mark{width:34px;height:34px}.header-link{font-size:10px;padding:9px}.hero h1{font-size:2.8rem}.hero-actions{flex-direction:column;align-items:stretch}.stat-grid strong{font-size:23px}.filter-panel{grid-template-columns:1fr}.filtered-stats span{font-size:8px}.filtered-stats strong{font-size:16px}.card-head{display:block}.card-head .small-button{margin-bottom:8px}.modal-actions{gap:3px}.modal-actions button{width:26px;height:26px}}
+
+/* The analysis is the page: show each complete figure at readable size. */
+.simple-intro{padding-block:42px 16px}
+.simple-intro h1{font-size:clamp(2rem,3vw,3rem);letter-spacing:-.05em;margin-bottom:10px}
+.simple-intro p{max-width:780px;font-size:15px;color:var(--muted);margin-bottom:9px}
+.simple-intro .simple-meta{font-size:12px;color:var(--teal);font-weight:700}
+.figure-section{padding-block:25px 75px}
+.figure-section .section-heading{margin-bottom:25px}
+.figure-grid{grid-template-columns:1fr;max-width:980px;gap:24px}
+.figure-card{box-shadow:none}
+.figure-image{height:auto;min-height:0;padding:0;background:#fff}
+.figure-image img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;transform:none!important}
+.figure-body{padding:18px 22px}
+.figure-body h3{font-size:20px}
+.figure-body p{font-size:13px}
+.figure-note{margin-top:5px!important}
+.explore-section{padding-block:60px 75px}
+
+/* Fit the entire chart inside the available viewer before applying zoom. */
+.modal-viewport{display:block;min-height:0}
+.modal-viewport img{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:none;max-height:none;padding:12px 18px;object-fit:contain;box-shadow:none}
+
+@media(max-width:760px){.simple-intro{padding-block:28px 10px}.figure-section{padding-block:20px 50px}.figure-body{padding:16px}.modal-viewport img{padding:8px}}

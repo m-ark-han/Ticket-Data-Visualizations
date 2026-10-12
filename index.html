@@ -12,41 +12,21 @@
 <body>
   <header class="site-header">
     <a class="brand" href="#top" aria-label="DebrisInsight home"><span class="brand-mark">D<span>·</span></span><span>Debris<span class="brand-accent">Insight</span><small>PINELLAS TICKET DATA</small></span></a>
-    <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#explore">Explore data</a><a href="#figures">20 figures</a><a href="#methods">Methods</a></nav>
+    <nav aria-label="Main navigation"><a href="#figures">Visualizations</a><a href="#explore">Explore data</a><a href="#methods">Data notes</a></nav>
     <a class="header-link" href="https://pinellas-egis.maps.arcgis.com/home/item.html?id=fb652dddee454f97929d7fe73ec25d12#data" target="_blank" rel="noopener">View source <span aria-hidden="true">↗</span></a>
   </header>
 
   <main id="top">
-    <section id="overview" class="hero section-shell">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-line"></span> VISUALIZATION & INSIGHT DISCOVERY · MARK'S ANALYSIS</p>
-        <h1>What do the debris tickets <em>tell us?</em></h1>
-        <p class="hero-intro">A visual field guide to recorded debris collection in Pinellas County. Follow the timeline, compare debris types, and zoom into patterns across the ticket map.</p>
-        <div class="hero-actions"><a class="button primary" href="#explore">Explore the data <span aria-hidden="true">↗</span></a><a class="button secondary" href="#figures">Browse all 20 figures <span aria-hidden="true">↓</span></a></div>
-        <p class="hero-source">Public ticket records · Local dates Oct 2, 2024–Apr 10, 2025</p>
-      </div>
-      <div class="hero-visual" aria-label="Decorative representation of ticket locations">
-        <div class="map-glow"></div><div class="contour contour-one"></div><div class="contour contour-two"></div><div class="contour contour-three"></div>
-        <div class="hero-readout"><span>RECORDS ANALYZED</span><strong>18,278</strong><small>pickup ticket locations</small></div>
-        <div class="hero-pin pin-a"></div><div class="hero-pin pin-b"></div><div class="hero-pin pin-c"></div><div class="hero-pin pin-d"></div><div class="hero-pin pin-e"></div>
-        <div class="hero-caption">27.61°–28.17° N <span>·</span> 82.85°–82.61° W</div>
-      </div>
+    <section id="overview" class="simple-intro section-shell">
+      <h1>Debris ticket visualizations</h1>
+      <p>Twenty charts and maps from 18,278 Pinellas County debris tickets. Each one explains what the data shows and what to keep in mind when reading it.</p>
+      <p class="simple-meta">Recorded volume: 644,952.65 cubic yards · Local dates: October 2, 2024–April 10, 2025</p>
     </section>
 
-    <section class="stat-band" aria-label="Key metrics"><div class="section-shell stat-grid">
-      <div><span class="stat-label">RECORDED VOLUME</span><strong>644,953 <small>CY</small></strong><p>cubic yards across all tickets</p></div>
-      <div><span class="stat-label">RECORDED DAYS</span><strong>141 <small>of 191</small></strong><p>days with at least one ticket</p></div>
-      <div><span class="stat-label">DOMINANT TYPE</span><strong>73.8<small>%</small></strong><p>of CY is Vegetative/Woody</p></div>
-      <div><span class="stat-label">PEAK DAY</span><strong>Nov 01 <small>2024</small></strong><p>19,187.4 CY recorded</p></div>
-    </div></section>
-
-    <section class="narrative section-shell">
-      <div class="section-heading"><p class="eyebrow">THE STORY IN THE RECORDS</p><h2>Three signals stand out.</h2></div>
-      <div class="insight-grid">
-        <article class="insight-card"><span class="insight-number">01 / PACE</span><h3>The largest wave came early.</h3><p>Three quarters of recorded cubic yards appear before December 2024. The week beginning October 28 was the peak at 112,592.9 CY.</p><a href="#figure-F05">See weekly volume <span aria-hidden="true">↗</span></a></article>
-        <article class="insight-card"><span class="insight-number">02 / COMPOSITION</span><h3>Vegetative loads lead.</h3><p>Vegetative/Woody makes up 476,239.1 CY, or 73.8% of the recorded total. Construction & Demolition is the next largest category.</p><a href="#figure-F10">See type totals <span aria-hidden="true">↗</span></a></article>
-        <article class="insight-card"><span class="insight-number">03 / COVERAGE</span><h3>Gaps need context.</h3><p>There are 50 dates with no ticket records. Those blank dates show absence from this extract, not proof that collection crews stopped.</p><a href="#figure-F20">See the activity calendar <span aria-hidden="true">↗</span></a></article>
-      </div>
+    <section id="figures" class="figure-section section-shell">
+      <div class="section-heading"><h2>All 20 visualizations</h2><p>Each full image appears below with its finding and reading note. Select an image to zoom and pan.</p></div>
+      <div class="figure-toolbar"><div id="categoryFilters" class="category-filters" role="group" aria-label="Figure categories"></div><label class="search-wrap"><span class="sr-only">Search figures</span><input id="figureSearch" type="search" placeholder="Search figures or findings…"></label></div>
+      <div id="figureCount" class="figure-count" aria-live="polite"></div><div id="figureGrid" class="figure-grid"></div>
     </section>
 
     <section id="explore" class="explore-section"><div class="section-shell">
@@ -70,17 +50,11 @@
       </div>
     </div></section>
 
-    <section id="figures" class="figure-section section-shell">
-      <div class="section-heading"><p class="eyebrow">THE COMPLETE ANALYSIS</p><h2>Twenty views of the same story.</h2><p>Every figure includes a finding and a reading note. Open any image to zoom and pan in full resolution.</p></div>
-      <div class="figure-toolbar"><div id="categoryFilters" class="category-filters" role="group" aria-label="Figure categories"></div><label class="search-wrap"><span class="sr-only">Search figures</span><input id="figureSearch" type="search" placeholder="Search figures or findings…"></label></div>
-      <div id="figureCount" class="figure-count" aria-live="polite"></div><div id="figureGrid" class="figure-grid"></div>
-    </section>
-
     <section id="methods" class="methods-section"><div class="section-shell methods-grid"><div><p class="eyebrow">SOURCE & METHODS</p><h2>What these visuals can—and cannot—show.</h2><p>The figures use a public Pinellas County eGIS ticket layer associated with the county's hurricane debris dashboard. We grouped the layer's 18,278 rows by the ticket's <code>LoadDate</code> after converting dates to Eastern time.</p><p>Ticket totals describe recorded loads. They do not measure all debris generated, material still on the ground, or unique properties served. The county has not confirmed here whether every record is an original pickup rather than another ticket stage.</p><a class="button light" href="https://pinellas-egis.maps.arcgis.com/home/item.html?id=fb652dddee454f97929d7fe73ec25d12#data" target="_blank" rel="noopener">Open the public data layer <span aria-hidden="true">↗</span></a></div><div class="method-notes"><article><span>01</span><div><h3>Date gaps</h3><p>A day with no ticket in the source is not evidence that crews were idle. Reporting coverage requires outside confirmation.</p></div></article><article><span>02</span><div><h3>Incident labels</h3><p>Values 80 and 84 are displayed as numeric IDs until the county confirms their storm mapping.</p></div></article><article><span>03</span><div><h3>Locations</h3><p>The coordinates are stored on ticket records; their exact operational meaning and positional accuracy need source validation.</p></div></article><article><span>04</span><div><h3>Privacy and scope</h3><p>The interactive subset omits addresses, ticket numbers, and truck identifiers. It contains date, type, volume, incident ID, and coordinates needed for exploration.</p></div></article></div></div></section>
   </main>
   <footer><div class="section-shell footer-inner"><div class="brand"><span class="brand-mark">D<span>·</span></span><span>Debris<span class="brand-accent">Insight</span><small>VISUALIZATION & INSIGHT DISCOVERY</small></span></div><p>Prepared by Mark · Based on public Pinellas County eGIS data · Analysis prepared October 2026</p><a href="#top">Back to top ↑</a></div></footer>
 
-  <div id="imageModal" class="image-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-top"><div><span id="modalIndex"></span><h2 id="modalTitle"></h2></div><div class="modal-actions"><button id="modalZoomOut" type="button" aria-label="Zoom out">−</button><button id="modalZoomIn" type="button" aria-label="Zoom in">+</button><button id="modalReset" type="button">Reset</button><button id="modalClose" type="button" aria-label="Close figure">×</button></div></div><div id="modalViewport" class="modal-viewport"><img id="modalImage" alt=""></div><div class="modal-bottom"><p id="modalFinding"></p><p id="modalCaveat"></p></div></div>
+  <div id="imageModal" class="image-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-top"><div><span id="modalIndex"></span><h2 id="modalTitle"></h2></div><div class="modal-actions"><button id="modalZoomOut" type="button" aria-label="Zoom out">−</button><button id="modalZoomIn" type="button" aria-label="Zoom in">+</button><button id="modalReset" type="button">Fit image</button><button id="modalClose" type="button" aria-label="Close figure">×</button></div></div><div id="modalViewport" class="modal-viewport"><img id="modalImage" alt=""></div><div class="modal-bottom"><p id="modalFinding"></p><p id="modalCaveat"></p></div></div>
   <div id="tooltip" class="tooltip" hidden></div>
 </body>
 </html>
