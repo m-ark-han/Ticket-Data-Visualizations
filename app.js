@@ -67,7 +67,7 @@ async function openModal(id){
   $('#pointReadout').textContent='Loading exact values…';
   $('#modalClose').focus();
   try{
-    if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+    if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json?v=preview-match-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
     const specs=await figureValuesPromise;
     if(request!==modalRequest||$('#imageModal').hidden)return;
     const chart=$('#interactiveChart');

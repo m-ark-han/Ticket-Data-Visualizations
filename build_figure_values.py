@@ -59,12 +59,14 @@ valid_cy = df.Volume.notna() & np.isfinite(df.Volume) & (df.Volume > 0)
 fields = ["TicketId", "DisasterID", "CollAddress", "DebrisType", "LoadDate", "Volume", "Lat", "Lng", "ZoneName"]
 present = [int((df[c].notna() & (df[c].astype(str).str.strip() != "")).sum()) for c in fields]
 t = trace([round(v / len(df) * 100, 4) for v in present], fields, "Completeness", "Populated records (%)", "Field", TEAL, horizontal=True, digits=0)
+t["marker"]["color"] = [TEAL if v / len(df) * 100 >= 99 else ORANGE for v in present]
 t["text"] = [f"Field: {f}<br>Populated: {number(v)} of {number(len(df))} records<br>Completeness: {v/len(df)*100:.4f}%" for f, v in zip(fields, present)]
-add(1, [t], "Records with a value (%)", "Ticket field", margin={"l": 150, "r": 30, "t": 30, "b": 70})
+add(1, [t], "Records with a value (%)", "Ticket field", yaxis={"title": "Ticket field", "autorange": "reversed"}, margin={"l": 150, "r": 30, "t": 30, "b": 70})
 flags = {"Missing collection address": int((df.address == "").sum()), "Unparseable load date": int(df.day.isna().sum()), "Missing/nonpositive CY": int((~valid_cy).sum()), "Invalid coordinates": int((~valid_xy).sum()), "Repeated TicketId": int(df.duplicated("TicketId", keep=False).sum()), "Volume above truck capacity": int((df.Volume > df.TruckCapacity).sum())}
 t = trace(list(flags.values()), list(flags), "Review flags", "Flagged records", "Check", ORANGE, horizontal=True)
+t["marker"]["color"] = [ORANGE if v else GREY for v in flags.values()]
 t["text"] = [f"Check: {k}<br>Flagged records: {number(v)}" for k, v in flags.items()]
-add(2, [t], "Flagged records (count)", "Review flag", margin={"l": 215, "r": 30, "t": 30, "b": 70})
+add(2, [t], "Flagged records (count)", "Review flag", yaxis={"title": "Review flag", "autorange": "reversed"}, margin={"l": 215, "r": 30, "t": 30, "b": 70})
 
 mix = df.pivot_table(index="week", columns="DisasterID", values="TicketId", aggfunc="size", fill_value=0)
 add(3, [trace(dates(mix.index), mix[c].astype(int), f"DisasterID {c}", "Week beginning", "Tickets", [ORANGE, TEAL, PLUM][i % 3]) for i, c in enumerate(mix.columns)], "Week beginning Monday", "Tickets (count)", barmode="stack")
@@ -75,7 +77,12 @@ add(7, [trace(dates(daily.index), [None if pd.isna(v) else int(v) for v in daily
 
 edges = np.arange(0, 95, 5)
 hist, _ = np.histogram(df.loc[valid_cy, "Volume"], bins=edges)
-add(8, [trace([f"{edges[i]}–{edges[i+1]} CY" for i in range(len(hist))], hist.astype(int), "Load size", "Load volume range", "Tickets")], "Recorded volume per ticket (5-CY bins)", "Tickets (count)")
+t = trace([float(edges[i] + 2.5) for i in range(len(hist))], hist.astype(int), "Load size", "Load volume range", "Tickets")
+t["width"] = 5
+t["marker"]["line"] = {"color": "white", "width": 1}
+t["text"] = [f"Recorded volume: {edges[i]} to under {edges[i+1]} CY<br>Tickets: {int(hist[i]):,}" for i in range(len(hist))]
+median_load = float(df.Volume.median())
+add(8, [t], "Recorded volume per ticket (CY; 5-CY bins)", "Tickets (count)", xaxis={"title": "Recorded volume per ticket (CY; 5-CY bins)", "range": [0, 95]}, shapes=[{"type": "line", "x0": median_load, "x1": median_load, "y0": 0, "y1": 1, "yref": "paper", "line": {"color": ORANGE, "width": 2}}], annotations=[{"x": median_load, "y": 1, "yref": "paper", "text": f"Median {median_load:.1f} CY", "showarrow": False, "xanchor": "left", "yanchor": "bottom", "font": {"color": ORANGE, "size": 11}}])
 
 major = types[types.tickets >= 20].index.tolist()
 boxes = []
@@ -86,14 +93,15 @@ for kind in major:
 add(9, boxes, "Recorded volume per ticket (CY)", "Debris type", showlegend=False, margin={"l": 230, "r": 25, "t": 30, "b": 70})
 
 t = trace([round(v, 2) for v in types.cy], types.index, "Type volume", "Recorded volume (CY)", "Debris type", horizontal=True, digits=0)
+t["marker"]["color"] = [COLORS.get(kind, GREY) for kind in types.index]
 t["text"] = [f"Debris type: {k}<br>Recorded volume: {v:,.2f} CY<br>Tickets: {int(types.loc[k, 'tickets']):,}" for k, v in types.cy.items()]
-add(10, [t], "Recorded volume (CY)", "Debris type", margin={"l": 230, "r": 25, "t": 30, "b": 70})
+add(10, [t], "Recorded volume (CY)", "Debris type", yaxis={"title": "Debris type", "autorange": "reversed"}, margin={"l": 230, "r": 25, "t": 30, "b": 70})
 shares = []
 for label, vals, color in [("Share of cubic yards", types.cy / types.cy.sum() * 100, TEAL), ("Share of tickets", types.tickets / types.tickets.sum() * 100, ORANGE)]:
     t = trace([round(v, 5) for v in vals], types.index, label, "Share (%)", "Debris type", color, horizontal=True, digits=5)
     t["text"] = [f"Debris type: {k}<br>{label}: {v:.5f}%" for k, v in vals.items()]
     shares.append(t)
-add(11, shares, "Share of total (%)", "Debris type", barmode="group", margin={"l": 230, "r": 25, "t": 30, "b": 70})
+add(11, shares, "Share of total (%)", "Debris type", barmode="group", yaxis={"title": "Debris type", "autorange": "reversed"}, legend={"x": 0.01, "y": 0.01, "xanchor": "left", "yanchor": "bottom", "bgcolor": "rgba(255,255,255,0.85)"}, margin={"l": 230, "r": 25, "t": 30, "b": 70})
 
 top3 = types.index[:3].tolist()
 df["type4"] = df.type.where(df.type.isin(top3), "Other")
@@ -107,7 +115,9 @@ pair = pd.DataFrame({"expected": expected[mask].round(2), "recorded": df.loc[mas
 t = trace(pair.expected.tolist(), pair.recorded.tolist(), "Capacity check", "Capacity × fullness (CY)", "Recorded volume (CY)", TEAL, "scatter", digits=2, mode="markers")
 t["marker"] = {"color": TEAL, "size": [min(24, 6 + np.sqrt(n)) for n in pair.tickets], "opacity": 0.72}
 t["text"] = [f"Capacity × fullness: {a:,.2f} CY<br>Recorded volume: {b:,.2f} CY<br>Tickets at these values: {n:,}" for a, b, n in pair.itertuples(index=False, name=None)]
-add(14, [t], "Truck capacity × load percent (CY)", "Recorded ticket volume (CY)")
+limit = max(float(expected[mask].max()), float(df.loc[mask, "Volume"].max())) * 1.04
+reference = {"type": "scatter", "mode": "lines", "x": [0, limit], "y": [0, limit], "name": "Recorded = capacity × fullness", "line": {"color": ORANGE, "width": 2}, "hoverinfo": "skip"}
+add(14, [reference, t], "Truck capacity × load percent (CY)", "Recorded ticket volume (CY)", xaxis={"title": "Truck capacity × load percent (CY)", "range": [0, limit]}, yaxis={"title": "Recorded ticket volume (CY)", "range": [0, limit]})
 
 xy = df.loc[valid_xy]
 extent = [-82.88, -82.59, 27.59, 28.20]
@@ -117,19 +127,27 @@ for i, values, metric, precision in [(15, None, "Tickets in cell", 0), (16, xy.V
     centers, totals = h.get_offsets(), h.get_array()
     plt.close(fig)
     t = trace([round(p[0], 6) for p in centers], [round(p[1], 6) for p in centers], metric, "Cell center longitude", "Cell center latitude", TEAL, "scatter", mode="markers")
-    t["marker"] = {"symbol": "hexagon", "size": 13, "color": [round(float(v), precision) for v in totals], "colorscale": "YlGnBu", "showscale": True, "colorbar": {"title": "Tickets" if i == 15 else "CY"}, "line": {"width": 0.3, "color": "#456"}}
+    t["marker"] = {"symbol": "hexagon", "size": 13, "color": [round(float(v), precision) for v in totals], "colorscale": "YlGnBu", "reversescale": True, "showscale": True, "colorbar": {"title": "Tickets" if i == 15 else "CY"}, "line": {"width": 0.3, "color": "#456"}}
     t["text"] = [f"Cell center longitude: {p[0]:.6f}<br>Cell center latitude: {p[1]:.6f}<br>{metric}: {number(v, precision)}" for p, v in zip(centers, totals)]
-    add(i, [t], "Longitude (degrees)", "Latitude (degrees)", xaxis={"title": "Longitude (degrees)", "range": extent[:2]}, yaxis={"title": "Latitude (degrees)", "range": extent[2:], "scaleanchor": "x"}, margin={"l": 75, "r": 95, "t": 25, "b": 65})
+    add(i, [t], "Longitude (degrees)", "Latitude (degrees)", xaxis={"title": "Longitude (degrees)", "range": extent[:2], "scaleanchor": "y", "constrain": "domain"}, yaxis={"title": "Latitude (degrees)", "range": extent[2:]}, margin={"l": 75, "r": 95, "t": 25, "b": 65})
 
 monthly = []
-month_colors = [TEAL, ORANGE, PLUM, GREEN, NAVY, "#ad7f47", "#9c5b5b"]
+monthly_layout = {"showlegend": False, "margin": {"l": 72, "r": 25, "t": 50, "b": 45}, "annotations": []}
 for month_index, month in enumerate(sorted(df.month.dropna().unique())):
     part = df.loc[(df.month == month) & valid_xy]
-    t = trace(part.Lng.round(6).tolist(), part.Lat.round(6).tolist(), str(month), "Longitude", "Latitude", month_colors[month_index], "scatter", mode="markers")
-    t["marker"] = {"color": month_colors[month_index], "size": 4, "opacity": 0.35}
+    row, col = divmod(month_index, 4)
+    axis = "" if month_index == 0 else str(month_index + 1)
+    x0, x1 = 0.01 + col * 0.25, 0.23 + col * 0.25
+    y0, y1 = (0.55, 0.98) if row == 0 else (0.06, 0.49)
+    monthly_layout[f"xaxis{axis}"] = {"domain": [x0, x1], "anchor": f"y{axis}", "range": extent[:2], "showticklabels": row == 1, "tickfont": {"size": 9}, "title": "Longitude" if row == 1 else None, "automargin": True}
+    monthly_layout[f"yaxis{axis}"] = {"domain": [y0, y1], "anchor": f"x{axis}", "range": extent[2:], "showticklabels": col == 0, "tickfont": {"size": 9}, "title": "Latitude" if col == 0 else None, "automargin": True}
+    monthly_layout["annotations"].append({"x": (x0 + x1) / 2, "y": y1 + 0.01, "xref": "paper", "yref": "paper", "text": f"{month} · {len(part):,} tickets", "showarrow": False, "font": {"size": 11}})
+    t = trace(part.Lng.round(6).tolist(), part.Lat.round(6).tolist(), str(month), "Longitude", "Latitude", TEAL, "scatter", mode="markers")
+    t["marker"] = {"color": TEAL, "size": 3, "opacity": 0.25}
     t["text"] = [f"Month: {month}<br>Longitude: {lon:.6f}<br>Latitude: {lat:.6f}<br>Pickup date: {day:%Y-%m-%d}<br>Recorded volume: {cy:,.2f} CY" for lon, lat, day, cy in zip(part.Lng, part.Lat, part.day, part.Volume)]
+    t["xaxis"], t["yaxis"] = f"x{axis}", f"y{axis}"
     monthly.append(t)
-add(17, monthly, "Longitude (degrees)", "Latitude (degrees)", xaxis={"title": "Longitude (degrees)", "range": extent[:2]}, yaxis={"title": "Latitude (degrees)", "range": extent[2:]}, margin={"l": 75, "r": 30, "t": 30, "b": 65})
+add(17, monthly, "Longitude (degrees)", "Latitude (degrees)", **monthly_layout)
 
 address_counts = df.loc[df.address != ""].groupby("address").size()
 buckets = Counter(np.clip(address_counts.to_numpy(), 1, 10))
@@ -152,8 +170,8 @@ for row in calendar_df.itertuples(index=False):
     n = 0 if pd.isna(row.tickets) else int(row.tickets)
     z[pos[row.week]][row.weekday] = n
     hover[pos[row.week]][row.weekday] = f"Pickup date: {row.day:%Y-%m-%d}<br>Recorded tickets: {n:,}"
-heat = {"type": "heatmap", "x": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], "y": dates(weeks), "z": z, "text": hover, "hovertemplate": "%{text}<extra></extra>", "colorscale": "YlGnBu", "colorbar": {"title": "Tickets"}}
-add(20, [heat], "Day of week", "Week beginning Monday", margin={"l": 95, "r": 85, "t": 25, "b": 65}, yaxis={"title": "Week beginning Monday", "autorange": "reversed"})
+heat = {"type": "heatmap", "x": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], "y": dates(weeks), "z": z, "text": hover, "hovertemplate": "%{text}<extra></extra>", "colorscale": "YlGnBu", "reversescale": True, "colorbar": {"title": "Tickets"}}
+add(20, [heat], "Day of week", "Week beginning Monday", margin={"l": 95, "r": 85, "t": 25, "b": 65}, plot_bgcolor="#e0e3e7", yaxis={"title": "Week beginning Monday", "autorange": "reversed"})
 
 for figure in spec.values():
     for item in figure["data"]:
