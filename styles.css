@@ -47,3 +47,38 @@
 .modal-actions button[hidden]{display:none}
 .interactive-viewport .modebar-btn[data-title^="Share chart"]{display:none}
 @media(max-width:760px){.modal-top{align-items:flex-start;flex-direction:column;padding:10px 12px;gap:8px}.modal-actions{justify-content:flex-start}.modal-actions #modalInteractive,.modal-actions #modalOriginal{min-width:90px;height:32px}.interactive-viewport{padding:5px}#pointReadout{font-size:11px;margin:3px 5px;padding:7px}.interaction-help{font-size:10px;margin:3px 5px}.modal-bottom{padding:7px 12px;font-size:10px}}
+
+/* Keep the figures and their reading notes in view without decorative sections. */
+.simple-intro{padding-block:24px 5px}
+.simple-intro h1{font-size:clamp(1.55rem,2.5vw,2rem);letter-spacing:-.03em;margin-bottom:5px}
+.simple-intro p{font-size:13px;margin:0;color:#455b65}
+.figure-section{padding-block:20px 42px}
+.figure-toolbar{margin-bottom:8px}
+.figure-grid{gap:22px}
+.figure-card,.filter-panel,.chart-card,.filtered-stats>div{box-shadow:none}
+.figure-body{padding:14px 18px 18px}
+.figure-body h3{font-size:18px;margin-bottom:7px}
+.figure-body p{margin-bottom:6px}
+.explore-section{background:#fff;padding-block:34px 42px}
+.explore-heading{margin-bottom:17px}
+.explore-heading h2{font-size:23px;letter-spacing:-.03em;margin-bottom:4px}
+.explore-heading p:last-child{font-size:13px;line-height:1.4;margin:0}
+.filter-panel{position:static}
+.source-note{font-size:11px;color:#657680;line-height:1.55;padding-block:16px 24px;border-top:1px solid var(--line)}
+.source-note a{color:#006f69;text-decoration:underline}
+.image-modal{background:#fff;color:#173342}
+.modal-top{background:#fff;border-bottom:1px solid #dce5e6}
+.modal-top span{color:#56717a}
+.modal-actions button{background:#fff;color:#173342;border-color:#bfcfd0}
+.modal-actions button:hover{background:#edf3f3}
+.modal-actions button.selected{background:#e3f2ee;color:#075b59;border-color:#88bdb1}
+.modal-actions #modalInteractive,.modal-actions #modalOriginal,.modal-actions #modalInfo{width:auto;min-width:100px;padding:0 10px;font-size:11px}
+.modal-viewport{background:#f7f9f9}
+.modal-info-viewport{flex:1;min-height:0;overflow:auto;background:#fff}
+.modal-info-viewport[hidden]{display:none}
+.modal-info-content{max-width:860px;margin:0 auto;padding:clamp(22px,4vw,55px)}
+.modal-info-content section{padding:0 0 23px;margin-bottom:24px;border-bottom:1px solid var(--line)}
+.modal-info-content section:last-child{border:0}
+.modal-info-content h3{font-size:14px;letter-spacing:0;margin-bottom:9px}
+.modal-info-content p{font-size:16px;line-height:1.65;margin:0;overflow-wrap:anywhere}
+@media(max-width:760px){.simple-intro{padding-block:16px 4px}.figure-section{padding-block:14px 32px}.explore-section{padding-block:28px 36px}.modal-top{padding:10px 12px}.modal-actions #modalInteractive,.modal-actions #modalOriginal,.modal-actions #modalInfo{min-width:0;height:32px}.modal-info-content{padding:22px 18px}.modal-info-content p{font-size:14px}}

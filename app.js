@@ -41,15 +41,20 @@ function renderFigureGallery(){
   $('#figureGrid').querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.open)));
 }
 
-let modalScale=1,modalX=0,modalY=0,modalDrag=null,figureValuesPromise=null,modalRequest=0;
+let modalScale=1,modalX=0,modalY=0,modalDrag=null,figureValuesPromise=null,figureDetailsPromise=null,modalRequest=0,modalView='interactive';
 function modalTransform(){ $('#modalImage').style.transform=`translate(${modalX}px,${modalY}px) scale(${modalScale})`; }
 function showModalView(view){
+  modalView=view;
   const interactive=view==='interactive';
+  const image=view==='image';
   $('#interactiveViewport').hidden=!interactive;
-  $('#modalViewport').hidden=interactive;
+  $('#modalViewport').hidden=!image;
+  $('#modalInfoViewport').hidden=view!=='info';
   $('#modalInteractive').classList.toggle('selected',interactive);
-  $('#modalOriginal').classList.toggle('selected',!interactive);
-  for(const id of ['#modalZoomOut','#modalZoomIn','#modalReset'])$(id).hidden=interactive;
+  $('#modalOriginal').classList.toggle('selected',image);
+  $('#modalInfo').classList.toggle('selected',view==='info');
+  for(const [id,active] of [['#modalInteractive',interactive],['#modalOriginal',image],['#modalInfo',view==='info']])$(id).setAttribute('aria-pressed',String(active));
+  for(const id of ['#modalZoomOut','#modalZoomIn','#modalReset'])$(id).hidden=!image;
   if(interactive&&$('#interactiveChart').data)Plotly.Plots.resize($('#interactiveChart'));
 }
 async function openModal(id){
@@ -59,13 +64,30 @@ async function openModal(id){
   $('#modalTitle').textContent=f.title;
   $('#modalImage').src=`figures/${f.img}`;
   $('#modalImage').alt=f.title;
-  $('#modalFinding').textContent=f.finding;
-  $('#modalCaveat').textContent=`Read with care: ${f.note}`;
+  $('#modalQuestion').textContent=`${f.id.replace('F','Q')}: Loading…`;
+  $('#modalVariables').textContent='Loading…';
+  $('#modalInterpretation').textContent='Loading…';
   $('#imageModal').hidden=false;document.body.style.overflow='hidden';
   modalScale=1;modalX=0;modalY=0;modalTransform();
   showModalView('interactive');
   $('#pointReadout').textContent='Loading exact values…';
   $('#modalClose').focus();
+  if(!figureDetailsPromise)figureDetailsPromise=fetch('data/figure-details.json?v=minimal-info-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+  figureDetailsPromise.then(details=>{
+    if(request!==modalRequest||$('#imageModal').hidden)return;
+    const d=details[id];
+    if(!d)throw Error(`Missing details for ${id}`);
+    $('#modalQuestion').textContent=d.question;
+    $('#modalVariables').textContent=d.variables;
+    $('#modalInterpretation').textContent=d.interpretation;
+  }).catch(error=>{
+    if(request!==modalRequest)return;
+    $('#modalQuestion').textContent=id.replace('F','Q');
+    $('#modalVariables').textContent='Details could not load.';
+    $('#modalInterpretation').textContent=f.finding;
+    figureDetailsPromise=null;
+    console.error('Could not load figure details',error);
+  });
   try{
     if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json?v=preview-match-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
     const specs=await figureValuesPromise;
@@ -87,7 +109,7 @@ async function openModal(id){
   }catch(error){
     if(request!==modalRequest)return;
     $('#pointReadout').textContent='Exact values could not load. The original image is available.';
-    showModalView('image');
+    if(modalView==='interactive')showModalView('image');
     figureValuesPromise=null;
     console.error('Could not load interactive figure',error);
   }
@@ -96,6 +118,7 @@ function closeModal(){++modalRequest;$('#imageModal').hidden=true;document.body.
 function modalZoom(factor){modalScale=Math.max(1,Math.min(8,modalScale*factor));if(modalScale===1){modalX=0;modalY=0}modalTransform()}
 $('#modalInteractive').addEventListener('click',()=>showModalView('interactive'));
 $('#modalOriginal').addEventListener('click',()=>showModalView('image'));
+$('#modalInfo').addEventListener('click',()=>showModalView('info'));
 $('#modalClose').addEventListener('click',closeModal);$('#modalZoomIn').addEventListener('click',()=>modalZoom(1.35));$('#modalZoomOut').addEventListener('click',()=>modalZoom(1/1.35));$('#modalReset').addEventListener('click',()=>{modalScale=1;modalX=modalY=0;modalTransform()});
 $('#imageModal').addEventListener('click',e=>{if(e.target===$('#imageModal'))closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#imageModal').hidden)closeModal()});
