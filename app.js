@@ -37,15 +37,65 @@ function renderFigureGallery(){
   $('#categoryFilters').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{state.category=b.dataset.category;renderFigureGallery()}));
   const filtered=FIGS.filter(f=>(state.category==='All'||f.cat===state.category)&&`${f.title} ${f.finding} ${f.note} ${f.id}`.toLowerCase().includes(state.search));
   $('#figureCount').textContent=`Showing ${filtered.length} of 20 figures`;
-  $('#figureGrid').innerHTML=filtered.map(f=>`<article class="figure-card" id="figure-${f.id}"><button type="button" class="figure-image" data-open="${f.id}" aria-label="Open ${f.id}: ${f.title}"><img loading="lazy" src="figures/${f.img}" alt="${f.title} visualization"></button><div class="figure-body"><span class="figure-meta">${f.id} · ${f.cat.toUpperCase()}</span><h3>${f.title}</h3><p>${f.finding}</p><p class="figure-note"><strong>Read with care:</strong> ${f.note}</p><button type="button" class="figure-open" data-open="${f.id}">Open & zoom figure ↗</button></div></article>`).join('');
+  $('#figureGrid').innerHTML=filtered.map(f=>`<article class="figure-card" id="figure-${f.id}"><button type="button" class="figure-image" data-open="${f.id}" aria-label="Open interactive ${f.id}: ${f.title}"><img loading="lazy" src="figures/${f.img}" alt="${f.title} visualization"></button><div class="figure-body"><span class="figure-meta">${f.id} · ${f.cat.toUpperCase()}</span><h3>${f.title}</h3><p>${f.finding}</p><p class="figure-note"><strong>Read with care:</strong> ${f.note}</p><button type="button" class="figure-open" data-open="${f.id}">Explore exact values ↗</button></div></article>`).join('');
   $('#figureGrid').querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.open)));
 }
 
-let modalScale=1,modalX=0,modalY=0,modalDrag=null;
+let modalScale=1,modalX=0,modalY=0,modalDrag=null,figureValuesPromise=null,modalRequest=0;
 function modalTransform(){ $('#modalImage').style.transform=`translate(${modalX}px,${modalY}px) scale(${modalScale})`; }
-function openModal(id){const f=FIGS.find(x=>x.id===id);if(!f)return;$('#modalIndex').textContent=`${f.id} / 20 · ${f.cat.toUpperCase()}`;$('#modalTitle').textContent=f.title;$('#modalImage').src=`figures/${f.img}`;$('#modalImage').alt=f.title;$('#modalFinding').textContent=f.finding;$('#modalCaveat').textContent=`Read with care: ${f.note}`;$('#imageModal').hidden=false;document.body.style.overflow='hidden';modalScale=1;modalX=0;modalY=0;modalTransform();$('#modalClose').focus()}
-function closeModal(){$('#imageModal').hidden=true;document.body.style.overflow='';$('#modalImage').src=''}
+function showModalView(view){
+  const interactive=view==='interactive';
+  $('#interactiveViewport').hidden=!interactive;
+  $('#modalViewport').hidden=interactive;
+  $('#modalInteractive').classList.toggle('selected',interactive);
+  $('#modalOriginal').classList.toggle('selected',!interactive);
+  for(const id of ['#modalZoomOut','#modalZoomIn','#modalReset'])$(id).hidden=interactive;
+  if(interactive&&$('#interactiveChart').data)Plotly.Plots.resize($('#interactiveChart'));
+}
+async function openModal(id){
+  const f=FIGS.find(x=>x.id===id);if(!f)return;
+  const request=++modalRequest;
+  $('#modalIndex').textContent=`${f.id} / 20 · ${f.cat.toUpperCase()}`;
+  $('#modalTitle').textContent=f.title;
+  $('#modalImage').src=`figures/${f.img}`;
+  $('#modalImage').alt=f.title;
+  $('#modalFinding').textContent=f.finding;
+  $('#modalCaveat').textContent=`Read with care: ${f.note}`;
+  $('#imageModal').hidden=false;document.body.style.overflow='hidden';
+  modalScale=1;modalX=0;modalY=0;modalTransform();
+  showModalView('interactive');
+  $('#pointReadout').textContent='Loading exact values…';
+  $('#modalClose').focus();
+  try{
+    if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+    const specs=await figureValuesPromise;
+    if(request!==modalRequest||$('#imageModal').hidden)return;
+    const chart=$('#interactiveChart');
+    if(chart.data)Plotly.purge(chart);
+    await Plotly.newPlot(chart,specs[id].data,specs[id].layout,{responsive:true,displaylogo:false,scrollZoom:true,modeBarButtonsToRemove:['sendDataToCloud']});
+    if(request!==modalRequest)return;
+    $('#pointReadout').textContent='Hover or tap a bar, point, or cell to read its exact X and Y values.';
+    const update=e=>{
+      const p=e.points?.[0];if(!p)return;
+      let label=p.customdata||p.text;
+      if(!label&&typeof p.pointNumber==='number')label=p.data?.text?.[p.pointNumber];
+      if(!label&&Array.isArray(p.pointNumber))label=p.data?.text?.[p.pointNumber[1]]?.[p.pointNumber[0]];
+      if(!label&&p.data?.type==='box')label=p.data.hovertemplate;
+      $('#pointReadout').textContent=String(label||`X: ${p.x} · Y: ${p.y}`).replace(/<br\s*\/?\s*>/gi,' · ').replace(/<[^>]*>/g,'').replace(/%\{[^}]+\}/g,'').trim();
+    };
+    chart.on('plotly_hover',update);chart.on('plotly_click',update);
+  }catch(error){
+    if(request!==modalRequest)return;
+    $('#pointReadout').textContent='Exact values could not load. The original image is available.';
+    showModalView('image');
+    figureValuesPromise=null;
+    console.error('Could not load interactive figure',error);
+  }
+}
+function closeModal(){++modalRequest;$('#imageModal').hidden=true;document.body.style.overflow='';$('#modalImage').src='';if($('#interactiveChart').data)Plotly.purge($('#interactiveChart'))}
 function modalZoom(factor){modalScale=Math.max(1,Math.min(8,modalScale*factor));if(modalScale===1){modalX=0;modalY=0}modalTransform()}
+$('#modalInteractive').addEventListener('click',()=>showModalView('interactive'));
+$('#modalOriginal').addEventListener('click',()=>showModalView('image'));
 $('#modalClose').addEventListener('click',closeModal);$('#modalZoomIn').addEventListener('click',()=>modalZoom(1.35));$('#modalZoomOut').addEventListener('click',()=>modalZoom(1/1.35));$('#modalReset').addEventListener('click',()=>{modalScale=1;modalX=modalY=0;modalTransform()});
 $('#imageModal').addEventListener('click',e=>{if(e.target===$('#imageModal'))closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#imageModal').hidden)closeModal()});
