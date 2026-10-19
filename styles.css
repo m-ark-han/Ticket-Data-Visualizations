@@ -82,3 +82,8 @@
 .modal-info-content h3{font-size:14px;letter-spacing:0;margin-bottom:9px}
 .modal-info-content p{font-size:16px;line-height:1.65;margin:0;overflow-wrap:anywhere}
 @media(max-width:760px){.simple-intro{padding-block:16px 4px}.figure-section{padding-block:14px 32px}.explore-section{padding-block:28px 36px}.modal-top{padding:10px 12px}.modal-actions #modalInteractive,.modal-actions #modalOriginal,.modal-actions #modalInfo{min-width:0;height:32px}.modal-info-content{padding:22px 18px}.modal-info-content p{font-size:14px}}
+
+.investigation-notes{padding-block:12px 32px;border-top:1px solid var(--line)}
+.investigation-notes h2{font-size:21px;margin:0 0 12px}
+.investigation-notes p{font-size:13px;line-height:1.6;max-width:1000px;margin:0 0 12px;color:#455b65}
+.investigation-notes a{color:#006f69;text-decoration:underline}

@@ -4,17 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#123344">
-  <meta name="description" content="Explore 20 visualizations and 18,278 Pinellas County debris collection tickets.">
+  <meta name="description" content="Explore 23 visualizations and 18,278 Pinellas County debris collection tickets.">
   <title>DebrisInsight | Pinellas ticket data</title>
-  <link rel="stylesheet" href="styles.css?v=minimal-info-1">
+  <link rel="stylesheet" href="styles.css?v=mark-followups-1">
   <script defer src="plotly-cartesian.min.js"></script>
-  <script defer src="app.js?v=minimal-info-1"></script>
+  <script defer src="app.js?v=mark-followups-1"></script>
 </head>
 <body>
   <main id="top">
     <section id="overview" class="simple-intro section-shell">
       <h1>Debris ticket visualizations</h1>
-      <p>20 charts and maps from 18,278 Pinellas County tickets. Select a graph for exact values, its original image, and its question and finding.</p>
+      <p>23 charts and maps from 18,278 Pinellas County tickets. Select a graph for exact values, its original image, and its question and finding.</p>
+    </section>
+
+    <section id="investigations" class="section-shell investigation-notes">
+      <h2>Follow-up review</h2>
+      <p><strong>Low weeks:</strong> Among 26 complete weeks, the weeks beginning February 24, March 3, and March 24, 2025 have no ticket records. March 10 has 2 tickets and 38.4 CY. <a href="https://pinellas.gov/emergency-information-3/sand-and-debris-cleanup/" target="_blank" rel="noopener">Pinellas County says</a> its final unincorporated-area collection pass ended in mid-January 2025. That supports a wind-down explanation for late low weeks; weather and reporting gaps remain unverified.</p>
+      <p><strong>Repeated addresses:</strong> 93 normalized address labels have at least 10 tickets, accounting for 2,839 tickets and 115,354.2 CY. The largest label has 351 tickets at 349 distinct GPS strings. Park and broad road labels appear among the highest counts. Repetition alone does not establish a duplicate pickup or temporary debris site.</p>
+      <p><strong>Areas and destinations:</strong> F21 compares recorded activity across 30 ticket debris zones. F22 and F23 use the ticket's <code>DisposalSite</code> label to summarize CY by stated destination and zone–destination pair. No figure establishes final disposal or verified cleanup completion.</p>
     </section>
 
     <section id="figures" class="figure-section section-shell">
@@ -46,7 +53,7 @@
     <p class="source-note section-shell">Source: <a href="https://pinellas-egis.maps.arcgis.com/home/item.html?id=fb652dddee454f97929d7fe73ec25d12#data" target="_blank" rel="noopener">Pinellas County eGIS Debris Ticket Locations</a>, extracted October 12, 2026. Dates use Eastern time. Totals describe recorded loads; missing dates do not establish that crews were idle.</p>
   </main>
 
-  <div id="imageModal" class="image-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-top"><div><span id="modalIndex"></span><h2 id="modalTitle"></h2></div><div class="modal-actions"><button id="modalInteractive" type="button" class="selected">Exact values</button><button id="modalOriginal" type="button">Original image</button><button id="modalInfo" type="button">Question &amp; finding</button><button id="modalZoomOut" type="button" aria-label="Zoom image out" hidden>−</button><button id="modalZoomIn" type="button" aria-label="Zoom image in" hidden>+</button><button id="modalReset" type="button" hidden>Fit image</button><button id="modalClose" type="button" aria-label="Close figure">×</button></div></div><div id="interactiveViewport" class="interactive-viewport"><div id="interactiveChart" aria-label="Interactive figure with exact hover values"></div><p id="pointReadout" aria-live="polite">Loading exact values…</p><p class="interaction-help">Hover or tap a mark to see its exact values. Drag over a region to zoom; double-click the chart to reset.</p></div><div id="modalViewport" class="modal-viewport" hidden><img id="modalImage" alt=""></div><div id="modalInfoViewport" class="modal-info-viewport" hidden><div class="modal-info-content"><section><h3>Question ID and question</h3><p id="modalQuestion"></p></section><section><h3>Variables used</h3><p id="modalVariables"></p></section><section><h3>Key finding and interpretation</h3><p id="modalInterpretation"></p></section></div></div></div>
+  <div id="imageModal" class="image-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-top"><div><span id="modalIndex"></span><h2 id="modalTitle"></h2></div><div class="modal-actions"><button id="modalInteractive" type="button" class="selected">Exact values</button><button id="modalOriginal" type="button">Original image</button><button id="modalInfo" type="button">Question &amp; finding</button><button id="modalZoomOut" type="button" aria-label="Zoom image out" hidden>−</button><button id="modalZoomIn" type="button" aria-label="Zoom image in" hidden>+</button><button id="modalReset" type="button" hidden>Fit image</button><button id="modalClose" type="button" aria-label="Close figure">×</button></div></div><div id="interactiveViewport" class="interactive-viewport"><div id="interactiveChart" aria-label="Interactive figure with exact hover values"></div><p id="pointReadout" aria-live="polite">Loading exact values…</p><p class="interaction-help">Hover or tap a mark to see its exact values. Drag over a region to zoom; double-click the chart to reset.</p></div><div id="modalViewport" class="modal-viewport" hidden><img id="modalImage" alt=""></div><div id="modalInfoViewport" class="modal-info-viewport" hidden><div class="modal-info-content"><section><h3>Question or task</h3><p id="modalQuestion"></p></section><section><h3>Variables used</h3><p id="modalVariables"></p></section><section><h3>Key finding and interpretation</h3><p id="modalInterpretation"></p></section></div></div></div>
   <div id="tooltip" class="tooltip" hidden></div>
 </body>
 </html>
