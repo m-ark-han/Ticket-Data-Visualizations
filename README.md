@@ -10,6 +10,8 @@ The explorer can filter by date, debris type, incident ID, minimum load volume, 
 
 The priority gallery includes F05 (weekly CY), F16 (pickup-volume map), F21 (zone activity duration), F24 (contractor footprint map), F25 (missing-address and internal GPS-field quality map), F26 (repeated-address coordinate-spread candidate map), F27 (recorded CY and ticket participation by contractor label), F28 (weekly distinct truck IDs with tickets), and F29 (listed capacity distribution among unique truck IDs). F22 and F23 destination-label figures remain in `figures/` and the exact-value JSON but are outside the nine-figure selection.
 
+The [question guide](question-guide.html) maps the 11 Ranbir questions answered by existing figures to their figure IDs and describes the 39 questions that need a new figure. It links archived figure images without adding them back to the nine-figure gallery. Q032, Q035, and Q025 are labeled partial in the gallery because their present figures do not fully answer those questions.
+
 Only two values occur in `Contractor`: DRC and PINELLAS COUNTY. The extract does not contain a separate subcontractor field. F28 counts distinct truck IDs present on at least one ticket in a week, not all deployed or available trucks. F29 counts each unique truck ID once; capacity is listed, not measured payload. F26 uses 90th-percentile distance from each repeated address label's median ticket coordinate. Spread can reflect broad roads or parks; identifying a true address/GPS mismatch requires authoritative address or parcel geometry. The address-level review files remain outside this public repository.
 
 ## Data source and limits

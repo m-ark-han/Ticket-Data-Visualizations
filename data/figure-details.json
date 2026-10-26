@@ -5,7 +5,7 @@
     "interpretation": "ID, incident, type, date, volume, and latitude/longitude are populated in all 18,278 rows. CollAddress is populated in 18,164 rows (99.38%). ZoneName is populated in only 6 rows (0.03%), so it cannot support a meaningful zone comparison."
   },
   "F02": {
-    "question": "Q02 asks which basic quality checks flag records.",
+    "question": "Q033: Which recorded volumes are nonnumeric, nonfinite, zero or negative? F02 provides the basic volume-quality check.",
     "variables": "normalized CollAddress, parsed LoadDate, numeric Volume, Lat, Lng, TicketId, and TruckCapacity.",
     "interpretation": "The only nonzero flag is 114 missing collection addresses. The checks found no unparseable load dates, missing or nonpositive CY values, out-of-range numeric coordinates, repeated TicketId values, or volumes above listed truck capacity."
   },
@@ -15,7 +15,7 @@
     "interpretation": "DisasterID 84 accounts for 17,767 tickets; ID 80 accounts for 511. ID 84 therefore dominates the recorded activity in this extract."
   },
   "F04": {
-    "question": "Q04 asks how recorded collection volume changes by day.",
+    "question": "Q001: How much pickup volume is recorded each day and week? F04 is the daily view; F05 is the weekly view.",
     "variables": "local pickup date from LoadDate and the daily sum of Volume in CY.",
     "interpretation": "November 1, 2024 is the highest recorded day at 19,187.40 CY. The figure shows a strong early collection phase followed by lower recorded daily totals."
   },
@@ -35,32 +35,32 @@
     "interpretation": "November 1, 2024 also has the most recorded tickets: 525 loads. The peak in ticket count coincides with the peak in recorded CY."
   },
   "F08": {
-    "question": "Q08 asks how recorded load sizes are distributed.",
+    "question": "Q007: What is the typical recorded volume per ticket, and how wide is the distribution?",
     "variables": "positive numeric Volume per ticket, grouped into 5-CY bins.",
     "interpretation": "The median recorded load is 35.0 CY. The 20 to under 25 CY bin has 2,046 tickets, the largest bin. The maximum recorded load is 88.35 CY."
   },
   "F09": {
-    "question": "Q09 asks whether ticket load sizes differ by debris type.",
+    "question": "Q014: How does recorded CY per ticket differ across debris types?",
     "variables": "DebrisType and per-ticket Volume in CY; plotted types have at least 20 tickets.",
     "interpretation": "Median loads are 35.0 CY for Vegetative/Woody, 37.7 CY for Construction & Demolition, and 32.3 CY for Veg Park Debris. These are differences in recorded load size, not evidence that one material was collected more efficiently."
   },
   "F10": {
-    "question": "Q10 asks which debris categories contribute the most recorded CY.",
+    "question": "Q011: Which debris types account for the recorded pickup volume? F10 shows volume by type; F11 compares shares.",
     "variables": "DebrisType and summed Volume.",
     "interpretation": "Vegetative/Woody leads with 476,239.10 CY, followed by Construction & Demolition with 88,876.90 CY and Veg Park Debris with 71,562.35 CY."
   },
   "F11": {
-    "question": "Q11 asks how each debris type's share of CY compares with its share of tickets.",
+    "question": "Q011: Which debris types account for the recorded pickup volume? F11 compares CY share with ticket share.",
     "variables": "DebrisType, summed Volume, ticket count, and each measure's percentage of its own total.",
     "interpretation": "Vegetative/Woody accounts for 73.84% of CY and 75.29% of tickets. Its ticket share is slightly higher than its volume share, consistent with a slightly lower average load than the overall average."
   },
   "F12": {
-    "question": "Q12 asks which material categories contributed to each week's recorded CY.",
+    "question": "Q013: How does the recorded debris-type mix change from week to week? F12 shows CY by type; F13 shows shares.",
     "variables": "week from local LoadDate, DebrisType grouped as the top three types plus Other, and summed Volume.",
     "interpretation": "Vegetative/Woody supplies most of the high-volume October and November weeks. In the peak week beginning October 28, its recorded volume alone is 104,988.55 CY."
   },
   "F13": {
-    "question": "Q13 asks how the percentage mix of recorded CY changed by week.",
+    "question": "Q013: How does the recorded debris-type mix change from week to week? F13 shows each type's weekly CY share.",
     "variables": "week, top-three DebrisType categories plus Other, each type's weekly CY divided by total weekly CY.",
     "interpretation": "Vegetative/Woody accounts for 81.7% of recorded CY in October–November but 50.3% from December onward. Veg Park Debris rises from 4.0% to 32.5% over those same periods, calculated from period totals. The composition of recorded tickets therefore changes substantially."
   },
@@ -80,7 +80,7 @@
     "interpretation": "The highest-volume cell is centered near −82.714286°, 27.895000° and contains 46,453.90 recorded CY. High-CY cells broadly follow high-ticket-count clusters."
   },
   "F17": {
-    "question": "Q17 asks how the footprint of recorded ticket coordinates changes by month.",
+    "question": "Q017: How does the footprint of recorded collection activity expand or contract over time? F17 compares monthly recorded footprints.",
     "variables": "LoadDate converted to month, Lng, Lat, and monthly ticket count.",
     "interpretation": "6,100 tickets are dated October 2024 and 8,012 November 2024; the mapped footprint is broad in those months. Later records become sparse, including 7 in March 2025 and 30 in April 2025."
   },
@@ -90,17 +90,17 @@
     "interpretation": "The extract contains 11,033 normalized nonblank addresses. 2,890 have at least two tickets; 93 have ten or more. Repeated tickets are common enough to investigate as a normal operational pattern or a data-quality issue."
   },
   "F19": {
-    "question": "Q19 asks how far apart distinct recorded dates are at a normalized address.",
+    "question": "Q021: How much time passes between successive recorded collection dates at the same location? F19 uses normalized addresses.",
     "variables": "normalized CollAddress, local date from LoadDate, distinct address–date pairs, and days between successive dates; values of 60 or more days are grouped as 60+.",
     "interpretation": "There are 1,576 intervals between distinct recorded dates, with a 3-day median. 582 intervals are exactly one day; 39 are 60 days or more. Short revisits occur frequently in the recorded data."
   },
   "F20": {
-    "question": "Q20 asks which local dates have records and how many.",
+    "question": "Q006: Which dates or stretches have no recorded pickups? F20 shows dates with and without ticket rows.",
     "variables": "local date from LoadDate, weekday, Monday-start week, and daily ticket count.",
     "interpretation": "Tickets appear on 141 of 191 dates in the observed span; 50 dates have no record in this extract. The calendar shows the timing of ticket reporting, including runs of higher and lower recorded activity."
   },
   "F21": {
-    "question": "M04: How long does recorded ticket activity span in each Zone1 debris zone? Related area question: Q025.",
+    "question": "M04: How long does recorded ticket activity span in each Zone1 debris zone? This is partial evidence for Q025, which asks for duration at each location.",
     "variables": "Zone1, local LoadDate, Volume, TicketId. For each zone: first and last ticket date; first date cumulative CY reaches 90% of that zone's observed total.",
     "interpretation": "Across 30 zones, the time to 90% of each zone's CY ranges from 32 to 122 days. The first-to-last ticket spans range from 53 to 187 days. These are recorded activity periods, not verified clearance times or municipality comparisons."
   },
@@ -120,7 +120,7 @@
     "interpretation": "DRC and PINELLAS COUNTY are the only Contractor labels. The maps show the footprint of ticket locations by label, not verified crew coverage or subcontractor participation."
   },
   "F25": {
-    "question": "Q032/Q035: Where are blank collection addresses and internally conflicting coordinate fields?",
+    "question": "Partial evidence for Q032 and Q035: where are blank collection addresses and internally conflicting coordinate fields? New figures are needed for affected CY and GPS precision.",
     "variables": "CollAddress (blank after whitespace trim), GPS text, numeric Lat/Lng, and Volume. A GPS conflict means either coordinate differs by more than 0.00001 degree.",
     "interpretation": "114 tickets have blank collection addresses (4,268.50 CY), and 1 ticket has GPS text differing from its numeric Lat/Lng. These flags do not verify whether any address is mapped to the wrong place (Q045)."
   },

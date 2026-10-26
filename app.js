@@ -1,13 +1,13 @@
 const FIGS = [
-  {id:'F05',q:'Q001 · Q006',cat:'Pace',title:'Weekly recorded collection volume',img:'F05-weekly-volume.png',finding:'The peak week beginning October 28, 2024 reached 112,592.90 CY. Three complete late-February/March weeks have no ticket records.',note:'No-record weeks do not prove that crews were idle.'},
-  {id:'F16',q:'Q016',cat:'Maps',title:'Pickup volume by map cell',img:'F16-pickup-volume-map.png',finding:'This map shows where recorded ticket CY is concentrated.',note:'Ticket coordinates do not measure remaining debris.'},
+  {id:'F05',q:'Q001 · Q006',cat:'Pace',title:'Weekly recorded collection volume',img:'F05-weekly-volume.png',finding:'Answers Q001 and Q006: the peak week beginning October 28, 2024 reached 112,592.90 CY. Three complete late-February/March weeks have no ticket records.',note:'No-record weeks do not prove that crews were idle.'},
+  {id:'F16',q:'Q016',cat:'Maps',title:'Pickup volume by map cell',img:'F16-pickup-volume-map.png',finding:'Answers Q016: this map shows where recorded ticket CY is concentrated.',note:'Ticket coordinates do not measure remaining debris.'},
   {id:'F24',q:'M01',cat:'Maps',title:'Contractor pickup footprint',img:'F24-contractor-footprint-map.png',finding:'Switch between DRC and PINELLAS COUNTY ticket CY on the same street map and scale.',note:'The file has no separate subcontractor field.'},
-  {id:'F25',q:'Q032 · Q035',cat:'Maps',title:'Missing address and GPS-field flags',img:'F25-location-quality-map.png',finding:'114 tickets have blank collection addresses; one GPS text coordinate differs from the numeric Lat/Lng.',note:'These are internal data flags, not confirmed wrong address locations.'},
-  {id:'F26',q:'Q030',cat:'Maps',title:'Coordinate spread under repeated addresses',img:'F26-address-spread-candidates-map.png',finding:'Fifteen repeated address labels have pickup points spread more than 1 km at the 90th percentile.',note:'Broad road or park labels can legitimately cover many points. Q045 needs authoritative address geometry.'},
+  {id:'F25',q:'Q032 · Q035 (partial)',cat:'Maps',title:'Missing address and GPS-field flags',img:'F25-location-quality-map.png',finding:'Partial evidence for Q032 and Q035: 114 tickets have blank collection addresses; one GPS text coordinate differs from numeric Lat/Lng.',note:'New figures are still needed for affected CY and GPS precision. These flags are not confirmed wrong locations.'},
+  {id:'F26',q:'Q030',cat:'Maps',title:'Coordinate spread under repeated addresses',img:'F26-address-spread-candidates-map.png',finding:'Answers Q030: fifteen repeated address labels have pickup points spread more than 1 km at the 90th percentile.',note:'Broad road or park labels can legitimately cover many points. Q045 needs authoritative address geometry.'},
   {id:'F27',q:'M01',cat:'Contractors',title:'Volume and participation by contractor label',img:'F27-contractor-volume.png',finding:'DRC has 608,886.10 CY on 14,799 tickets; PINELLAS COUNTY has 36,066.55 CY on 3,479.',note:'These are ticket labels, not a verified subcontractor roster or productivity comparison.'},
   {id:'F28',q:'M02',cat:'Trucks',title:'Weekly truck IDs with tickets',img:'F28-weekly-active-trucks.png',finding:'The busiest observed week has 142 distinct truck IDs with ticket records.',note:'This counts recorded activity, not every truck deployed or available.'},
   {id:'F29',q:'M03',cat:'Trucks',title:'Listed capacity of unique trucks',img:'F29-truck-capacity-distribution.png',finding:'The tickets identify 283 distinct truck IDs: 183 under DRC and 100 under PINELLAS COUNTY.',note:'Each ID is counted once; capacity is a listed value, not measured payload.'},
-  {id:'F21',q:'M04 · Q025',cat:'Areas',title:'Recorded activity duration by debris zone',img:'F21-zone-activity-duration.png',finding:'Across 30 debris zones, first ticket to 90% of each zone’s CY ranges from 32 to 122 days.',note:'This measures ticket activity, not verified cleanup completion or city boundaries.'}
+  {id:'F21',q:'M04 · Q025 (partial)',cat:'Areas',title:'Recorded activity duration by debris zone',img:'F21-zone-activity-duration.png',finding:'Partial evidence for Q025: across 30 debris zones, first ticket to 90% of each zone’s CY ranges from 32 to 122 days. Q025 still needs duration at each location.',note:'This measures ticket activity, not verified cleanup completion or city boundaries.'}
 ];
 
 const $ = (s) => document.querySelector(s);
@@ -157,7 +157,7 @@ async function openModal(id){
   showModalView('interactive');
   $('#pointReadout').textContent='Loading exact values…';
   $('#modalClose').focus();
-  if(!figureDetailsPromise)figureDetailsPromise=fetch('data/figure-details.json?v=priority-3').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+  if(!figureDetailsPromise)figureDetailsPromise=fetch('data/figure-details.json?v=questions-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
   figureDetailsPromise.then(details=>{
     if(request!==modalRequest||$('#imageModal').hidden)return;
     const d=details[id];
