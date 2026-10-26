@@ -89,10 +89,10 @@
 .investigation-notes a{color:#006f69;text-decoration:underline}
 
 /* Geographic figures use street tiles with the original plotted values on top. */
-.figure-image:has(.map-preview){height:380px;position:relative}
+.figure-image:has(.map-preview){height:380px;position:relative;isolation:isolate}
 .figure-image:has(.map-preview) > img{height:100%;object-fit:contain}
 .figure-image > img[hidden]{display:none}
-.map-preview{width:100%;height:380px;pointer-events:none;text-align:left}
+.map-preview{width:100%;height:380px;pointer-events:none;text-align:left;isolation:isolate}
 .map-preview[hidden],#leafletMap[hidden],#mapLayerControls[hidden]{display:none}
 .map-preview .leaflet-control-attribution{font-size:9px}
 .map-credit{display:block;margin-top:8px;font-size:9px;color:#597780;text-decoration:underline}
@@ -107,6 +107,7 @@
 .map-key .key-missing{background:#d47b28}.map-key .key-conflict{background:#17324b}
 .leaflet-popup-content{font-size:12px;line-height:1.55}
 .map-wrap:before{display:none}
+.map-wrap{isolation:isolate}
 #explorerBasemap{position:absolute;inset:0;z-index:0}
 .map-wrap canvas{z-index:2}
 .map-selection{z-index:3}
