@@ -61,7 +61,7 @@ async function openModal(id){
   showModalView('interactive');
   $('#pointReadout').textContent='Loading exact values…';
   $('#modalClose').focus();
-  if(!figureDetailsPromise)figureDetailsPromise=fetch('data/figure-details.json?v=priority-2').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+  if(!figureDetailsPromise)figureDetailsPromise=fetch('data/figure-details.json?v=priority-3').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
   figureDetailsPromise.then(details=>{
     if(request!==modalRequest||$('#imageModal').hidden)return;
     const d=details[id];
@@ -78,7 +78,7 @@ async function openModal(id){
     console.error('Could not load figure details',error);
   });
   try{
-    if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json?v=priority-2').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+    if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json?v=priority-3').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
     const specs=await figureValuesPromise;
     if(request!==modalRequest||$('#imageModal').hidden)return;
     const chart=$('#interactiveChart');

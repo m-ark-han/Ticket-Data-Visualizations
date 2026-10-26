@@ -48,7 +48,7 @@ def point_trace(x, y, name, text, color, size=11, **extra):
             "customdata": list(text), "hovertemplate": "%{customdata}<extra></extra>"}
 
 def map_layout(title, **extra):
-    return {"xaxis": {"title": "Longitude (degrees)", "range": EXTENT[:2], "scaleanchor": "y"},
+    return {"xaxis": {"title": "Longitude (degrees)", "range": EXTENT[:2]},
             "yaxis": {"title": "Latitude (degrees)", "range": EXTENT[2:]},
             "margin": {"l": 80, "r": 60, "t": 45, "b": 70}, "showlegend": True,
             "hovermode": "closest", **extra}
@@ -89,7 +89,7 @@ for i, (contractor, centers, totals) in enumerate(hexes):
              for (lon, lat), cy in zip(centers, totals)]
     tr = point_trace(np.round(centers[:, 0], 6), np.round(centers[:, 1], 6), contractor,
                      texts, np.round(totals, 2).tolist(), size=13, symbol="hexagon",
-                     colorscale="YlGnBu", cmin=0, cmax=max_cy, showscale=i == 1,
+                     colorscale="YlGnBu", reversescale=True, cmin=0, cmax=max_cy, showscale=i == 1,
                      colorbar={"title": "CY"})
     tr["xaxis"], tr["yaxis"] = "x" + axis, "y" + axis
     traces.append(tr)
@@ -165,7 +165,7 @@ texts = [f"Review group: {r.review_id}<br>Median longitude: {r.lng:.6f}<br>Media
 values["F26"] = {"data": [point_trace(spread.lng.round(6), spread.lat.round(6), "Repeated address label",
                                       texts, spread.p90_km.clip(upper=10).tolist(),
                                       size=np.clip(np.sqrt(spread.tickets) * 2.5, 9, 34).tolist(),
-                                      colorscale="YlOrRd", cmin=0, cmax=10, showscale=True,
+                                      colorscale="YlOrRd", reversescale=True, cmin=0, cmax=10, showscale=True,
                                       colorbar={"title": "P90 km"})],
                  "layout": map_layout("Repeated address coordinate spread", showlegend=False)}
 details["F26"] = {"question": "Q030: Which repeated address labels have unusually spread-out pickup coordinates? Q045 remains unresolved.",
