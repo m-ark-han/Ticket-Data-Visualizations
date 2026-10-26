@@ -1,7 +1,7 @@
 const FIGS = [
   {id:'F05',q:'Q001 · Q006',cat:'Pace',title:'Weekly recorded collection volume',img:'F05-weekly-volume.png',finding:'The peak week beginning October 28, 2024 reached 112,592.90 CY. Three complete late-February/March weeks have no ticket records.',note:'No-record weeks do not prove that crews were idle.'},
   {id:'F16',q:'Q016',cat:'Maps',title:'Pickup volume by map cell',img:'F16-pickup-volume-map.png',finding:'This map shows where recorded ticket CY is concentrated.',note:'Ticket coordinates do not measure remaining debris.'},
-  {id:'F24',q:'M01',cat:'Maps',title:'Contractor pickup footprint',img:'F24-contractor-footprint-map.png',finding:'Two fixed-scale maps compare ticket CY associated with DRC and PINELLAS COUNTY.',note:'The file has no separate subcontractor field.'},
+  {id:'F24',q:'M01',cat:'Maps',title:'Contractor pickup footprint',img:'F24-contractor-footprint-map.png',finding:'Switch between DRC and PINELLAS COUNTY ticket CY on the same street map and scale.',note:'The file has no separate subcontractor field.'},
   {id:'F25',q:'Q032 · Q035',cat:'Maps',title:'Missing address and GPS-field flags',img:'F25-location-quality-map.png',finding:'114 tickets have blank collection addresses; one GPS text coordinate differs from the numeric Lat/Lng.',note:'These are internal data flags, not confirmed wrong address locations.'},
   {id:'F26',q:'Q030',cat:'Maps',title:'Coordinate spread under repeated addresses',img:'F26-address-spread-candidates-map.png',finding:'Fifteen repeated address labels have pickup points spread more than 1 km at the 90th percentile.',note:'Broad road or park labels can legitimately cover many points. Q045 needs authoritative address geometry.'},
   {id:'F27',q:'M01',cat:'Contractors',title:'Volume and participation by contractor label',img:'F27-contractor-volume.png',finding:'DRC has 608,886.10 CY on 14,799 tickets; PINELLAS COUNTY has 36,066.55 CY on 3,479.',note:'These are ticket labels, not a verified subcontractor roster or productivity comparison.'},
@@ -19,15 +19,74 @@ const tooltip = $('#tooltip');
 let DATA = null, rows = [], visible = [];
 const ALL_VIEW = {lon0:-82.875,lon1:-82.59,lat0:27.59,lat1:28.20};
 const state = {from:0,to:190,type:'all',incident:'all',minVolume:0,bounds:null,view:{...ALL_VIEW},category:'All',search:''};
+const PINELLAS_BOUNDS=[[27.59,-82.875],[28.20,-82.59]];
+const MAP_IDS=new Set(['F16','F24','F25','F26']);
+const previewMaps=new Map();
+let mapOverlaysPromise=null,previewObserver=null,figureMap=null,activeFigureId=null;
+const mapOverlays=()=>mapOverlaysPromise||(mapOverlaysPromise=fetch('data/map-overlays.json?v=basemap-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()}));
+const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const osmTiles=()=>L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'});
+function mapColor(id,value){
+  if(id==='F25')return '#d47b28';
+  if(id==='F26')return value>=1?'#ad3f36':value>=.25?'#dd8d29':'#247c87';
+  return value>=5000?'#9b2f31':value>=1000?'#d46b29':value>=100?'#e9a93b':'#178b88';
+}
+function addFigurePoints(map,id,group,{preview=false}={}){
+  const layer=L.layerGroup();
+  for(const p of group.points){
+    if(!Number.isFinite(p.lat)||!Number.isFinite(p.lon))continue;
+    const color=id==='F25'&&group.name==='GPS field conflict'?'#17324b':mapColor(id,p.value);
+    const radius=id==='F25'?(group.name==='GPS field conflict'?7:4.5):id==='F26'?Math.max(4,Math.min(11,Number(p.size||10)/2)):id==='F16'?6:5;
+    const marker=L.circleMarker([p.lat,p.lon],{radius:preview?Math.max(2.5,radius*.7):radius,color:'#fff',weight:preview?.5:1,fillColor:color,fillOpacity:preview?.77:.84,interactive:!preview});
+    if(!preview){
+      const detail=escapeHtml(p.detail).replace(/\n/g,'<br>');
+      marker.bindPopup(`<strong>${escapeHtml(group.name)}</strong><br>${detail}`,{maxWidth:320});
+      marker.on('click',()=>{$('#pointReadout').textContent=p.detail.replace(/\n/g,' · ')});
+    }
+    layer.addLayer(marker);
+  }
+  layer.addTo(map);
+  return layer;
+}
+async function initPreviewMaps(){
+  if(previewObserver)previewObserver.disconnect();
+  for(const map of previewMaps.values())map.remove();
+  previewMaps.clear();
+  if(!window.L)return;
+  previewObserver=new IntersectionObserver(async entries=>{
+    for(const entry of entries){
+      if(!entry.isIntersecting)continue;
+      previewObserver.unobserve(entry.target);
+      const host=entry.target.querySelector('[data-map-preview]'),id=host.dataset.mapPreview;
+      try{
+        const overlays=await mapOverlays();
+        if(!host.isConnected)return;
+        host.hidden=false;
+        const map=L.map(host,{zoomControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,preferCanvas:true});
+        previewMaps.set(host,map);
+        osmTiles().addTo(map);
+        map.fitBounds(PINELLAS_BOUNDS,{padding:[4,4]});
+        addFigurePoints(map,id,overlays[id][0],{preview:true});
+        host.parentElement.querySelector('img').hidden=true;
+        setTimeout(()=>map.invalidateSize(),0);
+      }catch(error){console.error('Map preview unavailable',error)}
+    }
+  },{rootMargin:'100px'});
+  document.querySelectorAll('[data-map-preview]').forEach(el=>previewObserver.observe(el.parentElement));
+}
 
 function renderFigureGallery(){
+  if(previewObserver)previewObserver.disconnect();
+  for(const map of previewMaps.values())map.remove();
+  previewMaps.clear();
   const cats=['All',...new Set(FIGS.map(f=>f.cat))];
   $('#categoryFilters').innerHTML=cats.map(c=>`<button type="button" data-category="${c}" class="${c===state.category?'active':''}">${c}</button>`).join('');
   $('#categoryFilters').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{state.category=b.dataset.category;renderFigureGallery()}));
   const filtered=FIGS.filter(f=>(state.category==='All'||f.cat===state.category)&&`${f.title} ${f.finding} ${f.note} ${f.id} ${f.q}`.toLowerCase().includes(state.search));
   $('#figureCount').textContent=`Showing ${filtered.length} of ${FIGS.length} figures`;
-  $('#figureGrid').innerHTML=filtered.map(f=>`<article class="figure-card" id="figure-${f.id}"><button type="button" class="figure-image" data-open="${f.id}" aria-label="Open interactive ${f.id}: ${f.title}"><img loading="lazy" src="figures/${f.img}" alt="${f.title} visualization"></button><div class="figure-body"><span class="figure-meta">${f.id} · ${f.cat.toUpperCase()} · QUESTION ${f.q}</span><h3>${f.title}</h3><p>${f.finding}</p><p class="figure-note"><strong>Read with care:</strong> ${f.note}</p><button type="button" class="figure-open" data-open="${f.id}">Explore exact values ↗</button></div></article>`).join('');
+  $('#figureGrid').innerHTML=filtered.map(f=>`<article class="figure-card" id="figure-${f.id}"><button type="button" class="figure-image" data-open="${f.id}" aria-label="Open interactive ${f.id}: ${f.title}">${MAP_IDS.has(f.id)?`<div class="map-preview" data-map-preview="${f.id}" hidden></div>`:''}<img loading="lazy" src="figures/${f.img}" alt="${f.title} visualization"></button><div class="figure-body"><span class="figure-meta">${f.id} · ${f.cat.toUpperCase()} · QUESTION ${f.q}</span><h3>${f.title}</h3><p>${f.finding}</p><p class="figure-note"><strong>Read with care:</strong> ${f.note}</p><button type="button" class="figure-open" data-open="${f.id}">${MAP_IDS.has(f.id)?'Open street map ↗':'Explore exact values ↗'}</button>${MAP_IDS.has(f.id)?'<a class="map-credit" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>':''}</div></article>`).join('');
   $('#figureGrid').querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.open)));
+  initPreviewMaps();
 }
 
 let modalScale=1,modalX=0,modalY=0,modalDrag=null,figureValuesPromise=null,figureDetailsPromise=null,modalRequest=0,modalView='interactive';
@@ -45,10 +104,47 @@ function showModalView(view){
   for(const [id,active] of [['#modalInteractive',interactive],['#modalOriginal',image],['#modalInfo',view==='info']])$(id).setAttribute('aria-pressed',String(active));
   for(const id of ['#modalZoomOut','#modalZoomIn','#modalReset'])$(id).hidden=!image;
   if(interactive&&$('#interactiveChart').data)Plotly.Plots.resize($('#interactiveChart'));
+  if(interactive&&figureMap)setTimeout(()=>figureMap.invalidateSize(),0);
+}
+async function renderFigureMap(id,request){
+  if(!window.L)throw Error('Leaflet map library did not load');
+  const overlays=await mapOverlays();
+  if(request!==modalRequest||$('#imageModal').hidden)return;
+  $('#interactiveChart').hidden=true;
+  const host=$('#leafletMap');host.hidden=false;
+  const controls=$('#mapLayerControls');controls.hidden=false;
+  figureMap=L.map(host,{preferCanvas:true,scrollWheelZoom:true});
+  osmTiles().addTo(figureMap);
+  figureMap.fitBounds(PINELLAS_BOUNDS,{padding:[12,12]});
+  L.control.scale({imperial:false}).addTo(figureMap);
+  let shown=[];
+  const showGroups=indexes=>{
+    for(const layer of shown)figureMap.removeLayer(layer);
+    shown=indexes.map(i=>addFigurePoints(figureMap,id,overlays[id][i]));
+    controls.querySelectorAll('[data-group]').forEach(b=>b.setAttribute('aria-pressed',String(indexes.includes(Number(b.dataset.group)))));
+  };
+  if(id==='F24'){
+    controls.innerHTML='<span>Contractor:</span> <button type="button" data-group="0" aria-pressed="true">DRC</button> <button type="button" data-group="1" aria-pressed="false">PINELLAS COUNTY</button><span class="map-key">Cell CY: <i class="key-low"></i>&lt;100 <i class="key-minor"></i>100–999 <i class="key-mid"></i>1,000–4,999 <i class="key-high"></i>5,000+</span>';
+    controls.querySelectorAll('[data-group]').forEach(b=>b.addEventListener('click',()=>showGroups([Number(b.dataset.group)])));
+    showGroups([0]);
+  }else{
+    showGroups(overlays[id].map((_,i)=>i));
+    controls.innerHTML=id==='F25'?'<span class="map-key"><i class="key-missing"></i> Blank address <i class="key-conflict"></i> GPS text / numeric conflict</span>':'<span class="map-key">'+(id==='F26'?'<i class="key-low"></i> under 0.25 km <i class="key-mid"></i> 0.25–1 km <i class="key-high"></i> 1+ km spread':'Cell CY: <i class="key-low"></i> &lt;100 <i class="key-minor"></i> 100–999 <i class="key-mid"></i> 1,000–4,999 <i class="key-high"></i> 5,000+')+'</span>';
+  }
+  $('#pointReadout').textContent=id==='F16'||id==='F24'?'Each circle marks an aggregated cell center. Click a circle for its exact center coordinates and recorded CY.':id==='F26'?'Color shows 90th percentile coordinate spread; circle size shows ticket count. Click a point for exact values.':'Click a point for its exact plotted coordinates and values.';
+  $('.interaction-help').textContent='Drag to pan; scroll or use +/− to zoom. Open Question & finding for interpretation. Map data are recorded ticket locations.';
+  setTimeout(()=>figureMap?.invalidateSize(),0);
 }
 async function openModal(id){
   const f=FIGS.find(x=>x.id===id);if(!f)return;
   const request=++modalRequest;
+  activeFigureId=id;
+  if(figureMap){figureMap.remove();figureMap=null}
+  $('#leafletMap').hidden=true;$('#mapLayerControls').hidden=true;
+  $('#interactiveChart').hidden=MAP_IDS.has(id);
+  $('#modalOriginal').hidden=MAP_IDS.has(id);
+  $('#modalInteractive').textContent=MAP_IDS.has(id)?'Map & values':'Exact values';
+  $('.interaction-help').textContent='Hover or tap a mark to see its exact values. Drag over a region to zoom; double-click the chart to reset.';
   $('#modalIndex').textContent=`${f.id} / ${FIGS.length} · ${f.cat.toUpperCase()} · QUESTION ${f.q}`;
   $('#modalTitle').textContent=f.title;
   $('#modalImage').src=`figures/${f.img}`;
@@ -78,6 +174,10 @@ async function openModal(id){
     console.error('Could not load figure details',error);
   });
   try{
+    if(MAP_IDS.has(id)){
+      await renderFigureMap(id,request);
+      return;
+    }
     if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json?v=priority-3').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
     const specs=await figureValuesPromise;
     if(request!==modalRequest||$('#imageModal').hidden)return;
@@ -97,13 +197,13 @@ async function openModal(id){
     chart.on('plotly_hover',update);chart.on('plotly_click',update);
   }catch(error){
     if(request!==modalRequest)return;
-    $('#pointReadout').textContent='Exact values could not load. The original image is available.';
-    if(modalView==='interactive')showModalView('image');
+    $('#pointReadout').textContent=MAP_IDS.has(id)?'Street map could not load. Check the connection and reload.':'Exact values could not load. The original image is available.';
+    if(modalView==='interactive'&&!MAP_IDS.has(id))showModalView('image');
     figureValuesPromise=null;
     console.error('Could not load interactive figure',error);
   }
 }
-function closeModal(){++modalRequest;$('#imageModal').hidden=true;document.body.style.overflow='';$('#modalImage').src='';if($('#interactiveChart').data)Plotly.purge($('#interactiveChart'))}
+function closeModal(){++modalRequest;$('#imageModal').hidden=true;document.body.style.overflow='';$('#modalImage').src='';if(figureMap){figureMap.remove();figureMap=null}if($('#interactiveChart').data)Plotly.purge($('#interactiveChart'))}
 function modalZoom(factor){modalScale=Math.max(1,Math.min(8,modalScale*factor));if(modalScale===1){modalX=0;modalY=0}modalTransform()}
 $('#modalInteractive').addEventListener('click',()=>showModalView('interactive'));
 $('#modalOriginal').addEventListener('click',()=>showModalView('image'));
@@ -145,19 +245,35 @@ function renderTrend(){
 
 function renderTypeMix(){const sums=Array(DATA.types.length).fill(0),counts=Array(DATA.types.length).fill(0);for(const r of visible){sums[r[1]]+=r[3];counts[r[1]]++}const total=sums.reduce((a,b)=>a+b,0);const order=sums.map((v,i)=>i).sort((a,b)=>sums[b]-sums[a]);$('#typeBreakdown').innerHTML=visible.length?order.filter(i=>counts[i]).map(i=>{const pct=total?100*sums[i]/total:0;return `<button class="type-row" type="button" data-type="${i}" title="Filter to ${DATA.types[i]}"><span class="type-row-top"><span class="type-name">${DATA.types[i]}</span><span class="type-value">${fmt(pct,1)}%</span></span><span class="type-meter"><i style="width:${pct}%"></i></span></button>`}).join(''):'<p class="empty-state">No tickets match these filters.</p>';$('#typeBreakdown').querySelectorAll('[data-type]').forEach(b=>b.addEventListener('click',()=>{state.type=b.dataset.type;$('#typeFilter').value=state.type;update()}))}
 
-const mapCanvas=$('#ticketMap'),mapWrap=mapCanvas.parentElement,mapSel=$('#mapSelection');let mapDrag=null;
+const mapCanvas=$('#ticketMap'),mapWrap=mapCanvas.parentElement,mapSel=$('#mapSelection');let mapDrag=null,explorerMap=null,panMode=false;
+function initExplorerMap(){
+  if(!window.L){$('#mapStatus').textContent='Street map library unavailable. Reload the page.';return}
+  explorerMap=L.map('explorerBasemap',{zoomControl:false,preferCanvas:true,scrollWheelZoom:true,dragging:false});
+  osmTiles().addTo(explorerMap);
+  explorerMap.fitBounds(PINELLAS_BOUNDS);
+  explorerMap.on('move zoom resize',()=>renderMap());
+  explorerMap.invalidateSize();
+  renderMap();
+}
+const explorerObserver=new IntersectionObserver(entries=>{
+  if(entries.some(e=>e.isIntersecting)){
+    explorerObserver.disconnect();
+    initExplorerMap();
+  }
+},{rootMargin:'100px'});
+explorerObserver.observe(mapWrap);
 function mapSize(){const r=mapWrap.getBoundingClientRect(),ratio=window.devicePixelRatio||1;mapCanvas.width=Math.round(r.width*ratio);mapCanvas.height=Math.round(r.height*ratio);return {w:r.width,h:r.height,ratio}}
-function mapPos(lon,lat,w,h){const v=state.view;return [(lon-v.lon0)/(v.lon1-v.lon0)*w,(v.lat1-lat)/(v.lat1-v.lat0)*h]}
-function geoPos(x,y,w,h){const v=state.view;return [v.lon0+x/w*(v.lon1-v.lon0),v.lat1-y/h*(v.lat1-v.lat0)]}
-function renderMap(){if(!DATA)return;const {w,h,ratio}=mapSize(),ctx=mapCanvas.getContext('2d');ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,w,h);ctx.fillStyle='#007f78';for(const r of visible){const [x,y]=mapPos(r[5],r[4],w,h);if(x>=0&&x<w&&y>=0&&y<h){ctx.globalAlpha=.24;ctx.fillRect(x-1.3,y-1.3,2.6,2.6)}}ctx.globalAlpha=1;ctx.fillStyle='#4a7876';ctx.font='10px DM Sans, Arial';ctx.fillText(`${Math.abs(state.view.lon0).toFixed(2)}°W`,8,h-9);ctx.fillText(`${Math.abs(state.view.lon1).toFixed(2)}°W`,w-48,h-9);ctx.fillText(`${state.view.lat1.toFixed(2)}°N`,8,24);$('#mapStatus').textContent=state.bounds?`Area selected · ${fmt(visible.length)} matching tickets · drag again to refine`: 'Drag on map to select an area · scroll to zoom'}
+function mapPos(lon,lat){const p=explorerMap.latLngToContainerPoint([lat,lon]);return [p.x,p.y]}
+function geoPos(x,y){const p=explorerMap.containerPointToLatLng([x,y]);return [p.lng,p.lat]}
+function renderMap(){if(!DATA||!explorerMap)return;const {w,h,ratio}=mapSize(),ctx=mapCanvas.getContext('2d');ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,w,h);ctx.fillStyle='#007f78';ctx.globalAlpha=.48;for(const r of visible){const [x,y]=mapPos(r[5],r[4]);if(x>=0&&x<w&&y>=0&&y<h)ctx.fillRect(x-1.3,y-1.3,2.6,2.6)}ctx.globalAlpha=1;$('#mapStatus').textContent=state.bounds?`Area selected · ${fmt(visible.length)} matching tickets · drag again to refine`:(panMode?'Drag to pan the street map · scroll to zoom':'Drag to select an area · choose Pan map to move the street map')}
 function localPoint(e){const rect=mapWrap.getBoundingClientRect();return {x:Math.max(0,Math.min(rect.width,e.clientX-rect.left)),y:Math.max(0,Math.min(rect.height,e.clientY-rect.top)),w:rect.width,h:rect.height}}
 mapCanvas.addEventListener('pointerdown',e=>{mapDrag=localPoint(e);mapCanvas.setPointerCapture(e.pointerId);mapSel.hidden=false});
 mapCanvas.addEventListener('pointermove',e=>{if(!mapDrag)return;const p=localPoint(e),x=Math.min(p.x,mapDrag.x),y=Math.min(p.y,mapDrag.y);Object.assign(mapSel.style,{left:`${x}px`,top:`${y}px`,width:`${Math.abs(p.x-mapDrag.x)}px`,height:`${Math.abs(p.y-mapDrag.y)}px`})});
-mapCanvas.addEventListener('pointerup',e=>{if(!mapDrag)return;const p=localPoint(e),d=mapDrag;mapDrag=null;mapSel.hidden=true;if(Math.abs(p.x-d.x)<8||Math.abs(p.y-d.y)<8)return;const [a,b]=geoPos(Math.min(p.x,d.x),Math.max(p.y,d.y),p.w,p.h),[c,f]=geoPos(Math.max(p.x,d.x),Math.min(p.y,d.y),p.w,p.h);state.bounds={lon0:a,lon1:c,lat0:b,lat1:f};update()});
+mapCanvas.addEventListener('pointerup',e=>{if(!mapDrag)return;const p=localPoint(e),d=mapDrag;mapDrag=null;mapSel.hidden=true;if(Math.abs(p.x-d.x)<8||Math.abs(p.y-d.y)<8)return;const [a,b]=geoPos(Math.min(p.x,d.x),Math.max(p.y,d.y)),[c,f]=geoPos(Math.max(p.x,d.x),Math.min(p.y,d.y));state.bounds={lon0:a,lon1:c,lat0:b,lat1:f};update()});
 mapCanvas.addEventListener('pointercancel',()=>{mapDrag=null;mapSel.hidden=true});
-function zoomMap(factor,px=.5,py=.5){const v=state.view,cLon=v.lon0+px*(v.lon1-v.lon0),cLat=v.lat1-py*(v.lat1-v.lat0),lonSpan=(v.lon1-v.lon0)*factor,latSpan=(v.lat1-v.lat0)*factor;state.view={lon0:cLon-px*lonSpan,lon1:cLon+(1-px)*lonSpan,lat0:cLat-(1-py)*latSpan,lat1:cLat+py*latSpan};renderMap()}
-$('#mapZoomIn').addEventListener('click',()=>zoomMap(.72));$('#mapZoomOut').addEventListener('click',()=>zoomMap(1/.72));$('#mapReset').addEventListener('click',()=>{state.view={...ALL_VIEW};renderMap()});
-mapCanvas.addEventListener('wheel',e=>{e.preventDefault();const p=localPoint(e);zoomMap(e.deltaY<0?.85:1/.85,p.x/p.w,p.y/p.h)},{passive:false});
+$('#mapMode').addEventListener('click',()=>{panMode=!panMode;mapCanvas.style.pointerEvents=panMode?'none':'auto';explorerMap?.dragging[panMode?'enable':'disable']();$('#mapMode').textContent=panMode?'Select area':'Pan map';$('#mapMode').setAttribute('aria-pressed',String(panMode));renderMap()});
+$('#mapZoomIn').addEventListener('click',()=>explorerMap?.zoomIn());$('#mapZoomOut').addEventListener('click',()=>explorerMap?.zoomOut());$('#mapReset').addEventListener('click',()=>explorerMap?.fitBounds(PINELLAS_BOUNDS));
+mapCanvas.addEventListener('wheel',e=>{if(!explorerMap)return;e.preventDefault();const p=localPoint(e);explorerMap.setZoomAround([p.x,p.y],explorerMap.getZoom()+(e.deltaY<0?1:-1))},{passive:false});
 
 function syncDateInputs(){$('#dateFrom').value=dateFromOffset(state.from);$('#dateTo').value=dateFromOffset(state.to)}
 $('#dateFrom').addEventListener('change',e=>{state.from=Math.min(offsetFromDate(e.target.value),state.to);syncDateInputs();update()});
@@ -167,7 +283,7 @@ $('#incidentFilter').addEventListener('change',e=>{state.incident=e.target.value
 $('#minVolume').addEventListener('input',e=>{state.minVolume=+e.target.value;$('#minVolumeValue').textContent=`${state.minVolume} CY`;update()});
 $('#clearArea').addEventListener('click',()=>{state.bounds=null;update()});
 $('#resetDateZoom').addEventListener('click',()=>{state.from=0;state.to=190;syncDateInputs();update()});
-$('#resetFilters').addEventListener('click',()=>{Object.assign(state,{from:0,to:190,type:'all',incident:'all',minVolume:0,bounds:null,view:{...ALL_VIEW}});syncDateInputs();$('#typeFilter').value='all';$('#incidentFilter').value='all';$('#minVolume').value=0;$('#minVolumeValue').textContent='0 CY';update()});
-window.addEventListener('resize',()=>{if(DATA){renderTrend();renderMap()}});
+$('#resetFilters').addEventListener('click',()=>{Object.assign(state,{from:0,to:190,type:'all',incident:'all',minVolume:0,bounds:null,view:{...ALL_VIEW}});syncDateInputs();$('#typeFilter').value='all';$('#incidentFilter').value='all';$('#minVolume').value=0;$('#minVolumeValue').textContent='0 CY';explorerMap?.fitBounds(PINELLAS_BOUNDS);update()});
+window.addEventListener('resize',()=>{if(DATA){renderTrend();explorerMap?.invalidateSize();renderMap()}});
 
 fetch('data/tickets.json').then(r=>{if(!r.ok)throw new Error(`Data request failed (${r.status})`);return r.json()}).then(data=>{DATA=data;rows=data.rows;$('#typeFilter').innerHTML='<option value="all">All debris types</option>'+data.types.map((t,i)=>`<option value="${i}">${t}</option>`).join('');update()}).catch(err=>{$('#trendChart').innerHTML=`<p class="empty-state">The interactive data could not load. Please reload the page. ${err.message}</p>`;$('#mapStatus').textContent='Interactive data unavailable';console.error(err)});
