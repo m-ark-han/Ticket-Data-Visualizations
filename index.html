@@ -4,25 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#123344">
-  <meta name="description" content="Explore 23 visualizations and 18,278 Pinellas County debris collection tickets.">
+  <meta name="description" content="Explore nine key figures from 18,278 Pinellas County debris collection tickets.">
   <title>DebrisInsight | Pinellas ticket data</title>
-  <link rel="stylesheet" href="styles.css?v=mark-followups-1">
+  <link rel="stylesheet" href="styles.css?v=priority-2">
   <script defer src="plotly-cartesian.min.js"></script>
-  <script defer src="app.js?v=mark-followups-1"></script>
+  <script defer src="app.js?v=priority-2"></script>
 </head>
 <body>
   <main id="top">
     <section id="overview" class="simple-intro section-shell">
       <h1>Debris ticket visualizations</h1>
-      <p>23 charts and maps from 18,278 Pinellas County tickets. Select a graph for exact values, its original image, and its question and finding.</p>
+      <p>Nine key figures, including four maps, from 18,278 Pinellas County pickup tickets. Select a figure for exact values, its question, and its interpretation. Q numbers refer to Ranbir's question list; M numbers name the new Mark questions.</p>
     </section>
 
-    <section id="investigations" class="section-shell investigation-notes">
-      <h2>Follow-up review</h2>
-      <p><strong>Low weeks:</strong> Among 26 complete weeks, the weeks beginning February 24, March 3, and March 24, 2025 have no ticket records. March 10 has 2 tickets and 38.4 CY. <a href="https://pinellas.gov/emergency-information-3/sand-and-debris-cleanup/" target="_blank" rel="noopener">Pinellas County says</a> its final unincorporated-area collection pass ended in mid-January 2025. That supports a wind-down explanation for late low weeks; weather and reporting gaps remain unverified.</p>
-      <p><strong>Repeated addresses:</strong> 93 normalized address labels have at least 10 tickets, accounting for 2,839 tickets and 115,354.2 CY. The largest label has 351 tickets at 349 distinct GPS strings. Park and broad road labels appear among the highest counts. Repetition alone does not establish a duplicate pickup or temporary debris site.</p>
-      <p><strong>Areas and destinations:</strong> F21 compares recorded activity across 30 ticket debris zones. F22 and F23 use the ticket's <code>DisposalSite</code> label to summarize CY by stated destination and zone–destination pair. No figure establishes final disposal or verified cleanup completion.</p>
-    </section>
+    <p class="source-note section-shell">The ticket file names DRC and PINELLAS COUNTY in <code>Contractor</code>; it has no separate subcontractor field. Truck counts mean distinct IDs appearing on tickets, not the full deployed fleet. Coordinate-spread maps show review candidates, not confirmed address errors.</p>
 
     <section id="figures" class="figure-section section-shell">
       <div class="figure-toolbar"><div id="categoryFilters" class="category-filters" role="group" aria-label="Figure categories"></div><label class="search-wrap"><span class="sr-only">Search figures</span><input id="figureSearch" type="search" placeholder="Search figures or findings…"></label></div>

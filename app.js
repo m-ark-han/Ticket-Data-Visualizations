@@ -1,27 +1,13 @@
 const FIGS = [
-  {id:'F01',cat:'Data quality',title:'Ticket field completeness',img:'F01-field-completeness.png',finding:'Core date, volume, type, and coordinate fields are filled for all 18,278 tickets. Collection address is present for 99.4%.',note:'ZoneName is almost entirely empty, so it should not be used for zone comparisons.'},
-  {id:'F02',cat:'Data quality',title:'Ticket quality review flags',img:'F02-quality-flags.png',finding:'The main flag is 114 missing collection addresses. No tickets have invalid numeric coordinates or nonpositive recorded CY.',note:'These checks do not establish that every ticket represents a unique pickup stage.'},
-  {id:'F03',cat:'Data quality',title:'Weekly tickets by incident ID',img:'F03-disaster-id-by-week.png',finding:'DisasterID 84 appears on 17,767 tickets; ID 80 appears on 511.',note:'The county must confirm which named incidents the numeric IDs represent.'},
-  {id:'F04',cat:'Collection pace',title:'Daily recorded collection volume',img:'F04-daily-volume.png',finding:'November 1, 2024 was the highest recorded day at 19,187.4 cubic yards.',note:'A day with no ticket records does not prove that collection stopped.'},
-  {id:'F05',cat:'Collection pace',title:'Weekly recorded collection volume',img:'F05-weekly-volume.png',finding:'The week beginning October 28, 2024 reached 112,592.9 cubic yards. Three complete weeks in late February and March 2025 have no ticket records.',note:'The first and last bars are partial weeks. County reporting says the unincorporated-area final pass ended in mid-January 2025; blank weeks alone cannot prove crews were idle.'},
-  {id:'F06',cat:'Collection pace',title:'Cumulative recorded volume',img:'F06-cumulative-volume.png',finding:'Recorded volume ends at 644,952.65 cubic yards; 75.0% falls before December 2024.',note:'Flat periods mean no ticket records in this extract, not a verified pause.'},
-  {id:'F07',cat:'Collection pace',title:'Daily load ticket count',img:'F07-daily-ticket-count.png',finding:'November 1, 2024 also had the most tickets: 525 recorded loads.',note:'A ticket is a load record, not a unique address or necessarily a unique trip.'},
-  {id:'F08',cat:'Load size',title:'Volume per load ticket',img:'F08-load-volume-histogram.png',finding:'The median recorded load is 35.0 cubic yards; the largest recorded value is 88.35.',note:'Large loads should be checked against truck and ticket documentation before calling them errors.'},
-  {id:'F09',cat:'Load size',title:'Load volume by debris type',img:'F09-load-volume-by-type.png',finding:'Median loads are 35.0 CY for Vegetative/Woody, 37.7 CY for Construction & Demolition, and 32.3 CY for Veg Park Debris.',note:'Types with fewer than 20 tickets and individual outlier dots are omitted.'},
-  {id:'F10',cat:'Debris mix',title:'Total volume by debris type',img:'F10-volume-by-type.png',finding:'Vegetative/Woody leads with 476,239.1 CY, followed by Construction & Demolition at 88,876.9 CY.',note:'Confirm category definitions before combining park debris with general vegetative debris.'},
-  {id:'F11',cat:'Debris mix',title:'Type share: volume vs. tickets',img:'F11-type-share-volume-vs-tickets.png',finding:'Vegetative/Woody accounts for 73.8% of cubic yards and 75.3% of tickets.',note:'Ticket share and volume share have different denominators and answer different questions.'},
-  {id:'F12',cat:'Debris mix',title:'Weekly volume by debris type',img:'F12-weekly-type-volume.png',finding:'Vegetative/Woody supplies most of the high-volume October and November weeks.',note:'The three largest types are shown separately; other types are grouped.'},
-  {id:'F13',cat:'Debris mix',title:'Weekly debris-type composition',img:'F13-weekly-type-share.png',finding:'The mix of recorded types changes after the initial high-volume phase.',note:'Late weeks have small totals, so a large percentage can represent few tickets.'},
-  {id:'F14',cat:'Load size',title:'Recorded CY versus capacity × fullness',img:'F14-capacity-versus-recorded.png',finding:'Recorded volume equals listed truck capacity times fullness percentage for all rows.',note:'This is an arithmetic check, not independent validation of physical load size.'},
-  {id:'F15',cat:'Spatial patterns',title:'Pickup-ticket density by grid cell',img:'F15-pickup-density-map.png',finding:'All 18,278 tickets have in-range coordinates; their mapped activity forms several clusters.',note:'The point meaning and positional accuracy should be confirmed with the data owner.'},
-  {id:'F16',cat:'Spatial patterns',title:'Recorded pickup volume by grid cell',img:'F16-pickup-volume-map.png',finding:'Higher-volume grid cells broadly track the ticket-density clusters.',note:'This maps recorded ticket coordinates, not total debris generated or left to collect.'},
-  {id:'F17',cat:'Spatial patterns',title:'Monthly pickup-point footprint',img:'F17-monthly-pickup-footprint.png',finding:'The mapped ticket footprint is widespread in October and November and sparse in later months.',note:'Overlapping points and changing ticket volume affect the visual impression.'},
-  {id:'F18',cat:'Spatial patterns',title:'Tickets per collection address',img:'F18-tickets-per-address.png',finding:'Ninety-three normalized address labels have at least 10 tickets, totaling 2,839 tickets and 115,354.2 recorded CY.',note:'A repeated label does not prove duplicate pickups or a temporary site. One high-count label has 351 tickets at 349 distinct GPS strings.'},
-  {id:'F19',cat:'Spatial patterns',title:'Time between pickup dates at an address',img:'F19-repeat-address-intervals.png',finding:'There are 1,576 intervals between distinct dates at a normalized address; the median is three days.',note:'Same-day multiple tickets are excluded from the interval calculation.'},
-  {id:'F20',cat:'Data quality',title:'Calendar of dates with ticket records',img:'F20-ticket-date-calendar.png',finding:'Tickets appear on 141 of the 191 dates in the observed span; 50 dates have none.',note:'No-record dates do not establish whether crews operated on those days.'},
-  {id:'F21',cat:'Spatial patterns',title:'Recorded activity duration by debris zone',img:'F21-zone-activity-duration.png',finding:'Across 30 Zone1 debris zones, the time from first ticket to 90% of each zone’s recorded CY ranges from 32 to 122 days.',note:'These are activity spans in the ticket extract, not verified cleanup times or municipality comparisons.'},
-  {id:'F22',cat:'Destination labels',title:'Recorded CY by destination label',img:'F22-destination-label-volume.png',finding:'All 18,278 tickets contain a DisposalSite label. SOD FARM SOUTH has the largest labeled total: 289,309.45 CY.',note:'A destination label does not verify arrival, processing, recycling, or final landfill disposal.'},
-  {id:'F23',cat:'Destination labels',title:'Zone-to-destination label volume',img:'F23-zone-destination-matrix.png',finding:'This matrix sums recorded CY for every Zone1–DisposalSite label pair.',note:'It depicts stated ticket routing, not verified transport or final material fate.'}
+  {id:'F05',q:'Q001 · Q006',cat:'Pace',title:'Weekly recorded collection volume',img:'F05-weekly-volume.png',finding:'The peak week beginning October 28, 2024 reached 112,592.90 CY. Three complete late-February/March weeks have no ticket records.',note:'No-record weeks do not prove that crews were idle.'},
+  {id:'F16',q:'Q016',cat:'Maps',title:'Pickup volume by map cell',img:'F16-pickup-volume-map.png',finding:'This map shows where recorded ticket CY is concentrated.',note:'Ticket coordinates do not measure remaining debris.'},
+  {id:'F24',q:'M01',cat:'Maps',title:'Contractor pickup footprint',img:'F24-contractor-footprint-map.png',finding:'Two fixed-scale maps compare ticket CY associated with DRC and PINELLAS COUNTY.',note:'The file has no separate subcontractor field.'},
+  {id:'F25',q:'Q032 · Q035',cat:'Maps',title:'Missing address and GPS-field flags',img:'F25-location-quality-map.png',finding:'114 tickets have blank collection addresses; one GPS text coordinate differs from the numeric Lat/Lng.',note:'These are internal data flags, not confirmed wrong address locations.'},
+  {id:'F26',q:'Q030',cat:'Maps',title:'Coordinate spread under repeated addresses',img:'F26-address-spread-candidates-map.png',finding:'Fifteen repeated address labels have pickup points spread more than 1 km at the 90th percentile.',note:'Broad road or park labels can legitimately cover many points. Q045 needs authoritative address geometry.'},
+  {id:'F27',q:'M01',cat:'Contractors',title:'Volume and participation by contractor label',img:'F27-contractor-volume.png',finding:'DRC has 608,886.10 CY on 14,799 tickets; PINELLAS COUNTY has 36,066.55 CY on 3,479.',note:'These are ticket labels, not a verified subcontractor roster or productivity comparison.'},
+  {id:'F28',q:'M02',cat:'Trucks',title:'Weekly truck IDs with tickets',img:'F28-weekly-active-trucks.png',finding:'The busiest observed week has 142 distinct truck IDs with ticket records.',note:'This counts recorded activity, not every truck deployed or available.'},
+  {id:'F29',q:'M03',cat:'Trucks',title:'Listed capacity of unique trucks',img:'F29-truck-capacity-distribution.png',finding:'The tickets identify 283 distinct truck IDs: 183 under DRC and 100 under PINELLAS COUNTY.',note:'Each ID is counted once; capacity is a listed value, not measured payload.'},
+  {id:'F21',q:'M04 · Q025',cat:'Areas',title:'Recorded activity duration by debris zone',img:'F21-zone-activity-duration.png',finding:'Across 30 debris zones, first ticket to 90% of each zone’s CY ranges from 32 to 122 days.',note:'This measures ticket activity, not verified cleanup completion or city boundaries.'}
 ];
 
 const $ = (s) => document.querySelector(s);
@@ -35,12 +21,12 @@ const ALL_VIEW = {lon0:-82.875,lon1:-82.59,lat0:27.59,lat1:28.20};
 const state = {from:0,to:190,type:'all',incident:'all',minVolume:0,bounds:null,view:{...ALL_VIEW},category:'All',search:''};
 
 function renderFigureGallery(){
-  const cats=['All','Data quality','Collection pace','Load size','Debris mix','Spatial patterns','Destination labels'];
+  const cats=['All',...new Set(FIGS.map(f=>f.cat))];
   $('#categoryFilters').innerHTML=cats.map(c=>`<button type="button" data-category="${c}" class="${c===state.category?'active':''}">${c}</button>`).join('');
   $('#categoryFilters').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{state.category=b.dataset.category;renderFigureGallery()}));
-  const filtered=FIGS.filter(f=>(state.category==='All'||f.cat===state.category)&&`${f.title} ${f.finding} ${f.note} ${f.id}`.toLowerCase().includes(state.search));
+  const filtered=FIGS.filter(f=>(state.category==='All'||f.cat===state.category)&&`${f.title} ${f.finding} ${f.note} ${f.id} ${f.q}`.toLowerCase().includes(state.search));
   $('#figureCount').textContent=`Showing ${filtered.length} of ${FIGS.length} figures`;
-  $('#figureGrid').innerHTML=filtered.map(f=>`<article class="figure-card" id="figure-${f.id}"><button type="button" class="figure-image" data-open="${f.id}" aria-label="Open interactive ${f.id}: ${f.title}"><img loading="lazy" src="figures/${f.img}" alt="${f.title} visualization"></button><div class="figure-body"><span class="figure-meta">${f.id} · ${f.cat.toUpperCase()}</span><h3>${f.title}</h3><p>${f.finding}</p><p class="figure-note"><strong>Read with care:</strong> ${f.note}</p><button type="button" class="figure-open" data-open="${f.id}">Explore exact values ↗</button></div></article>`).join('');
+  $('#figureGrid').innerHTML=filtered.map(f=>`<article class="figure-card" id="figure-${f.id}"><button type="button" class="figure-image" data-open="${f.id}" aria-label="Open interactive ${f.id}: ${f.title}"><img loading="lazy" src="figures/${f.img}" alt="${f.title} visualization"></button><div class="figure-body"><span class="figure-meta">${f.id} · ${f.cat.toUpperCase()} · QUESTION ${f.q}</span><h3>${f.title}</h3><p>${f.finding}</p><p class="figure-note"><strong>Read with care:</strong> ${f.note}</p><button type="button" class="figure-open" data-open="${f.id}">Explore exact values ↗</button></div></article>`).join('');
   $('#figureGrid').querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.open)));
 }
 
@@ -63,11 +49,11 @@ function showModalView(view){
 async function openModal(id){
   const f=FIGS.find(x=>x.id===id);if(!f)return;
   const request=++modalRequest;
-  $('#modalIndex').textContent=`${f.id} / ${FIGS.length} · ${f.cat.toUpperCase()}`;
+  $('#modalIndex').textContent=`${f.id} / ${FIGS.length} · ${f.cat.toUpperCase()} · QUESTION ${f.q}`;
   $('#modalTitle').textContent=f.title;
   $('#modalImage').src=`figures/${f.img}`;
   $('#modalImage').alt=f.title;
-  $('#modalQuestion').textContent=`${f.id.replace('F','Q')}: Loading…`;
+  $('#modalQuestion').textContent=`${f.q}: Loading…`;
   $('#modalVariables').textContent='Loading…';
   $('#modalInterpretation').textContent='Loading…';
   $('#imageModal').hidden=false;document.body.style.overflow='hidden';
@@ -75,7 +61,7 @@ async function openModal(id){
   showModalView('interactive');
   $('#pointReadout').textContent='Loading exact values…';
   $('#modalClose').focus();
-  if(!figureDetailsPromise)figureDetailsPromise=fetch('data/figure-details.json?v=mark-followups-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+  if(!figureDetailsPromise)figureDetailsPromise=fetch('data/figure-details.json?v=priority-2').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
   figureDetailsPromise.then(details=>{
     if(request!==modalRequest||$('#imageModal').hidden)return;
     const d=details[id];
@@ -85,14 +71,14 @@ async function openModal(id){
     $('#modalInterpretation').textContent=d.interpretation;
   }).catch(error=>{
     if(request!==modalRequest)return;
-    $('#modalQuestion').textContent=id.replace('F','Q');
+    $('#modalQuestion').textContent=f.q;
     $('#modalVariables').textContent='Details could not load.';
     $('#modalInterpretation').textContent=f.finding;
     figureDetailsPromise=null;
     console.error('Could not load figure details',error);
   });
   try{
-    if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json?v=mark-followups-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+    if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json?v=priority-2').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
     const specs=await figureValuesPromise;
     if(request!==modalRequest||$('#imageModal').hidden)return;
     const chart=$('#interactiveChart');

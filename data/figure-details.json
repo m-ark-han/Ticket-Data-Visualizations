@@ -62,22 +62,22 @@
   "F13": {
     "question": "Q13 asks how the percentage mix of recorded CY changed by week.",
     "variables": "week, top-three DebrisType categories plus Other, each type's weekly CY divided by total weekly CY.",
-    "interpretation": "Vegetative/Woody accounts for 81.7% of recorded CY in October\u2013November but 50.3% from December onward. Veg Park Debris rises from 4.0% to 32.5% over those same periods, calculated from period totals. The composition of recorded tickets therefore changes substantially."
+    "interpretation": "Vegetative/Woody accounts for 81.7% of recorded CY in October–November but 50.3% from December onward. Veg Park Debris rises from 4.0% to 32.5% over those same periods, calculated from period totals. The composition of recorded tickets therefore changes substantially."
   },
   "F14": {
     "question": "Q14 asks whether recorded CY follows the ticket's capacity formula.",
-    "variables": "TruckCapacity, LoadPercent, calculated TruckCapacity \u00d7 LoadPercent \u00f7 100, and recorded Volume.",
+    "variables": "TruckCapacity, LoadPercent, calculated TruckCapacity × LoadPercent ÷ 100, and recorded Volume.",
     "interpretation": "All 18,278 records align with the listed calculation at the displayed precision. The result suggests that Volume is calculated from capacity and fullness rather than being an independent measurement in this extract."
   },
   "F15": {
     "question": "Q15 asks where ticket coordinates cluster.",
     "variables": "Lng, Lat, and count of tickets within each hexagonal cell (grid resolution 35).",
-    "interpretation": "All 18,278 records have numeric coordinates in the allowed latitude/longitude range. The densest plotted cell contains 974 tickets, centered near \u221282.714286\u00b0, 27.895000\u00b0. This is a concentration of recorded ticket locations."
+    "interpretation": "All 18,278 records have numeric coordinates in the allowed latitude/longitude range. The densest plotted cell contains 974 tickets, centered near −82.714286°, 27.895000°. This is a concentration of recorded ticket locations."
   },
   "F16": {
-    "question": "Q16 asks where summed ticket CY is concentrated.",
+    "question": "Q016: Where are the largest concentrations of recorded pickup volume?",
     "variables": "Lng, Lat, and Volume summed within the same hexagonal grid as F15.",
-    "interpretation": "The highest-volume cell is centered near \u221282.714286\u00b0, 27.895000\u00b0 and contains 46,453.90 recorded CY. High-CY cells broadly follow high-ticket-count clusters."
+    "interpretation": "The highest-volume cell is centered near −82.714286°, 27.895000° and contains 46,453.90 recorded CY. High-CY cells broadly follow high-ticket-count clusters."
   },
   "F17": {
     "question": "Q17 asks how the footprint of recorded ticket coordinates changes by month.",
@@ -91,7 +91,7 @@
   },
   "F19": {
     "question": "Q19 asks how far apart distinct recorded dates are at a normalized address.",
-    "variables": "normalized CollAddress, local date from LoadDate, distinct address\u2013date pairs, and days between successive dates; values of 60 or more days are grouped as 60+.",
+    "variables": "normalized CollAddress, local date from LoadDate, distinct address–date pairs, and days between successive dates; values of 60 or more days are grouped as 60+.",
     "interpretation": "There are 1,576 intervals between distinct recorded dates, with a 3-day median. 582 intervals are exactly one day; 39 are 60 days or more. Short revisits occur frequently in the recorded data."
   },
   "F20": {
@@ -100,7 +100,7 @@
     "interpretation": "Tickets appear on 141 of 191 dates in the observed span; 50 dates have no record in this extract. The calendar shows the timing of ticket reporting, including runs of higher and lower recorded activity."
   },
   "F21": {
-    "question": "Area comparison: How long did recorded pickup activity continue in each Zone1 debris zone?",
+    "question": "M04: How long does recorded ticket activity span in each Zone1 debris zone? Related area question: Q025.",
     "variables": "Zone1, local LoadDate, Volume, TicketId. For each zone: first and last ticket date; first date cumulative CY reaches 90% of that zone's observed total.",
     "interpretation": "Across 30 zones, the time to 90% of each zone's CY ranges from 32 to 122 days. The first-to-last ticket spans range from 53 to 187 days. These are recorded activity periods, not verified clearance times or municipality comparisons."
   },
@@ -111,7 +111,37 @@
   },
   "F23": {
     "question": "Recorded flow: Which Zone1 debris-zone and DisposalSite label pairs have the most ticket CY?",
-    "variables": "Zone1, DisposalSite, Volume. Sum CY for each zone\u2013destination-label pair.",
-    "interpretation": "The matrix shows how recorded pickup CY is distributed among zone\u2013destination-label pairs. It is a ticket-label flow view, not a verified chain of custody or final-disposal outcome."
+    "variables": "Zone1, DisposalSite, Volume. Sum CY for each zone–destination-label pair.",
+    "interpretation": "The matrix shows how recorded pickup CY is distributed among zone–destination-label pairs. It is a ticket-label flow view, not a verified chain of custody or final-disposal outcome."
+  },
+  "F24": {
+    "question": "M01: Where is recorded pickup volume associated with each Contractor label?",
+    "variables": "Contractor, pickup Lat/Lng, Volume. Sum CY in identical hexagonal map cells for each label.",
+    "interpretation": "DRC and PINELLAS COUNTY are the only Contractor labels. The maps show the footprint of ticket locations by label, not verified crew coverage or subcontractor participation."
+  },
+  "F25": {
+    "question": "Q032/Q035: Where are blank collection addresses and internally conflicting coordinate fields?",
+    "variables": "CollAddress (blank after whitespace trim), GPS text, numeric Lat/Lng, and Volume. A GPS conflict means either coordinate differs by more than 0.00001 degree.",
+    "interpretation": "114 tickets have blank collection addresses (4,268.50 CY), and 1 ticket has GPS text differing from its numeric Lat/Lng. These flags do not verify whether any address is mapped to the wrong place (Q045)."
+  },
+  "F26": {
+    "question": "Q030: Which repeated address labels have unusually spread-out pickup coordinates? Q045 remains unresolved.",
+    "variables": "Whitespace-normalized CollAddress, Lat/Lng, TicketId. For labels with 10+ tickets, distance from each coordinate to that label's median coordinate; color shows 90th percentile in km.",
+    "interpretation": "93 labels have 10+ tickets; 15 have a 90th-percentile coordinate spread above 1 km. Broad road and park labels can legitimately span large areas. Authoritative address geometry is needed before calling these GPS/address mismatches."
+  },
+  "F27": {
+    "question": "M01: How many tickets, truck IDs, and recorded CY are associated with each Contractor label?",
+    "variables": "Contractor, TicketId, TruckNumber, and Volume. Sum CY, count ticket rows, and count distinct truck IDs per Contractor label.",
+    "interpretation": "DRC has 14,799 tickets and 608,886.10 CY; PINELLAS COUNTY has 3,479 tickets and 36,066.55 CY. The source has no separate subcontractor field, so subcontractor participation cannot be identified."
+  },
+  "F28": {
+    "question": "M02: How many distinct truck IDs appear on tickets in each week, by Contractor label?",
+    "variables": "Local LoadDate (Monday-start week), Contractor, and distinct TruckNumber. A truck appearing on multiple tickets in one week counts once for that contractor.",
+    "interpretation": "The highest observed week begins October 28, 2024, with 142 distinct truck IDs. This is an activity count within the ticket extract, not verified total deployment, available fleet, hours, or shifts."
+  },
+  "F29": {
+    "question": "M03: What is the distribution of listed capacity among truck IDs with pickup tickets?",
+    "variables": "Distinct (Contractor, TruckNumber) pairs and their consistent TruckCapacity values, binned into 10-CY ranges.",
+    "interpretation": "There are 283 distinct truck IDs: 183 DRC and 100 PINELLAS COUNTY. Listed capacity is a registration field, not measured payload. The file does not identify trucks that were deployed but generated no ticket."
   }
 }
