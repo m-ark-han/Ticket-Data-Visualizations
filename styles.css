@@ -67,6 +67,7 @@
 .source-note{font-size:11px;color:#657680;line-height:1.55;padding-block:16px 24px;border-top:1px solid var(--line)}
 .source-note a{color:#006f69;text-decoration:underline}
 .image-modal{background:#fff;color:#173342}
+.image-modal{z-index:10000}
 .modal-top{background:#fff;border-bottom:1px solid #dce5e6}
 .modal-top span{color:#56717a}
 .modal-actions button{background:#fff;color:#173342;border-color:#bfcfd0}

@@ -152,7 +152,7 @@ async function openModal(id){
   $('#modalQuestion').textContent=`${f.q}: Loading…`;
   $('#modalVariables').textContent='Loading…';
   $('#modalInterpretation').textContent='Loading…';
-  $('#imageModal').hidden=false;document.body.style.overflow='hidden';
+  $('#imageModal').hidden=false;document.body.style.overflow='hidden';$('#top').style.visibility='hidden';
   modalScale=1;modalX=0;modalY=0;modalTransform();
   showModalView('interactive');
   $('#pointReadout').textContent='Loading exact values…';
@@ -203,7 +203,7 @@ async function openModal(id){
     console.error('Could not load interactive figure',error);
   }
 }
-function closeModal(){++modalRequest;$('#imageModal').hidden=true;document.body.style.overflow='';$('#modalImage').src='';if(figureMap){figureMap.remove();figureMap=null}if($('#interactiveChart').data)Plotly.purge($('#interactiveChart'))}
+function closeModal(){++modalRequest;$('#imageModal').hidden=true;document.body.style.overflow='';$('#top').style.visibility='';$('#modalImage').src='';if(figureMap){figureMap.remove();figureMap=null}if($('#interactiveChart').data)Plotly.purge($('#interactiveChart'))}
 function modalZoom(factor){modalScale=Math.max(1,Math.min(8,modalScale*factor));if(modalScale===1){modalX=0;modalY=0}modalTransform()}
 $('#modalInteractive').addEventListener('click',()=>showModalView('interactive'));
 $('#modalOriginal').addEventListener('click',()=>showModalView('image'));
