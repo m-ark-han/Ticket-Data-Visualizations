@@ -13,6 +13,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from build_f21_grid import build_f21_grid
 
 
 SITE = Path(__file__).resolve().parent
@@ -115,21 +116,8 @@ fig.tight_layout(rect=(0, .04, 1, .98))
 fig.savefig(FIGURES / "F05-weekly-volume.png", dpi=150)
 plt.close(fig)
 
-fig, ax = plt.subplots(figsize=(10.8, 11.5))
-y = np.arange(len(zones))
-ax.barh(y, zones.days_to_90pct_cy, color=TEAL, height=.64, label="First ticket to 90% of zone CY")
-ax.scatter(zones.first_to_last_days, y, s=24, color=ORANGE, zorder=3, label="First to last ticket")
-ax.set_yticks(y, zones.zone)
-ax.invert_yaxis()
-ax.set_xlabel("Elapsed days from first recorded pickup in zone")
-ax.set_title("F21 · Recorded pickup activity duration by debris zone", loc="left", weight="bold", fontsize=14)
-ax.grid(axis="x", color="#dce5e8", linewidth=.6)
-ax.set_axisbelow(True)
-ax.legend(loc="lower right", frameon=False)
-fig.text(.02, .012, source_line + " · These are observed ticket spans, not clearance times.", fontsize=7, color="#53616d")
-fig.tight_layout(rect=(0, .03, 1, .98))
-fig.savefig(FIGURES / "F21-zone-activity-duration.png", dpi=150)
-plt.close(fig)
+f21_svg, f21_spec = build_f21_grid(zones.to_dict(orient="records"))
+(FIGURES / "F21-zone-duration-grid.svg").write_text(f21_svg, encoding="utf-8")
 
 fig, ax = plt.subplots(figsize=(10.8, 5.5))
 ordered_sites = sites.iloc[::-1]
@@ -178,16 +166,7 @@ specs["F05"] = {"data": [
     "layout": {"xaxis": {"title": "Week beginning Monday", "range": ["2024-09-25", "2025-04-19"], "tickangle": -35},
                "yaxis": {"title": "Recorded volume (CY/week)", "range": [0, float(all_weeks.cy.max()) * 1.1]},
                "margin": {"l": 85, "r": 25, "t": 35, "b": 95}, "showlegend": False, "hovermode": "closest"}}
-zone_names = zones.zone.tolist()
-zone_hover = [f"Zone1: {r.zone}<br>Tickets: {r.tickets:,}<br>Recorded CY: {r.cy:,.2f}<br>First: {r.first}<br>Last: {r.last}<br>Active dates: {r.active_dates}<br>Days to 90% of zone CY: {r.days_to_90pct_cy}<br>First-to-last: {r.first_to_last_days} days" for r in zones.itertuples(index=False)]
-specs["F21"] = {"data": [
-    {"type": "bar", "orientation": "h", "name": "Days to 90% of recorded CY", "x": zones.days_to_90pct_cy.tolist(), "y": zone_names,
-     "marker": {"color": TEAL}, "customdata": zone_hover, "hovertemplate": "%{customdata}<extra></extra>"},
-    {"type": "scatter", "mode": "markers", "name": "First-to-last ticket days", "x": zones.first_to_last_days.tolist(), "y": zone_names,
-     "marker": {"color": ORANGE, "size": 8}, "customdata": zone_hover, "hovertemplate": "%{customdata}<extra></extra>"}],
-    "layout": {"xaxis": {"title": "Days from first recorded pickup", "range": [0, int(zones.first_to_last_days.max()) + 10]},
-               "yaxis": {"title": "Zone1 debris zone", "autorange": "reversed", "automargin": True},
-               "margin": {"l": 110, "r": 25, "t": 25, "b": 65}, "barmode": "overlay", "showlegend": True, "hovermode": "closest"}}
+specs["F21"] = f21_spec
 site_names = sites.index.tolist()
 site_hover = [f"DisposalSite label: {name}<br>Recorded CY: {sites.loc[name, 'cy']:,.2f}<br>Tickets: {int(sites.loc[name, 'tickets']):,}" for name in site_names]
 specs["F22"] = {"data": [{"type": "bar", "orientation": "h", "x": sites.cy.tolist(), "y": site_names,
@@ -212,7 +191,7 @@ details.update({
             "variables": "Local LoadDate and Volume. Sum CY by Monday-start week, including zero-record weeks. The first and last weeks are partial.",
             "interpretation": "The week beginning October 28, 2024 has the most recorded CY (112,592.90). Three complete late-February/March weeks have no ticket rows. County reporting says the unincorporated-area final pass ended in mid-January 2025, making a wind-down plausible; the ticket file cannot establish the cause of a particular gap."},
     "F21": {"question": "Area comparison: How long did recorded pickup activity continue in each Zone1 debris zone?",
-            "variables": "Zone1, local LoadDate, Volume, TicketId. For each zone: first and last ticket date; first date cumulative CY reaches 90% of that zone's observed total.",
+            "variables": "Zone1, local LoadDate, Volume, TicketId. Each grid cell combines its column prefix and row suffix into a zone code. For each zone: first and last ticket date; first date cumulative CY reaches 90% of that zone's observed total.",
             "interpretation": f"Across {len(zones)} zones, the time to 90% of each zone's CY ranges from {zones.days_to_90pct_cy.min()} to {zones.days_to_90pct_cy.max()} days. The first-to-last ticket spans range from {zones.first_to_last_days.min()} to {zones.first_to_last_days.max()} days. These are recorded activity periods, not verified clearance times or municipality comparisons."},
     "F22": {"question": "Destination field: How much pickup-ticket CY is recorded under each DisposalSite label?",
             "variables": "DisposalSite, Volume, TicketId. Sum CY and count tickets per destination label.",

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 760" role="img" aria-labelledby="title desc">
+<title id="title">F21: Days to 90% of recorded volume by debris zone</title>
+<desc id="desc">Thirty cells show the exact number of days from the first ticket until each zone reached 90 percent of its own recorded cubic yards. Darker cells mean more days.</desc>
+<rect width="820" height="760" fill="white"/>
+<g font-family="Arial, sans-serif" fill="#17324b">
+<text x="46" y="44" font-size="24" font-weight="700">F21 · Days to 90% of recorded volume</text>
+<text x="46" y="70" font-size="15">Each cell is one debris zone. The number is elapsed days from its first ticket.</text>
+<text x="46" y="95" font-size="13">Zone code prefix</text>
+<text x="198.0" y="117" text-anchor="middle" font-size="17" font-weight="700">INON</text>
+<text x="410.0" y="117" text-anchor="middle" font-size="17" font-weight="700">INSE</text>
+<text x="622.0" y="117" text-anchor="middle" font-size="17" font-weight="700">INSW</text>
+<text x="73" y="159.0" text-anchor="end" font-size="16">01</text>
+<g><title>INON01: 115 days to 90%; 162 days to last ticket</title><rect x="94" y="130" width="208" height="48" rx="4" fill="#92ccc0"/><text x="198.0" y="161.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">115</text></g>
+<g><title>INSE01: 56 days to 90%; 85 days to last ticket</title><rect x="306" y="130" width="208" height="48" rx="4" fill="#cae7e2"/><text x="410.0" y="161.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">56</text></g>
+<g><title>INSW01: 67 days to 90%; 98 days to last ticket</title><rect x="518" y="130" width="208" height="48" rx="4" fill="#c0e3dc"/><text x="622.0" y="161.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">67</text></g>
+<text x="73" y="211.0" text-anchor="end" font-size="16">02</text>
+<g><title>INON02: 74 days to 90%; 115 days to last ticket</title><rect x="94" y="182" width="208" height="48" rx="4" fill="#bae0d8"/><text x="198.0" y="213.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">74</text></g>
+<g><title>INSE02: 46 days to 90%; 90 days to last ticket</title><rect x="306" y="182" width="208" height="48" rx="4" fill="#d3ebe7"/><text x="410.0" y="213.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">46</text></g>
+<g><title>INSW02: 65 days to 90%; 187 days to last ticket</title><rect x="518" y="182" width="208" height="48" rx="4" fill="#c2e4dd"/><text x="622.0" y="213.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">65</text></g>
+<text x="73" y="263.0" text-anchor="end" font-size="16">03</text>
+<g><title>INON03: 88 days to 90%; 92 days to last ticket</title><rect x="94" y="234" width="208" height="48" rx="4" fill="#addad1"/><text x="198.0" y="265.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">88</text></g>
+<g><title>INSE03: 58 days to 90%; 148 days to last ticket</title><rect x="306" y="234" width="208" height="48" rx="4" fill="#c8e7e0"/><text x="410.0" y="265.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">58</text></g>
+<g><title>INSW03: 97 days to 90%; 122 days to last ticket</title><rect x="518" y="234" width="208" height="48" rx="4" fill="#a5d6cc"/><text x="622.0" y="265.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">97</text></g>
+<text x="73" y="315.0" text-anchor="end" font-size="16">04</text>
+<g><title>INON04: 122 days to 90%; 123 days to last ticket</title><rect x="94" y="286" width="208" height="48" rx="4" fill="#8bc8bb"/><text x="198.0" y="317.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">122</text></g>
+<g><title>INSE04: 54 days to 90%; 63 days to last ticket</title><rect x="306" y="286" width="208" height="48" rx="4" fill="#cce8e3"/><text x="410.0" y="317.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">54</text></g>
+<g><title>INSW04: 90 days to 90%; 112 days to last ticket</title><rect x="518" y="286" width="208" height="48" rx="4" fill="#acd9d0"/><text x="622.0" y="317.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">90</text></g>
+<text x="73" y="367.0" text-anchor="end" font-size="16">05</text>
+<g><title>INON05: 44 days to 90%; 116 days to last ticket</title><rect x="94" y="338" width="208" height="48" rx="4" fill="#d5ece7"/><text x="198.0" y="369.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">44</text></g>
+<g><title>INSE05: 88 days to 90%; 131 days to last ticket</title><rect x="306" y="338" width="208" height="48" rx="4" fill="#addad1"/><text x="410.0" y="369.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">88</text></g>
+<g><title>INSW05: 89 days to 90%; 119 days to last ticket</title><rect x="518" y="338" width="208" height="48" rx="4" fill="#acdad0"/><text x="622.0" y="369.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">89</text></g>
+<text x="73" y="419.0" text-anchor="end" font-size="16">06</text>
+<g><title>INON06: 49 days to 90%; 53 days to last ticket</title><rect x="94" y="390" width="208" height="48" rx="4" fill="#d1eae5"/><text x="198.0" y="421.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">49</text></g>
+<g><title>INSE06: 93 days to 90%; 161 days to last ticket</title><rect x="306" y="390" width="208" height="48" rx="4" fill="#a9d8ce"/><text x="410.0" y="421.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">93</text></g>
+<g><title>INSW06: 63 days to 90%; 120 days to last ticket</title><rect x="518" y="390" width="208" height="48" rx="4" fill="#c4e4de"/><text x="622.0" y="421.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">63</text></g>
+<text x="73" y="471.0" text-anchor="end" font-size="16">07</text>
+<g><title>INON07: 32 days to 90%; 109 days to last ticket</title><rect x="94" y="442" width="208" height="48" rx="4" fill="#ddf0ec"/><text x="198.0" y="473.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">32</text></g>
+<g><title>INSE07: 63 days to 90%; 159 days to last ticket</title><rect x="306" y="442" width="208" height="48" rx="4" fill="#c4e4de"/><text x="410.0" y="473.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">63</text></g>
+<g><title>INSW07: 55 days to 90%; 104 days to last ticket</title><rect x="518" y="442" width="208" height="48" rx="4" fill="#cbe8e2"/><text x="622.0" y="473.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">55</text></g>
+<text x="73" y="523.0" text-anchor="end" font-size="16">08</text>
+<g><title>INON08: 68 days to 90%; 114 days to last ticket</title><rect x="94" y="494" width="208" height="48" rx="4" fill="#bfe2db"/><text x="198.0" y="525.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">68</text></g>
+<g><title>INSE08: 68 days to 90%; 110 days to last ticket</title><rect x="306" y="494" width="208" height="48" rx="4" fill="#bfe2db"/><text x="410.0" y="525.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">68</text></g>
+<g><title>INSW08: 63 days to 90%; 132 days to last ticket</title><rect x="518" y="494" width="208" height="48" rx="4" fill="#c4e4de"/><text x="622.0" y="525.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">63</text></g>
+<text x="73" y="575.0" text-anchor="end" font-size="16">09</text>
+<g><title>INON09: 103 days to 90%; 106 days to last ticket</title><rect x="94" y="546" width="208" height="48" rx="4" fill="#9fd3c8"/><text x="198.0" y="577.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">103</text></g>
+<g><title>INSE09: 64 days to 90%; 123 days to last ticket</title><rect x="306" y="546" width="208" height="48" rx="4" fill="#c3e4dd"/><text x="410.0" y="577.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">64</text></g>
+<g><title>INSW09: 95 days to 90%; 125 days to last ticket</title><rect x="518" y="546" width="208" height="48" rx="4" fill="#a7d7cd"/><text x="622.0" y="577.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">95</text></g>
+<text x="73" y="627.0" text-anchor="end" font-size="16">10</text>
+<g><title>INON10: 37 days to 90%; 80 days to last ticket</title><rect x="94" y="598" width="208" height="48" rx="4" fill="#daeeea"/><text x="198.0" y="629.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">37</text></g>
+<g><title>INSE10: 65 days to 90%; 131 days to last ticket</title><rect x="306" y="598" width="208" height="48" rx="4" fill="#c2e4dd"/><text x="410.0" y="629.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">65</text></g>
+<g><title>INSW10: 55 days to 90%; 70 days to last ticket</title><rect x="518" y="598" width="208" height="48" rx="4" fill="#cbe8e2"/><text x="622.0" y="629.0" text-anchor="middle" font-size="20" font-weight="700" fill="#17324b">55</text></g>
+<text x="46" y="674" font-size="13">Zone = column prefix + row suffix; for example, INON01.</text>
+<text x="46" y="698" font-size="13">Darker = longer elapsed time. Open the figure to switch to first-to-last ticket duration.</text>
+<text x="46" y="731" font-size="11" fill="#53616d">Source: Pinellas County eGIS ticket extract, Oct 2, 2024–Apr 10, 2025. Ticket activity is not verified cleanup completion.</text>
+</g></svg>

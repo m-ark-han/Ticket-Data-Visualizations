@@ -39,6 +39,7 @@
 .interactive-viewport{flex:1;min-height:0;display:flex;flex-direction:column;background:#fff;color:#17324b;padding:10px 16px 5px}
 .interactive-viewport[hidden],.modal-viewport[hidden]{display:none}
 #interactiveChart{width:100%;flex:1;min-height:0}
+#interactiveChart.zone-grid-chart{max-width:900px;margin-inline:auto}
 #pointReadout{margin:4px 10px 0;padding:9px 12px;min-height:39px;background:#eaf5f2;color:#153f43;border-radius:5px;font-size:13px;font-weight:700}
 .interaction-help{font-size:11px;color:#526b72;margin:5px 10px 3px}
 .modal-actions{flex-wrap:wrap;justify-content:flex-end}

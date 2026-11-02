@@ -7,7 +7,7 @@ const FIGS = [
   {id:'F27',q:'M01',cat:'Contractors',title:'Volume and participation by contractor label',img:'F27-contractor-volume.png',finding:'DRC has 608,886.10 CY on 14,799 tickets; PINELLAS COUNTY has 36,066.55 CY on 3,479.',note:'These are ticket labels, not a verified subcontractor roster or productivity comparison.'},
   {id:'F28',q:'M02',cat:'Trucks',title:'Weekly truck IDs with tickets',img:'F28-weekly-active-trucks.png',finding:'The busiest observed week has 142 distinct truck IDs with ticket records.',note:'This counts recorded activity, not every truck deployed or available.'},
   {id:'F29',q:'M03',cat:'Trucks',title:'Listed capacity of unique trucks',img:'F29-truck-capacity-distribution.png',finding:'The tickets identify 283 distinct truck IDs: 183 under DRC and 100 under PINELLAS COUNTY.',note:'Each ID is counted once; capacity is a listed value, not measured payload.'},
-  {id:'F21',q:'M04 · Q025 (partial)',cat:'Areas',title:'Recorded activity duration by debris zone',img:'F21-zone-activity-duration.png',finding:'Partial evidence for Q025: across 30 debris zones, first ticket to 90% of each zone’s CY ranges from 32 to 122 days. Q025 still needs duration at each location.',note:'This measures ticket activity, not verified cleanup completion or city boundaries.'}
+  {id:'F21',q:'M04 · Q025 (partial)',cat:'Areas',title:'Recorded activity duration by debris zone',img:'F21-zone-duration-grid.svg',finding:'Each grid cell is one debris zone. The exact number shows days from its first ticket to 90% of its recorded CY; the 30 zones range from 32 to 122 days. Open the chart to compare first-to-last ticket spans too.',note:'These are observed ticket periods, not verified cleanup completion or city boundaries. Q025 still needs duration at each location.'}
 ];
 
 const $ = (s) => document.querySelector(s);
@@ -157,7 +157,7 @@ async function openModal(id){
   showModalView('interactive');
   $('#pointReadout').textContent='Loading exact values…';
   $('#modalClose').focus();
-  if(!figureDetailsPromise)figureDetailsPromise=fetch('data/figure-details.json?v=questions-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+  if(!figureDetailsPromise)figureDetailsPromise=fetch('data/figure-details.json?v=f21-grid-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
   figureDetailsPromise.then(details=>{
     if(request!==modalRequest||$('#imageModal').hidden)return;
     const d=details[id];
@@ -178,14 +178,16 @@ async function openModal(id){
       await renderFigureMap(id,request);
       return;
     }
-    if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json?v=priority-3').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
+    if(!figureValuesPromise)figureValuesPromise=fetch('data/figure-values.json?v=f21-grid-1').then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json()});
     const specs=await figureValuesPromise;
     if(request!==modalRequest||$('#imageModal').hidden)return;
     const chart=$('#interactiveChart');
+    chart.classList.toggle('zone-grid-chart',id==='F21');
     if(chart.data)Plotly.purge(chart);
     await Plotly.newPlot(chart,specs[id].data,specs[id].layout,{responsive:true,displaylogo:false,scrollZoom:true,modeBarButtonsToRemove:['sendDataToCloud']});
     if(request!==modalRequest)return;
-    $('#pointReadout').textContent='Hover or tap a bar, point, or cell to read its exact X and Y values.';
+    $('#pointReadout').textContent=id==='F21'?'Select a zone cell for its dates, ticket count, recorded CY, and both duration measures.':'Hover or tap a bar, point, or cell to read its exact X and Y values.';
+    if(id==='F21')$('.interaction-help').textContent='Each cell is one zone: column prefix + row suffix (for example, INON01). Use the chart buttons to switch duration measures. Darker cells mean more days. These are recorded ticket periods, not verified cleanup completion.';
     const update=e=>{
       const p=e.points?.[0];if(!p)return;
       let label=p.customdata||p.text;

@@ -101,7 +101,7 @@
   },
   "F21": {
     "question": "M04: How long does recorded ticket activity span in each Zone1 debris zone? This is partial evidence for Q025, which asks for duration at each location.",
-    "variables": "Zone1, local LoadDate, Volume, TicketId. For each zone: first and last ticket date; first date cumulative CY reaches 90% of that zone's observed total.",
+    "variables": "Zone1, local LoadDate, Volume, TicketId. Each grid cell combines its column prefix and row suffix into a zone code. For each zone: first and last ticket date; first date cumulative CY reaches 90% of that zone's observed total.",
     "interpretation": "Across 30 zones, the time to 90% of each zone's CY ranges from 32 to 122 days. The first-to-last ticket spans range from 53 to 187 days. These are recorded activity periods, not verified clearance times or municipality comparisons."
   },
   "F22": {
