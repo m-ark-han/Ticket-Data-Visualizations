@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Original figures captured from the Pinellas County Hurricane Debris Management dashboard.">
+  <title>Original Pinellas County dashboard figures</title>
+  <style>
+    body{font:16px/1.5 Arial,sans-serif;color:#1b2930;background:#fff;margin:0 auto;max-width:900px;padding:22px 18px 50px}
+    h1{font-size:1.6rem;margin:0 0 8px}h2{font-size:1.15rem;margin:0 0 8px}p{margin:0 0 12px}
+    a{color:#075d78;text-decoration:underline}figure{border-top:1px solid #cfd9dc;margin:26px 0 0;padding:22px 0 0}
+    img{display:block;max-width:100%;height:auto;border:1px solid #cfd9dc;margin:10px 0}
+    figcaption{font-size:.94rem}.note{color:#465963}.links{font-size:.9rem}.links a{margin-right:16px}
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="index.html">← Nine priority figures</a></p>
+    <h1>Original Pinellas County dashboard figures</h1>
+    <p>These are screenshots of the figures displayed in the <a href="https://pinellas-egis.maps.arcgis.com/apps/dashboards/cc0cb850528c4b1b8ee669ec79feb341" target="_blank" rel="noopener">Pinellas County Public Works Hurricane Debris Management dashboard</a>, captured November 2, 2026. They preserve the county's chart and map appearance. The live dashboard can change; use the source link for its current data and interactive controls.</p>
+    <p class="note">The first chart uses pickup tickets. The sand chart uses a separate sand-ticket layer. The two estimate charts use a separate zone-estimate layer. Their numbers should not be added to or compared directly with the nine figures from our pickup-ticket extract without checking the source definitions.</p>
+
+    <figure id="load-ticket-chart">
+      <h2>1. Load Ticket Chart</h2>
+      <a href="figures/county-dashboard/load-ticket-chart.jpg"><img src="figures/county-dashboard/load-ticket-chart.jpg" alt="Original county dashboard chart of daily debris-ticket cubic yards, stacked by debris type, with headline loads, cubic yards, and miles driven figures."></a>
+      <figcaption>The county dashboard plots recorded debris volume by ticket date and debris type. Its headline counters show 18,278 loads (tickets), 644,953 cubic yards hauled, and 153,781 miles driven in this snapshot. The colored daily bars show when recorded volume was highest and which debris categories contributed. These are dashboard totals and may be rounded.</figcaption>
+      <p class="links"><a href="figures/county-dashboard/dashboard-loads-full.jpg">Full dashboard view</a><a href="https://pinellas-egis.maps.arcgis.com/apps/dashboards/cc0cb850528c4b1b8ee669ec79feb341" target="_blank" rel="noopener">Open live source</a></p>
+    </figure>
+
+    <figure id="sand-ticket-chart">
+      <h2>2. Sand Ticket Chart</h2>
+      <a href="figures/county-dashboard/sand-ticket-chart.jpg"><img src="figures/county-dashboard/sand-ticket-chart.jpg" alt="Original county dashboard chart of sand cubic yards by load date and beach, with sand-ticket and cubic-yard counters."></a>
+      <figcaption>The county dashboard plots sand volume by load date and beach name, comparing Pass-a-grille with Sunset Beach, Treasure Island. Its sand-operation counters show 1,844 loads (tickets) and 64,701 cubic yards hauled in this snapshot. This is a separate sand-ticket layer, so it is not part of the 18,278-row debris-ticket analysis on the main page.</figcaption>
+      <p class="links"><a href="figures/county-dashboard/dashboard-sand-full.jpg">Full dashboard view</a><a href="https://pinellas-egis.maps.arcgis.com/apps/dashboards/cc0cb850528c4b1b8ee669ec79feb341" target="_blank" rel="noopener">Open live source</a></p>
+    </figure>
+
+    <figure id="estimated-remaining">
+      <h2>3. Estimated Remaining Debris</h2>
+      <a href="figures/county-dashboard/estimated-remaining-debris.jpg"><img src="figures/county-dashboard/estimated-remaining-debris.jpg" alt="Original county dashboard chart of estimated remaining debris by district, comparing construction and demolition with vegetative debris."></a>
+      <figcaption>This chart compares the county's estimated remaining construction and demolition debris with estimated remaining vegetative debris across district IDs. It comes from a zone-estimate layer, not from the pickup-ticket volumes on the main page. The dashboard image does not show a clear vertical-axis unit, so read precise quantities and definitions from the live source rather than inferring them from bar height alone.</figcaption>
+      <p class="links"><a href="figures/county-dashboard/dashboard-remaining-full.jpg">Full dashboard view</a><a href="https://pinellas-egis.maps.arcgis.com/apps/dashboards/cc0cb850528c4b1b8ee669ec79feb341" target="_blank" rel="noopener">Open live source</a></p>
+    </figure>
+
+    <figure id="estimated-initial">
+      <h2>4. Estimated Initial Debris</h2>
+      <a href="figures/county-dashboard/estimated-initial-debris.jpg"><img src="figures/county-dashboard/estimated-initial-debris.jpg" alt="Original county dashboard chart of initial debris estimates by district, comparing construction and demolition with vegetative debris."></a>
+      <figcaption>This chart compares the county's initial construction and demolition and vegetative debris estimates across district IDs. It is an estimate-layer figure, not a tally of pickup tickets. The vertical-axis unit is not clear in the captured dashboard, so it should not be presented as recorded cubic yards.</figcaption>
+      <p class="links"><a href="figures/county-dashboard/dashboard-initial-full.jpg">Full dashboard view</a><a href="https://pinellas-egis.maps.arcgis.com/apps/dashboards/cc0cb850528c4b1b8ee669ec79feb341" target="_blank" rel="noopener">Open live source</a></p>
+    </figure>
+
+    <figure id="zone-status-map">
+      <h2>5. Debris Pickup Status by Zone map</h2>
+      <a href="figures/county-dashboard/zone-status-map.jpg"><img src="figures/county-dashboard/zone-status-map.jpg" alt="Original county dashboard map of unincorporated Pinellas County debris pickup zones and their color-coded status."></a>
+      <figcaption>The county map colors labeled pickup zones by its operational status categories: in progress, pass 1 complete, final pass in progress, and complete–final. In this snapshot, the visible zones appear green and the adjacent status table lists the visible rows as complete–final. The map reports county status; it is not a cleanup-completion calculation from our ticket records. Basemap credits are retained in the image.</figcaption>
+      <p class="links"><a href="figures/county-dashboard/dashboard-loads-full.jpg">Full dashboard view</a><a href="https://pinellas-egis.maps.arcgis.com/apps/dashboards/cc0cb850528c4b1b8ee669ec79feb341" target="_blank" rel="noopener">Open live map</a></p>
+    </figure>
+
+    <figure id="status-table">
+      <h2>Other dashboard display: Current Pickup Locations</h2>
+      <a href="figures/county-dashboard/current-pickup-locations.jpg"><img src="figures/county-dashboard/current-pickup-locations.jpg" alt="Visible rows of the county dashboard Current Pickup Locations table, showing zone, location, and status."></a>
+      <figcaption>The accompanying county table lists zone ID, named location, and current status. This screenshot shows only the rows visible at capture; the live table scrolls to additional zones.</figcaption>
+      <p class="links"><a href="figures/county-dashboard/dashboard-loads-full.jpg">Full dashboard view</a><a href="https://pinellas-egis.maps.arcgis.com/apps/dashboards/cc0cb850528c4b1b8ee669ec79feb341" target="_blank" rel="noopener">Open live table</a></p>
+    </figure>
+  </main>
+</body>
+</html>

@@ -12,6 +12,8 @@ The priority gallery includes F05 (weekly CY), F16 (pickup-volume map), F21 (a 3
 
 The [question guide](question-guide.html) maps the 11 Ranbir questions answered by existing figures to their figure IDs and describes the 39 questions that need a new figure. It links archived figure images without adding them back to the nine-figure gallery. Q032, Q035, and Q025 are labeled partial in the gallery because their present figures do not fully answer those questions.
 
+The [original county dashboard figures](county-dashboard.html) page preserves screenshots of the county's four chart widgets and zone-status map, plus the visible status table, captured November 2, 2026. The figures are stored in `figures/county-dashboard/`, including full dashboard screenshots for context. The sand chart and two estimate charts use separate county layers; they are presented as original county figures rather than results from our pickup-ticket extract. Each image links back to the live [county dashboard](https://pinellas-egis.maps.arcgis.com/apps/dashboards/cc0cb850528c4b1b8ee669ec79feb341).
+
 Only two values occur in `Contractor`: DRC and PINELLAS COUNTY. The extract does not contain a separate subcontractor field. F28 counts distinct truck IDs present on at least one ticket in a week, not all deployed or available trucks. F29 counts each unique truck ID once; capacity is listed, not measured payload. F26 uses 90th-percentile distance from each repeated address label's median ticket coordinate. Spread can reflect broad roads or parks; identifying a true address/GPS mismatch requires authoritative address or parcel geometry. The address-level review files remain outside this public repository.
 
 ## Data source and limits
