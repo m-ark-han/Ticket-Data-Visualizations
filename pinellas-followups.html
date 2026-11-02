@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Five new Pinellas ticket figures answering Ranbir questions Q003, Q004, Q009, Q026, and Q053.">
+  <title>Five Pinellas question figures</title>
+  <style>
+    body{font:16px/1.5 Arial,sans-serif;color:#1b2930;background:#fff;margin:0 auto;max-width:1120px;padding:22px 18px 60px}
+    h1{font-size:1.7rem;margin:0 0 9px}h2{font-size:1.2rem;margin:0 0 8px}p{margin:0 0 12px}
+    a{color:#075d78;text-decoration:underline}section{border-top:1px solid #cfd9dc;margin-top:30px;padding-top:22px}
+    .chart{width:100%;min-height:430px}.chart-frame{overflow-x:auto}.note{color:#465963;font-size:.94rem}
+    .finding{border-left:4px solid #0b8178;padding:8px 12px;background:#f0f7f5;margin:10px 0}
+    .downloads{font-size:.9rem;margin:8px 0 0}.downloads a{margin-right:14px}
+    table{border-collapse:collapse;font-size:.9rem;margin:8px 0 14px}th,td{padding:6px 11px;border:1px solid #d9e1e3;text-align:right}th:first-child,td:first-child{text-align:left}
+    .qid{font-weight:bold;color:#075d78}
+    @media(max-width:700px){body{padding:16px 10px 45px}h1{font-size:1.45rem}.wide{min-width:760px}}
+  </style>
+  <script defer src="plotly-cartesian.min.js"></script>
+  <script defer src="pinellas-followups.js"></script>
+</head>
+<body>
+  <main>
+    <p><a href="index.html">← Nine priority figures</a> · <a href="question-guide.html">Question guide</a></p>
+    <h1>Five more Pinellas ticket figures</h1>
+    <p>These answer five questions from Ranbir's guide using the same 18,278 public Pinellas County pickup tickets as the main gallery. Values are recorded cubic yards (CY). All dates use Eastern time. Hover or tap for exact values, drag to zoom, and double-click a chart to reset.</p>
+    <p class="note">Source: <a href="https://pinellas-egis.maps.arcgis.com/home/item.html?id=fb652dddee454f97929d7fe73ec25d12#data" target="_blank" rel="noopener">Pinellas County eGIS Debris Ticket Locations</a>, extracted October 12, 2026. These figures describe recorded tickets, not total debris generated or verified cleanup completion. <span id="dataStatus">Loading figures…</span></p>
+
+    <section id="Q003">
+      <h2><span class="qid">Q003</span> · When did recorded volume reach 25%, 50%, 75%, and 90%?</h2>
+      <p>The line adds each local date's recorded CY to all earlier dates. Markers show the first date the running total crossed each fraction of this extract's final recorded CY.</p>
+      <div id="milestoneChart" class="chart" role="img" aria-label="Cumulative recorded cubic yards with 25, 50, 75, and 90 percent date markers"></div>
+      <table id="milestoneTable"><thead><tr><th>Threshold</th><th>First date crossed</th><th>Recorded CY by date</th><th>Actual share</th></tr></thead><tbody></tbody></table>
+      <p class="finding" id="milestoneFinding"></p>
+      <p class="note">A milestone is a share of the available ticket extract. It does not measure the share of debris generated or confirm cleanup completion.</p>
+      <p class="downloads"><a href="data/q003-cumulative-milestones.csv" download>Download daily cumulative CY (CSV)</a></p>
+    </section>
+
+    <section id="Q004">
+      <h2><span class="qid">Q004</span> · How much of recorded CY came from the largest days?</h2>
+      <p>Dates with at least one ticket are ranked by CY. Bars show each day's recorded CY; the line shows the cumulative share contributed by the top-ranked dates.</p>
+      <div id="rankedDaysChart" class="chart" role="img" aria-label="Recorded cubic yards by ranked pickup date and cumulative share"></div>
+      <p class="finding" id="rankedDaysFinding"></p>
+      <p class="note">Ranks compare recorded ticket volume. A high-volume date is not proof that more debris was generated that day.</p>
+      <p class="downloads"><a href="data/q004-ranked-days.csv" download>Download ranked-date values (CSV)</a></p>
+    </section>
+
+    <section id="Q009">
+      <h2><span class="qid">Q009</span> · Did weekly CY change because of ticket counts, load size, or both?</h2>
+      <p>Three aligned panels compare total recorded CY, ticket count, and mean CY per ticket in each Monday-start week. Total CY equals ticket count multiplied by mean CY per ticket.</p>
+      <div class="chart-frame"><div id="weeklyComponentsChart" class="chart wide" role="img" aria-label="Aligned weekly recorded volume, ticket count, and mean cubic yards per ticket"></div></div>
+      <p class="finding" id="weeklyFinding"></p>
+      <p class="note">This is an arithmetic explanation of the recorded change, not evidence about weather, staffing, routes, or all available trucks. First and last weeks cover only the dates present in the extract.</p>
+      <p class="downloads"><a href="data/q009-weekly-components.csv" download>Download weekly components (CSV)</a></p>
+    </section>
+
+    <section id="Q026">
+      <h2><span class="qid">Q026</span> · How concentrated is recorded CY among location labels?</h2>
+      <p>Each location is one uppercase, whitespace-normalized <code>CollAddress</code> string. Address labels are ranked by their combined recorded CY. The curve shows the cumulative share from the top-ranked labels; the diagonal is an equal-share reference.</p>
+      <div id="addressConcentrationChart" class="chart" role="img" aria-label="Cumulative share of cubic yards by ranked anonymous collection-address labels"></div>
+      <p class="finding" id="addressFinding"></p>
+      <p class="note">Address names are withheld from this public figure. A label can cover a broad road, park, or staging address and need not represent one property. Blank addresses are excluded from this calculation.</p>
+      <p class="downloads"><a href="data/q026-anonymous-location-ranks.csv" download>Download anonymous rank aggregates (CSV)</a></p>
+    </section>
+
+    <section id="Q053">
+      <h2><span class="qid">Q053</span> · Which debris zones rank differently by tickets and CY?</h2>
+      <p>For each of the 30 <code>Zone1</code> debris-zone labels, the connected dots compare its rank by ticket count with its rank by recorded CY. Rank 1 is highest. Hover or tap a dot for the underlying count and CY.</p>
+      <div class="chart-frame"><div id="zoneRanksChart" class="chart wide" role="img" aria-label="Thirty debris zones ranked by ticket count versus recorded cubic yards"></div></div>
+      <p class="finding" id="zoneFinding"></p>
+      <p class="note">A rank difference can reflect different recorded CY per ticket. It does not establish which zone had more debris remaining or was served better.</p>
+      <p class="downloads"><a href="data/q053-zone-rank-differences.csv" download>Download all 30 zone ranks (CSV)</a></p>
+    </section>
+  </main>
+</body>
+</html>
