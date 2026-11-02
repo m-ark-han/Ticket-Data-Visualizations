@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Three additional figures for the St. Petersburg retrospective debris collection draft.">
+  <title>St. Petersburg retrospective figures</title>
+  <style>
+    body{font:16px/1.5 Arial,sans-serif;color:#1b2930;background:#fff;margin:0 auto;max-width:1120px;padding:22px 18px 60px}
+    h1{font-size:1.7rem;margin:0 0 9px}h2{font-size:1.2rem;margin:0 0 8px}p{margin:0 0 12px}
+    a{color:#075d78;text-decoration:underline}section{border-top:1px solid #cfd9dc;margin-top:30px;padding-top:22px}
+    .chart{width:100%;min-height:410px}.note{color:#465963;font-size:.94rem}.downloads{font-size:.9rem;margin:8px 0 0}
+    .downloads a{margin-right:14px}label{display:inline-block;font-size:.94rem;margin:10px 0 0}
+    select{font:inherit;padding:5px 8px;border:1px solid #a9b9bd;border-radius:3px;margin-left:5px}
+    .callout{border-left:4px solid #0b8178;padding:8px 12px;background:#f0f7f5;margin:6px 0 10px}
+    @media(max-width:700px){body{padding:16px 10px 45px}.chart{min-height:350px}h1{font-size:1.45rem}}
+  </style>
+  <script defer src="plotly-cartesian.min.js"></script>
+  <script defer src="st-petersburg.js"></script>
+</head>
+<body>
+  <main>
+    <p><a href="index.html">← Pinellas County ticket figures</a> · <a href="county-dashboard.html">County dashboard originals</a></p>
+    <h1>St. Petersburg retrospective: three additional figures</h1>
+    <p>These figures use the separate <a href="https://services.arcgis.com/HdtZMT2FmI4wPzTM/arcgis/rest/services/ReocveryTrac_DebrisRemovalData_StPeteCity_HurrMilton_Static_RT2024/FeatureServer/0" target="_blank" rel="noopener">St. Petersburg debris-ticket layer</a> reviewed in the report draft. They cover 6,694 records dated October 3–23, 2024. The neighborhood figure also uses the city's <a href="https://egis.stpete.org/arcgis/rest/services/ServicesDOTS/NeighborhoodRelations/MapServer/22" target="_blank" rel="noopener">Neighborhood Associations layer</a>. They are separate from the nine Pinellas County figures on the main page.</p>
+    <p class="note" id="retrievalNote">Loading source summary…</p>
+
+    <section id="daily-mix">
+      <h2>1. What drove each day's ticket count?</h2>
+      <p>Daily ticket counts by activity group, based on the local date of <code>LoadDate</code>. Each ticket appears once; household hazardous waste is separated from other special services. Empty dates remain on the axis. Hover or tap for exact counts, and drag to zoom.</p>
+      <div id="dailyChart" class="chart" role="img" aria-label="Stacked daily St. Petersburg ticket counts by activity group"></div>
+      <p class="callout" id="dailyFinding"></p>
+      <p class="note">This chart counts tickets, not comparable volumes or operating hours. No records on a date do not prove crews were idle.</p>
+      <p class="downloads"><a href="data/st-pete-daily-activity.csv" download>Download daily counts (CSV)</a></p>
+    </section>
+
+    <section id="neighborhood-dates">
+      <h2>2. Steady or intermittent collection by neighborhood?</h2>
+      <p>Each colored square marks a date with an ordinary construction-and-demolition or vegetative collection ticket. Darker colors mean more tickets on that date; pale squares mean no matching ticket. Dates use local <code>TicketDate</code>. The first-to-last span is an observed ticket window, not verified cleanup duration.</p>
+      <label for="areaScope">Show neighborhoods <select id="areaScope"><option value="selected">12 longest windows with at least 10 tickets</option><option value="all">All 42 with matched tickets</option></select></label>
+      <div id="neighborhoodChart" class="chart" role="img" aria-label="Calendar grid of ordinary collection ticket dates by neighborhood association"></div>
+      <p class="callout" id="neighborhoodFinding"></p>
+      <p class="note">Of 1,923 eligible tickets, 1,743 matched one city association polygon and 180 matched none. The current boundaries may differ from 2024 boundaries. A pale square means no matched ticket in this snapshot, not no service.</p>
+      <p class="downloads"><a href="data/st-pete-neighborhood-activity.csv" download>Download all neighborhood-date counts (CSV)</a></p>
+    </section>
+
+    <section id="receiving-sites">
+      <h2>3. How complete are receiving-site labels?</h2>
+      <p>Each bar shows the share of an activity group's tickets carrying each original <code>DisposalSite</code> label. Hover or tap for the exact ticket count and share. “MISSING” is displayed explicitly; a named receiving site does not establish final disposal or recycling.</p>
+      <div id="siteChart" class="chart" role="img" aria-label="Recorded receiving-site labels as a share of tickets in each activity group"></div>
+      <p class="callout" id="siteFinding"></p>
+      <p class="downloads"><a href="data/st-pete-receiving-site-labels.csv" download>Download site-label counts (CSV)</a></p>
+    </section>
+  </main>
+</body>
+</html>
