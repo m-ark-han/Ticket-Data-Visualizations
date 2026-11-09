@@ -101,9 +101,9 @@
     <div id="siteChart" class="chart visual" role="img" aria-label="DisposalSite labels as a share of tickets in each St. Petersburg activity group"></div>
     <span id="siteFinding" hidden></span>
     <div class="text">
-      <p><strong>Caption:</strong> Stacked bars show the percentage of each activity group's tickets with each recorded DisposalSite value, including blanks.</p>
-      <p><strong>Takeaway:</strong> The field is blank on 3,601 of 6,694 tickets: 3,566 other special-service tickets and 35 of 41 household hazardous-waste tickets. The city's column definitions are needed before interpreting why.</p>
-      <p class="need"><strong>Needs:</strong> DisposalSite, DocumentFormatID, DebrisType, HazardClass, and the complete city field dictionary to check for another destination or service-specific field.</p>
+      <p><strong>Caption:</strong> Stacked bars show the percentage of each activity group's tickets with each original DisposalSite label, including the literal value “MISSING.”</p>
+      <p><strong>Takeaway:</strong> “MISSING” appears on 3,601 of 6,694 tickets, all in special-service format 3: 3,566 other special-service tickets and 35 of 41 household hazardous-waste tickets. This is a source value, not an empty cell.</p>
+      <p class="need"><strong>Needs:</strong> DisposalSite, DocumentFormatID, HazardClass, SvcCode, and the city's definitions for special-service tickets. A verified destination would need a separate receiving or unload record.</p>
     </div>
   </section>
 
@@ -201,8 +201,9 @@
 
   <details id="receiving-sites">
     <summary>Receiving-site label investigation</summary>
-    <p>In the St. Petersburg snapshot, DisposalSite is blank for 3,601 tickets. The blanks are concentrated in special services: all 3,566 other special-service tickets and 35 of 41 household hazardous-waste tickets. The other six hazardous-waste tickets show three labels for 7TH AND 22ND DMS and three for NXGEN ENVIRONMENTAL. Ordinary collection and citizen drop-off have no blank DisposalSite values in this snapshot.</p>
-    <p>HazardClass and DebrisType explain the activity grouping; TicketDate, LoadDate, and Volume do not identify a receiving site. The extracted analysis fields contain no alternate verified receiving-site value. Report “blank in the DisposalSite column,” not “destination unknown.” Check the full city schema, service-specific fields, unload records, and city definitions before making a stronger claim.</p>
+    <p>The <a href="https://services.arcgis.com/HdtZMT2FmI4wPzTM/arcgis/rest/services/ReocveryTrac_DebrisRemovalData_StPeteCity_HurrMilton_Static_RT2024/FeatureServer/0" target="_blank" rel="noopener">public St. Petersburg ticket layer</a> contains the literal string “MISSING” in DisposalSite on 3,601 tickets. All use special-service format 3. DisposalSiteGPS also says “MISSING” on all 3,601. Ordinary collection and citizen drop-off have named DisposalSite values in this snapshot. Of 41 household hazardous-waste tickets, 35 have “MISSING”; the other six name 7TH AND 22ND DMS or NXGEN ENVIRONMENTAL.</p>
+    <p>HazardClass and SvcCode identify the work type, not the receiving site. SvcName says “CITY OF ST. PETERSBURG” on all 3,601. Notes contain text on 604 tickets, but the public fields checked provide no reliable alternative destination. Each of the 3,601 has Volume equal to UnitCount, Weight zero, and ScaleTicketNumber “N/A.” This suggests a service-unit workflow rather than ordinary measured debris loads; the city must confirm that interpretation. Pickup GPS and collection address cannot substitute for a destination.</p>
+    <p>The public service exposes a ticket layer and a project-boundary layer, with no linked unload or haulout table. Report the source value as “MISSING,” and ask the city whether these special-service forms are supposed to record a receiving site or whether that information lives in another system.</p>
   </details>
   <details id="neighborhood-clearance">
     <summary>Neighborhood timing and clearance definition</summary>
