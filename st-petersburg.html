@@ -46,12 +46,15 @@
 
     <section id="receiving-sites">
       <h2>3. How complete are receiving-site labels?</h2>
-      <p>Each bar shows the share of an activity group's tickets carrying each original <code>DisposalSite</code> label. Hover or tap for the exact ticket count and share. “MISSING” means this column is blank; the city has not yet confirmed whether another field records a destination for special services. A named receiving site does not establish final disposal or recycling. <a href="mark-handoff.html#receiving-sites">Read Mark's field review.</a></p>
+      <p>Each bar shows the share of an activity group's tickets carrying each original <code>DisposalSite</code> label. Hover or tap for the exact ticket count and share. <strong>“MISSING” is a literal value in the public layer, not an empty cell.</strong> A named receiving site does not establish final disposal or recycling. <a href="mark-handoff.html#receiving-sites">Read the field review.</a></p>
       <div id="siteChart" class="chart" role="img" aria-label="Recorded receiving-site labels as a share of tickets in each activity group"></div>
       <p class="callout" id="siteFinding"></p>
+      <h3>What else is recorded on those tickets?</h3>
+      <p>All 3,601 tickets labeled <code>MISSING</code> use special-service format 3. Their <code>DisposalSiteGPS</code> is also literally <code>MISSING</code>. <code>HazardClass</code> and <code>SvcCode</code> identify the service, while <code>SvcName</code> says “CITY OF ST. PETERSBURG” on all 3,601; those fields do not name a receiving facility. <code>Notes</code> has text on 604 of these tickets, but the public fields checked do not yield a reliable replacement site label.</p>
+      <p>For these 3,601 records, <code>Volume</code> equals <code>UnitCount</code> on every ticket, <code>Weight</code> is zero, and <code>ScaleTicketNumber</code> is “N/A.” That pattern suggests service-unit records rather than ordinary measured debris loads; the city's field definitions are needed to confirm the workflow. Do not treat these values as cubic yards or infer a destination from pickup GPS or address.</p>
+      <p class="note">The <code>MISSING</code> labels cover 2,028 hanger, 798 electronic-scrap, 712 white-goods, 35 household hazardous-waste, 17 freon-removal, nine leaner, and two “N/A” service tickets. The other six hazardous-waste tickets have named site labels. The public service has a ticket layer and a project-boundary layer, but no linked unload or haulout table. A separate city operations record may still exist.</p>
       <p class="downloads"><a href="data/st-pete-receiving-site-labels.csv" download>Download site-label counts (CSV)</a></p>
     </section>
   </main>
 </body>
 </html>
-
