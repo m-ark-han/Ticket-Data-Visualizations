@@ -12,6 +12,8 @@ The priority gallery includes F05 (weekly CY), F16 (pickup-volume map), F21 (a 3
 
 The [question guide](question-guide.html) maps the 16 Ranbir questions answered by figures to their IDs and describes the 34 questions that still need a new figure. It links archived figure images without adding them back to the nine-figure gallery. Q032, Q035, and Q025 are labeled partial in the gallery because their present figures do not fully answer those questions.
 
+The [dashboard figure handoff](mark-handoff.html) gives Sai a candidate ten-figure set, short captions and takeaways, required fields, a receiving-site blank-field review, and a definition of observed neighborhood activity versus verified clearance. The candidate list needs to be checked against Sai's three existing app figures once its app link is available.
+
 The [five question follow-up figures](pinellas-followups.html) answer Q003 (cumulative CY milestones), Q004 (largest-date CY contribution), Q009 (weekly ticket-count and mean-load components), Q026 (anonymous normalized-address CY concentration), and Q053 (ticket-count versus CY ranks across 30 Zone1 debris zones). Each interactive figure shows its question ID, interpretation, exact hover values, and a downloadable aggregate CSV. `build_question_figures.py` regenerates the public `data/pinellas-five-figures.json` and five CSVs from the reviewed local ticket CSV; raw addresses and ticket IDs are not published.
 
 The [original county dashboard figures](county-dashboard.html) page preserves screenshots of the county's four chart widgets and zone-status map, plus the visible status table, captured November 2, 2026. The figures are stored in `figures/county-dashboard/`, including full dashboard screenshots for context. The sand chart and two estimate charts use separate county layers; they are presented as original county figures rather than results from our pickup-ticket extract. Each image links back to the live [county dashboard](https://pinellas-egis.maps.arcgis.com/apps/dashboards/cc0cb850528c4b1b8ee669ec79feb341).
@@ -36,3 +38,4 @@ Map overlays are extracted from `data/figure-values.json` with `node build_map_o
 4. Review all findings and totals in `app.js` and `index.html` before publishing.
 
 This is a buildless site. GitHub Pages can publish the repository root of `main`; `.nojekyll` keeps static paths unchanged. The interactive charts use the bundled Plotly cartesian library; its MIT license is included in `PLOTLY-LICENSE.txt`.
+

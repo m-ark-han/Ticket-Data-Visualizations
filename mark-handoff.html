@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Mark's figure captions, dashboard recommendations, receiving-site check, and neighborhood clearance metric definitions for DebrisInsight.">
+  <title>Mark's dashboard figure handoff</title>
+  <style>
+    body{font:16px/1.5 Arial,sans-serif;color:#1b2930;background:#fff;margin:0 auto;max-width:950px;padding:22px 18px 60px}
+    h1{font-size:1.65rem;margin:0 0 8px}h2{font-size:1.25rem;margin:32px 0 8px}h3{font-size:1.08rem;margin:0 0 5px}
+    p{margin:0 0 10px}a{color:#075d78;text-decoration:underline}li{margin:0 0 9px}ol{padding-left:24px}
+    .note{color:#465963}.figure{border-top:1px solid #cfd9dc;padding:15px 0 8px}.figure p{margin:3px 0}
+    .tag{font-size:.85rem;color:#445c62}.status{font-weight:bold}.source{font-size:.9rem}
+    @media(max-width:650px){body{padding:16px 12px 45px}h1{font-size:1.4rem}}
+  </style>
+</head>
+<body>
+<main>
+  <p><a href="index.html">← Main figures</a> · <a href="question-guide.html">Question guide</a></p>
+  <h1>Mark's dashboard figure handoff</h1>
+  <p>Ten figures to consider for Sai's left dashboard and the report. Each has text that can be used as a short caption and takeaway. <strong>St. Petersburg and Pinellas County are separate ticket datasets:</strong> display their source names and date ranges, and do not combine their totals. Question IDs below refer to Ranbir's Pinellas question guide; the St. Petersburg analogues need IDs from the team's finalized question list.</p>
+  <p class="note">This is a candidate set based on the figures available here and the reviewed public dashboard examples. Deduplicate it against the three figures already in Sai's app when its link is available.</p>
+
+  <h2>Recommended dashboard set</h2>
+  <div class="figure"><h3>1. Daily activity mix — St. Petersburg</h3>
+    <p class="tag">Existing <a href="st-petersburg.html#daily-mix">interactive figure</a> · Daily collection question</p>
+    <p><strong>Caption:</strong> Stacked daily ticket counts compare ordinary construction-and-demolition or vegetative collection, citizen drop-off, other special services, and household hazardous waste.</p>
+    <p><strong>Takeaway:</strong> October 22, 2024 has the most records in this static snapshot: 1,179 tickets, including 719 other special-service tickets. The snapshot ends October 23; the endpoint is not a clearance date.</p>
+    <p class="source"><strong>Needs:</strong> local LoadDate, DocumentFormatID, DebrisType, HazardClass, and ticket identifier.</p></div>
+  <div class="figure"><h3>2. Neighborhood activity calendar — St. Petersburg</h3>
+    <p class="tag">Existing <a href="st-petersburg.html#neighborhood-dates">interactive figure</a> · Neighborhood timing question</p>
+    <p><strong>Caption:</strong> Each square marks a local date and neighborhood with ordinary collection tickets; color shows how many tickets were recorded that day.</p>
+    <p><strong>Takeaway:</strong> Shore Acres and Coquina Key have equal 20-day first-to-last ticket spans, but activity appears on 17 versus 10 dates. The span measures observed ticket activity, not completed cleanup.</p>
+    <p class="source"><strong>Needs:</strong> TicketDate, ticket point coordinates, activity type, stable neighborhood polygons, and a documented spatial match rule. Of 1,923 eligible tickets, 1,743 matched one association polygon and 180 matched none.</p></div>
+  <div class="figure"><h3>3. Receiving-site field coverage — St. Petersburg</h3>
+    <p class="tag">Existing <a href="st-petersburg.html#receiving-sites">interactive figure</a> · Destination-data question</p>
+    <p><strong>Caption:</strong> Stacked bars show the percentage of each activity group's tickets with each recorded DisposalSite value, including blanks.</p>
+    <p><strong>Takeaway:</strong> The field is blank on 3,601 of 6,694 tickets: 3,566 other special-service tickets and 35 of 41 household hazardous-waste tickets. The city's column definitions are needed before interpreting why.</p>
+    <p class="source"><strong>Needs:</strong> DisposalSite, DocumentFormatID, DebrisType, HazardClass, and the full city field dictionary to check for another destination or service-specific field.</p></div>
+  <div class="figure"><h3>4. Weekly recorded collection volume — Pinellas County</h3>
+    <p class="tag">Existing <a href="index.html#figure-F05">F05</a> · Q001, Q006</p>
+    <p><strong>Caption:</strong> Bars compare the sum of recorded pickup cubic yards (CY) by Monday-start week, including weeks with no ticket rows.</p>
+    <p><strong>Takeaway:</strong> The week beginning October 28, 2024 peaks at 112,592.90 CY. A zero-record week does not establish that crews were idle.</p>
+    <p class="source"><strong>Needs:</strong> LoadDate, Volume, defined time zone, and complete calendar weeks.</p></div>
+  <div class="figure"><h3>5. Debris-type share — Pinellas County</h3>
+    <p class="tag">Existing <a href="figures/F11-type-share-volume-vs-tickets.png">F11 image</a> · Q011</p>
+    <p><strong>Caption:</strong> Paired bars compare each debris type's share of ticket count with its share of recorded CY.</p>
+    <p><strong>Takeaway:</strong> Vegetative/Woody accounts for 75.29% of tickets and 73.84% of recorded CY. Keep type labels separate until their definitions are confirmed.</p>
+    <p class="source"><strong>Needs:</strong> DebrisType, Volume, and ticket identifier.</p></div>
+  <div class="figure"><h3>6. Pickup-volume street map — Pinellas County</h3>
+    <p class="tag">Existing <a href="index.html#figure-F16">F16 interactive map</a> · Q016</p>
+    <p><strong>Caption:</strong> Equal-sized map cells compare the sum of CY recorded at pickup coordinates.</p>
+    <p><strong>Takeaway:</strong> The highest-volume plotted cell contains 46,453.90 CY. It locates recorded pickups, not all debris present or an unmet need.</p>
+    <p class="source"><strong>Needs:</strong> pickup latitude, longitude, Volume, fixed cell size, and a street basemap.</p></div>
+  <div class="figure"><h3>7. Zone activity duration — Pinellas County</h3>
+    <p class="tag">Existing <a href="index.html#figure-F21">F21 interactive grid</a> · M04, Q025 partial</p>
+    <p><strong>Caption:</strong> Each zone shows days from its first ticket to the date it reached 90% of its own recorded CY; a switch shows first-to-last ticket span.</p>
+    <p><strong>Takeaway:</strong> The 90% measure ranges from 32 to 122 days across 30 zones. Neither measure verifies that a zone was cleared.</p>
+    <p class="source"><strong>Needs:</strong> Zone1, LoadDate, Volume, ticket identifier, and validated zone meanings.</p></div>
+  <div class="figure"><h3>8. Recorded destination labels — Pinellas County</h3>
+    <p class="tag">Existing <a href="figures/F22-destination-label-volume.png">F22 image</a> · Destination question</p>
+    <p><strong>Caption:</strong> Bars compare pickup-ticket CY under each of six DisposalSite labels.</p>
+    <p><strong>Takeaway:</strong> SOD FARM SOUTH has the largest labeled total, 289,309.45 CY. A ticket label is a stated destination; receipt, later transfers, and final disposal require separate evidence.</p>
+    <p class="source"><strong>Needs:</strong> DisposalSite, Volume, and ticket identifier. A true debris-flow view also needs linked unload and haulout records.</p></div>
+  <div class="figure"><h3>9. Initial and remaining debris estimates — Pinellas County</h3>
+    <p class="tag">Original county <a href="county-dashboard.html#estimated-initial">initial</a> and <a href="county-dashboard.html#estimated-remaining">remaining</a> charts · Proposed paired view</p>
+    <p><strong>Caption:</strong> Aligned charts would compare initial and remaining debris estimates by district and debris type, with estimate date and unit shown.</p>
+    <p><strong>Takeaway:</strong> This could reveal where estimated work remains. A completion percentage is not ready until the two layers have matching area, type, units, and time definitions.</p>
+    <p class="source"><strong>Needs:</strong> district ID, type, initial estimate, remaining estimate, unit, estimate dates, update cadence, and methods. The captured charts do not show a clear vertical-axis unit.</p></div>
+  <div class="figure"><h3>10. Official area status map — Pinellas County</h3>
+    <p class="tag">Original county <a href="county-dashboard.html#zone-status-map">status map</a> · Completion-status question</p>
+    <p><strong>Caption:</strong> A map colors work areas by the county's recorded pass/status category, with the status update date.</p>
+    <p><strong>Takeaway:</strong> The captured dashboard displays categories such as in progress and complete–final. Those are agency statuses, not statuses calculated from the ticket dates.</p>
+    <p class="source"><strong>Needs:</strong> official zone polygons, status code and definition, status date, responsible agency, and source refresh timestamp. A live app should show the current API value and last update.</p></div>
+
+  <h2 id="receiving-sites">Receiving-site label investigation</h2>
+  <p>In the St. Petersburg snapshot, <code>DisposalSite</code> is blank for 3,601 tickets. The blank values are concentrated in records classified by <code>DocumentFormatID</code> as special services: all 3,566 “other special services” and 35 of 41 household hazardous-waste tickets. The other six hazardous-waste tickets show three labels for 7TH AND 22ND DMS and three for NXGEN ENVIRONMENTAL. Ordinary collection and citizen drop-off have no blank <code>DisposalSite</code> values in this snapshot.</p>
+  <p><code>HazardClass</code> and <code>DebrisType</code> explain the activity grouping; <code>TicketDate</code>, <code>LoadDate</code>, and <code>Volume</code> do not identify a receiving site. The extracted analysis fields contain no alternate verified receiving-site value. <strong>Conclusion:</strong> report “blank in the DisposalSite column,” not “destination unknown.” Check the complete city schema, service-specific fields, unload records, and city column definitions before making a stronger claim. The Pinellas County destination labels come from a different dataset and cannot fill these blanks.</p>
+
+  <h2 id="neighborhood-clearance">Neighborhood timing and clearance definition</h2>
+  <ol>
+    <li><strong>Observed activity:</strong> for each neighborhood, show first ticket date, last ticket date, elapsed days between them, count of dates with tickets, longest internal no-ticket gap, ticket count, and matched-ticket coverage. These can be calculated from the static St. Petersburg snapshot.</li>
+    <li><strong>90% of recorded volume:</strong> if per-ticket CY and neighborhood matching are validated, find the first date cumulative recorded CY reaches 90% of that neighborhood's snapshot total. Label the result “days to 90% of recorded CY.” F21 already uses this idea for county debris zones, not St. Petersburg neighborhoods.</li>
+    <li><strong>Verified clearance:</strong> show an ongoing/completed status and clearance date only when an agency work-area status, final-pass record, or signed inspection supplies them. Keep the authority, status definition, update date, and boundary version. A last ticket or a 90% volume date cannot supply that status.</li>
+    <li><strong>Estimate-based progress:</strong> initial and remaining debris estimates may show a possible backlog only after units, area boundaries, debris types, methods, and timestamps are reconciled. Do not use <code>1 − remaining ÷ initial</code> as a completion percentage without that validation.</li>
+  </ol>
+  <p>The St. Petersburg layer used for the current neighborhood calendar is a static October 3–23, 2024 snapshot. To describe current conditions, use a live authoritative status API with a visible refresh time. To describe a finished operation retrospectively, use the final status history and its approval or inspection date.</p>
+
+  <h2>Dashboard patterns reviewed</h2>
+  <p>The <a href="county-dashboard.html">Pinellas County dashboard originals</a> use daily load volume, a separate sand view, initial/remaining estimate charts, and a work-area status map. <a href="https://doc.arcgis.com/en/arcgis-solutions/12.0/reference/use-emergency-debris-management.htm" target="_blank" rel="noopener">Esri's Emergency Debris Management workflow</a> also describes status by work area, total volume removed, volume by debris type and provider, separate haulout/final-disposal charts, and ticket lists. These examples support a compact dashboard that distinguishes collection, operational status, estimates, and later disposal stages. A complete comparison with the other dashboards in Sai's Data tab awaits that app's link.</p>
+</main>
+</body>
+</html>
+
