@@ -27,21 +27,15 @@
     .visual.pair img{width:100%;height:auto}
     .visual.pair figcaption{text-align:center;font-size:.88rem;color:#465963}
     .chart{width:100%;min-height:430px}
-    #neighborhoodChart{min-height:540px}
-    #neighborhoodTimeline{min-height:680px}
     .text{max-width:1000px}
     .text p{margin:7px 0}
     .need{color:#364b52}
-    .live-note{border-left:4px solid #087f77;padding:8px 12px;background:#f1f8f7;margin:10px 0}
     .table-wrap{width:100%;overflow-x:auto;margin:12px 0 16px}
-    table{border-collapse:collapse;width:100%;min-width:1050px;font-size:.92rem}
+    table{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
     th,td{text-align:left;border-bottom:1px solid #d8e2e4;padding:8px 9px}
-    td:nth-child(2),td:nth-child(3){white-space:nowrap}
-    th{background:#f0f5f5;position:sticky;top:0}
+    th{background:#f0f5f5}
     td.num{text-align:right;font-variant-numeric:tabular-nums}
     tbody tr:nth-child(even){background:#f8fbfb}
-    .table-note{font-size:.9rem;color:#465963}
-    select{font:inherit;padding:5px;border:1px solid #a9b9bd;border-radius:3px;margin:4px 0 4px 5px}
     details{border-top:1px solid #cad7da;padding:15px 0}
     summary{font-weight:bold;cursor:pointer}
     ol{padding-left:22px}
@@ -51,22 +45,20 @@
       h1{font-size:1.45rem}
       .visual.pair{grid-template-columns:1fr}
       .chart{min-height:380px}
-      #neighborhoodTimeline{min-width:560px}
     }
   </style>
   <script defer src="plotly-cartesian.min.js"></script>
-  <script defer src="st-petersburg.js"></script>
-  <script defer src="mark-handoff.js?v=3"></script>
+  <script defer src="mark-handoff.js?v=4"></script>
 </head>
 <body>
 <main>
   <p><a href="index.html">Main ticket figures</a> · <a href="question-guide.html">Question guide</a> · <a href="county-dashboard.html">County dashboard originals</a></p>
   <h1>DebrisInsight: ten figures for the dashboard and report</h1>
   <p class="intro">Each figure appears here with a caption, the main takeaway, and the data it needs. The St. Petersburg and Pinellas County ticket extracts are <strong>separate datasets</strong>; their totals should not be combined. These are candidates for Sai's dashboard, pending comparison with its existing figures.</p>
-  <p id="retrievalNote" class="note">Loading St. Petersburg figure data…</p>
+  <p class="note">The daily activity figure uses the separate St. Petersburg snapshot; all other ticket figures below use Pinellas County records. Do not combine their totals.</p>
   <nav class="contents" aria-label="Figures on this page">
-    <a href="#figure-1">1 Daily mix</a><a href="#figure-2">2 Neighborhoods</a><a href="#figure-3">3 Receiving sites</a>
-    <a href="#figure-4">4 Weekly volume</a><a href="#figure-5">5 Debris types</a><a href="#figure-6">6 Neighborhood times</a>
+    <a href="#figure-1">1 Daily mix</a><a href="#figure-2">2 Cumulative volume</a><a href="#figure-3">3 Location flags</a>
+    <a href="#figure-4">4 Weekly volume</a><a href="#figure-5">5 Debris types</a><a href="#figure-6">6 Address spread</a>
     <a href="#figure-7">7 Zone duration</a><a href="#figure-8">8 Destination labels</a><a href="#figure-9">9 Estimates</a><a href="#figure-10">10 Area status</a>
   </nav>
 
@@ -74,7 +66,6 @@
     <h2>1. Daily activity mix — St. Petersburg</h2>
     <p class="tag">Daily collection question · <a href="st-petersburg.html#daily-mix">Open the detailed interactive view</a></p>
     <div id="dailyChart" class="chart visual" role="img" aria-label="Stacked daily St. Petersburg ticket counts by activity group"></div>
-    <span id="dailyFinding" hidden></span>
     <div class="text">
       <p><strong>Caption:</strong> Stacked daily ticket counts compare ordinary construction-and-demolition or vegetative collection, citizen drop-off, other special services, and household hazardous waste. Dates use local LoadDate.</p>
       <p><strong>Takeaway:</strong> October 22, 2024 has the most records in this static snapshot: 1,179 tickets, including 719 other special-service tickets. The snapshot ends October 23; the endpoint is not a clearance date.</p>
@@ -83,27 +74,25 @@
   </section>
 
   <section class="figure" id="figure-2">
-    <h2>2. Neighborhood activity calendar — St. Petersburg</h2>
-    <p class="tag">Neighborhood timing question · <a href="st-petersburg.html#neighborhood-dates">Open the detailed interactive view</a></p>
-    <label for="areaScope">Show neighborhoods <select id="areaScope"><option value="selected">12 longest windows with at least 10 tickets</option><option value="all">All 42 with matched tickets</option></select></label>
-    <div id="neighborhoodChart" class="chart visual" role="img" aria-label="Calendar grid of ordinary collection ticket dates by neighborhood association"></div>
-    <span id="neighborhoodFinding" hidden></span>
+    <h2>2. Cumulative recorded collection volume — Pinellas County</h2>
+    <p class="tag">Q003 · <a href="pinellas-followups.html#Q003">Open the detailed interactive figure</a></p>
+    <div id="milestoneChart" class="chart visual" role="img" aria-label="Cumulative recorded cubic yards with 25, 50, 75, and 90 percent milestone markers"></div>
+    <div class="table-wrap"><table id="milestoneTable" aria-label="Dates when cumulative recorded volume passed milestones"><thead><tr><th scope="col">Threshold</th><th scope="col">First date crossed</th><th scope="col">Recorded CY by date</th><th scope="col">Actual share</th></tr></thead><tbody><tr><td colspan="4">Loading milestones…</td></tr></tbody></table></div>
     <div class="text">
-      <p><strong>Caption:</strong> Each square marks a local TicketDate and neighborhood with ordinary collection tickets; color shows the ticket count on that date. A pale square means no matching ticket in this snapshot.</p>
-      <p><strong>Takeaway:</strong> Shore Acres and Coquina Key have equal 20-day first-to-last ticket spans, but activity appears on 17 versus 10 dates. The span measures observed ticket activity, not completed cleanup.</p>
-      <p class="need"><strong>Needs:</strong> TicketDate, ticket point coordinates, activity type, stable neighborhood polygons, and a documented spatial match rule. Of 1,923 eligible tickets, 1,743 matched one association polygon and 180 matched none.</p>
+      <p><strong>Caption:</strong> The line accumulates each local date's recorded pickup cubic yards (CY). Markers and the table show when the running total first crossed 25%, 50%, 75%, and 90% of this extract's final total.</p>
+      <p><strong>Takeaway:</strong> Recorded volume passed 50% on November 11, 2024 and 90% on December 19, 2024. These percentages describe the ticket extract, not all debris generated or verified cleanup progress.</p>
+      <p class="need"><strong>Needs:</strong> LoadDate, Volume, Eastern-time date conversion, and a defined extraction endpoint and total.</p>
     </div>
   </section>
 
   <section class="figure" id="figure-3">
-    <h2>3. Receiving-site field coverage — St. Petersburg</h2>
-    <p class="tag">Destination-data question · <a href="st-petersburg.html#receiving-sites">Open the detailed interactive view</a></p>
-    <div id="siteChart" class="chart visual" role="img" aria-label="DisposalSite labels as a share of tickets in each St. Petersburg activity group"></div>
-    <span id="siteFinding" hidden></span>
+    <h2>3. Missing address and GPS-field flags — Pinellas County</h2>
+    <p class="tag">F25 · Q032 and Q035 (partial) · <a href="index.html#figure-F25">Open the interactive street map</a></p>
+    <div class="visual"><img src="figures/F25-location-quality-map.png" alt="Pickup points with a blank collection address or a mismatch between GPS text and numeric coordinates" loading="lazy"></div>
     <div class="text">
-      <p><strong>Caption:</strong> Stacked bars show the percentage of each activity group's tickets with each original DisposalSite label, including the literal value “MISSING.”</p>
-      <p><strong>Takeaway:</strong> “MISSING” appears on 3,601 of 6,694 tickets, all in special-service format 3: 3,566 other special-service tickets and 35 of 41 household hazardous-waste tickets. This is a source value, not an empty cell.</p>
-      <p class="need"><strong>Needs:</strong> DisposalSite, DocumentFormatID, HazardClass, SvcCode, and the city's definitions for special-service tickets. A verified destination would need a separate receiving or unload record.</p>
+      <p><strong>Caption:</strong> Points flag tickets with no collection address and the one ticket whose GPS text differs from its numeric latitude and longitude. The street-map view lets reviewers inspect locations and exact values.</p>
+      <p><strong>Takeaway:</strong> There are 114 tickets with blank collection addresses and one GPS-text/numeric-coordinate conflict. These are review flags, not confirmed incorrect pickup locations.</p>
+      <p class="need"><strong>Needs:</strong> CollAddress, GPS text, numeric Lat and Lng, and Volume. Authoritative address or geocoding data are needed to validate positions; affected CY and GPS precision require further analysis.</p>
     </div>
   </section>
 
@@ -130,25 +119,13 @@
   </section>
 
   <section class="figure" id="figure-6">
-    <h2>6. Neighborhood ticket-activity times — St. Petersburg</h2>
-    <p class="tag">Neighborhood timing question · <a href="st-petersburg.html#neighborhood-dates">Compare dates in the activity calendar</a></p>
-    <p class="table-note"><strong>Read this as recorded activity, not verified cleanup time.</strong> Each line runs from the first to the last matching ticket date in the October 3–23, 2024 snapshot. The city has not supplied an official cleared date for these neighborhoods.</p>
-    <label for="timelineScope">Show neighborhoods <select id="timelineScope"><option value="top">12 longest observed windows</option><option value="all">All 42 with matched tickets</option></select></label>
-    <div id="neighborhoodTimeline" class="chart visual" role="img" aria-label="First-to-last ordinary collection ticket dates by St. Petersburg neighborhood"></div>
-    <details>
-      <summary>Show exact dates and counts for all neighborhoods</summary>
-      <div class="table-wrap">
-      <table aria-label="St. Petersburg neighborhood ticket-activity times">
-        <thead><tr><th scope="col">Neighborhood</th><th scope="col">First ticket</th><th scope="col">Last ticket</th><th scope="col">Observed span (days)</th><th scope="col">Dates with tickets</th><th scope="col">Longest gap (days)</th><th scope="col">Tickets</th><th scope="col">Official cleared date</th></tr></thead>
-        <tbody id="neighborhoodTimes"><tr><td colspan="8">Loading neighborhood records…</td></tr></tbody>
-      </table>
-      </div>
-    </details>
-    <p id="neighborhoodTableCount" class="table-note"></p>
+    <h2>6. Coordinate spread under repeated address labels — Pinellas County</h2>
+    <p class="tag">F26 · Q030 · <a href="index.html#figure-F26">Open the interactive street map</a></p>
+    <div class="visual"><img src="figures/F26-address-spread-candidates-map.png" alt="Median pickup points for repeated address labels, colored by coordinate spread and sized by ticket count" loading="lazy"></div>
     <div class="text">
-      <p><strong>Caption:</strong> Horizontal lines compare the first and last recorded ordinary-collection ticket dates for each neighborhood. Hover or tap an endpoint for exact dates, inclusive span, active dates, gaps, and ticket count. The table below contains all 42 neighborhoods.</p>
-      <p><strong>Takeaway:</strong> Shore Acres and Coquina Key both have 20-day observed spans, yet Shore Acres has tickets on 17 dates and Coquina Key on 10. A longer span does not by itself mean cleanup took longer.</p>
-      <p class="need"><strong>Needs:</strong> TicketDate, ordinary-collection classification, pickup coordinates, neighborhood boundaries, and matching rules. To report when an area was actually cleared and how long cleanup took, add official final-pass or clearance records with dates and definitions.</p>
+      <p><strong>Caption:</strong> Each point represents a repeated collection-address label with at least ten tickets. Its position is the median pickup coordinate; color shows the 90th-percentile distance of that label's ticket points from the median, and point size shows ticket count.</p>
+      <p><strong>Takeaway:</strong> Fifteen repeated address labels have a 90th-percentile pickup-point spread greater than 1 kilometer. Broad roads, parks, and staging labels may legitimately cover many points; spread alone does not prove a GPS error.</p>
+      <p class="need"><strong>Needs:</strong> CollAddress, ticket coordinates and IDs, a consistent address-normalization rule, and authoritative address geometry to determine whether a spread is problematic.</p>
     </div>
   </section>
 
@@ -199,22 +176,6 @@
     </div>
   </section>
 
-  <details id="receiving-sites">
-    <summary>Receiving-site label investigation</summary>
-    <p>The <a href="https://services.arcgis.com/HdtZMT2FmI4wPzTM/arcgis/rest/services/ReocveryTrac_DebrisRemovalData_StPeteCity_HurrMilton_Static_RT2024/FeatureServer/0" target="_blank" rel="noopener">public St. Petersburg ticket layer</a> contains the literal string “MISSING” in DisposalSite on 3,601 tickets. All use special-service format 3. DisposalSiteGPS also says “MISSING” on all 3,601. Ordinary collection and citizen drop-off have named DisposalSite values in this snapshot. Of 41 household hazardous-waste tickets, 35 have “MISSING”; the other six name 7TH AND 22ND DMS or NXGEN ENVIRONMENTAL.</p>
-    <p>HazardClass and SvcCode identify the work type, not the receiving site. SvcName says “CITY OF ST. PETERSBURG” on all 3,601. Notes contain text on 604 tickets, but the public fields checked provide no reliable alternative destination. Each of the 3,601 has Volume equal to UnitCount, Weight zero, and ScaleTicketNumber “N/A.” This suggests a service-unit workflow rather than ordinary measured debris loads; the city must confirm that interpretation. Pickup GPS and collection address cannot substitute for a destination.</p>
-    <p>The public service exposes a ticket layer and a project-boundary layer, with no linked unload or haulout table. Report the source value as “MISSING,” and ask the city whether these special-service forms are supposed to record a receiving site or whether that information lives in another system.</p>
-  </details>
-  <details id="neighborhood-clearance">
-    <summary>Neighborhood timing and clearance definition</summary>
-    <ol>
-      <li><strong>Observed activity:</strong> show first and last ticket dates, elapsed days, dates with tickets, longest internal gap, ticket count, and matched-ticket coverage.</li>
-      <li><strong>90% of recorded volume:</strong> if per-ticket CY and neighborhood matching are validated, show the first date cumulative CY reaches 90% of the snapshot total. Label this “days to 90% of recorded CY.”</li>
-      <li><strong>Verified clearance:</strong> use an agency work-area status, final-pass record, or signed inspection with its status definition and date. A last ticket cannot establish clearance.</li>
-      <li><strong>Estimate-based progress:</strong> reconcile units, boundaries, debris types, methods, and timestamps before calculating any completion percentage.</li>
-    </ol>
-    <p>The St. Petersburg figure uses a static October 3–23, 2024 snapshot. Current conditions require a live authoritative status source and refresh time.</p>
-  </details>
   <details>
     <summary>Dashboard examples reviewed</summary>
     <p>The <a href="county-dashboard.html">Pinellas County dashboard originals</a> include daily load volume, sand, initial and remaining estimates, and area status. <a href="https://doc.arcgis.com/en/arcgis-solutions/12.0/reference/use-emergency-debris-management.htm" target="_blank" rel="noopener">Esri's Emergency Debris Management workflow</a> describes work-area status, total volume removed, debris type and provider, haulout and final disposal, and ticket lists.</p>
