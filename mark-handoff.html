@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Ten DebrisInsight figures with their captions, takeaways, data needs, and source links on one page.">
   <title>DebrisInsight figure handoff</title>
+  <link rel="stylesheet" href="leaflet.css">
   <style>
     :root{font-family:Arial,sans-serif;color:#1b2930;background:#fff}
     *{box-sizing:border-box}
@@ -21,6 +22,11 @@
     .tag{color:#445c62;font-size:.9rem;margin-bottom:12px}
     .visual{width:100%;margin:10px 0 15px;overflow:hidden}
     .visual img{display:block;max-width:100%;max-height:650px;width:auto;height:auto;margin:0 auto}
+    [hidden]{display:none!important}
+    .street-map{height:520px;width:100%;background:#e9eef1}
+    .map-key{font-size:.9rem;color:#364b52;margin:3px 0 12px}
+    .map-key i{display:inline-block;width:11px;height:11px;border-radius:50%;margin:0 5px 0 15px}
+    .map-key i:first-child{margin-left:0}
     .visual.status img{max-height:560px}
     .visual.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
     .visual.pair figure{margin:0}
@@ -48,7 +54,8 @@
     }
   </style>
   <script defer src="plotly-cartesian.min.js"></script>
-  <script defer src="mark-handoff.js?v=4"></script>
+  <script defer src="leaflet.js"></script>
+  <script defer src="mark-handoff.js?v=5"></script>
 </head>
 <body>
 <main>
@@ -88,7 +95,8 @@
   <section class="figure" id="figure-3">
     <h2>3. Missing address and GPS-field flags — Pinellas County</h2>
     <p class="tag">F25 · Q032 and Q035 (partial) · <a href="index.html#figure-F25">Open the interactive street map</a></p>
-    <div class="visual"><img src="figures/F25-location-quality-map.png" alt="Pickup points with a blank collection address or a mismatch between GPS text and numeric coordinates" loading="lazy"></div>
+    <div class="visual"><div id="qualityMap" class="street-map" role="img" aria-label="Street map of blank collection addresses and one GPS-field conflict"></div><img id="qualityFallback" src="figures/F25-location-quality-map.png" alt="Pickup points with a blank collection address or a mismatch between GPS text and numeric coordinates" hidden></div>
+    <p class="map-key"><i style="background:#d47b28"></i>Blank collection address <i style="background:#17324b"></i>GPS text / numeric-coordinate conflict · Pan and zoom; click a point for exact values.</p>
     <div class="text">
       <p><strong>Caption:</strong> Points flag tickets with no collection address and the one ticket whose GPS text differs from its numeric latitude and longitude. The street-map view lets reviewers inspect locations and exact values.</p>
       <p><strong>Takeaway:</strong> There are 114 tickets with blank collection addresses and one GPS-text/numeric-coordinate conflict. These are review flags, not confirmed incorrect pickup locations.</p>
@@ -121,7 +129,8 @@
   <section class="figure" id="figure-6">
     <h2>6. Coordinate spread under repeated address labels — Pinellas County</h2>
     <p class="tag">F26 · Q030 · <a href="index.html#figure-F26">Open the interactive street map</a></p>
-    <div class="visual"><img src="figures/F26-address-spread-candidates-map.png" alt="Median pickup points for repeated address labels, colored by coordinate spread and sized by ticket count" loading="lazy"></div>
+    <div class="visual"><div id="spreadMap" class="street-map" role="img" aria-label="Street map of coordinate spread under repeated collection-address labels"></div><img id="spreadFallback" src="figures/F26-address-spread-candidates-map.png" alt="Median pickup points for repeated address labels, colored by coordinate spread and sized by ticket count" hidden></div>
+    <p class="map-key"><i style="background:#247c87"></i>Under 0.25 km <i style="background:#dd8d29"></i>0.25–1 km <i style="background:#ad3f36"></i>Over 1 km · Circle size shows ticket count.</p>
     <div class="text">
       <p><strong>Caption:</strong> Each point represents a repeated collection-address label with at least ten tickets. Its position is the median pickup coordinate; color shows the 90th-percentile distance of that label's ticket points from the median, and point size shows ticket count.</p>
       <p><strong>Takeaway:</strong> Fifteen repeated address labels have a 90th-percentile pickup-point spread greater than 1 kilometer. Broad roads, parks, and staging labels may legitimately cover many points; spread alone does not prove a GPS error.</p>
