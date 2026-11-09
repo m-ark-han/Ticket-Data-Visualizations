@@ -21,7 +21,6 @@
     .tag{color:#445c62;font-size:.9rem;margin-bottom:12px}
     .visual{width:100%;margin:10px 0 15px;overflow:hidden}
     .visual img{display:block;max-width:100%;max-height:650px;width:auto;height:auto;margin:0 auto}
-    .visual.map img{max-height:720px}
     .visual.status img{max-height:560px}
     .visual.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
     .visual.pair figure{margin:0}
@@ -33,6 +32,13 @@
     .text p{margin:7px 0}
     .need{color:#364b52}
     .live-note{border-left:4px solid #087f77;padding:8px 12px;background:#f1f8f7;margin:10px 0}
+    .table-wrap{width:100%;overflow-x:auto;margin:12px 0 16px}
+    table{border-collapse:collapse;width:100%;min-width:830px;font-size:.92rem}
+    th,td{text-align:left;border-bottom:1px solid #d8e2e4;padding:8px 9px}
+    th{background:#f0f5f5;position:sticky;top:0}
+    td.num{text-align:right;font-variant-numeric:tabular-nums}
+    tbody tr:nth-child(even){background:#f8fbfb}
+    .table-note{font-size:.9rem;color:#465963}
     select{font:inherit;padding:5px;border:1px solid #a9b9bd;border-radius:3px;margin:4px 0 4px 5px}
     details{border-top:1px solid #cad7da;padding:15px 0}
     summary{font-weight:bold;cursor:pointer}
@@ -47,6 +53,7 @@
   </style>
   <script defer src="plotly-cartesian.min.js"></script>
   <script defer src="st-petersburg.js"></script>
+  <script defer src="mark-handoff.js"></script>
 </head>
 <body>
 <main>
@@ -56,7 +63,7 @@
   <p id="retrievalNote" class="note">Loading St. Petersburg figure data…</p>
   <nav class="contents" aria-label="Figures on this page">
     <a href="#figure-1">1 Daily mix</a><a href="#figure-2">2 Neighborhoods</a><a href="#figure-3">3 Receiving sites</a>
-    <a href="#figure-4">4 Weekly volume</a><a href="#figure-5">5 Debris types</a><a href="#figure-6">6 Pickup map</a>
+    <a href="#figure-4">4 Weekly volume</a><a href="#figure-5">5 Debris types</a><a href="#figure-6">6 Neighborhood times</a>
     <a href="#figure-7">7 Zone duration</a><a href="#figure-8">8 Destination labels</a><a href="#figure-9">9 Estimates</a><a href="#figure-10">10 Area status</a>
   </nav>
 
@@ -120,13 +127,20 @@
   </section>
 
   <section class="figure" id="figure-6">
-    <h2>6. Pickup-volume map — Pinellas County</h2>
-    <p class="tag">F16 · Question Q016 · <a href="index.html#figure-F16">Open the detailed figure</a></p>
-    <div class="visual map"><img src="figures/F16-pickup-volume-map.png" alt="Map cells shaded by summed recorded pickup cubic yards in Pinellas County" loading="lazy"></div>
+    <h2>6. Neighborhood ticket-activity times — St. Petersburg</h2>
+    <p class="tag">Neighborhood timing question · <a href="st-petersburg.html#neighborhood-dates">Compare dates in the activity calendar</a></p>
+    <p class="table-note"><strong>Read this as recorded activity, not verified cleanup time.</strong> “First” and “last” are ticket dates in the October 3–23, 2024 snapshot. The span counts both endpoint dates. The city has not supplied an official cleared date for these neighborhoods.</p>
+    <div class="table-wrap">
+      <table aria-label="St. Petersburg neighborhood ticket-activity times">
+        <thead><tr><th scope="col">Neighborhood</th><th scope="col">First ticket</th><th scope="col">Last ticket</th><th scope="col">Observed span (days)</th><th scope="col">Dates with tickets</th><th scope="col">Longest gap (days)</th><th scope="col">Tickets</th><th scope="col">Official cleared date</th></tr></thead>
+        <tbody id="neighborhoodTimes"><tr><td colspan="8">Loading neighborhood records…</td></tr></tbody>
+      </table>
+    </div>
+    <p id="neighborhoodTableCount" class="table-note"></p>
     <div class="text">
-      <p><strong>Caption:</strong> Equal-sized map cells compare the sum of CY recorded at pickup coordinates.</p>
-      <p><strong>Takeaway:</strong> The highest-volume plotted cell contains 46,453.90 CY. It locates recorded pickups, not all debris present or an unmet need.</p>
-      <p class="need"><strong>Needs:</strong> Pickup latitude, longitude, Volume, fixed cell size, and a street basemap for geographic context.</p>
+      <p><strong>Caption:</strong> Neighborhoods are ordered by the inclusive span between their first and last matching ordinary-collection tickets. The table also shows active ticket dates and the longest internal gap to distinguish steady from intermittent records.</p>
+      <p><strong>Takeaway:</strong> Shore Acres and Coquina Key both have 20-day observed spans, yet Shore Acres has tickets on 17 dates and Coquina Key on 10. A longer span does not by itself mean cleanup took longer.</p>
+      <p class="need"><strong>Needs:</strong> TicketDate, ordinary-collection classification, pickup coordinates, neighborhood boundaries, and matching rules. To report when an area was actually cleared and how long cleanup took, add official final-pass or clearance records with dates and definitions.</p>
     </div>
   </section>
 
