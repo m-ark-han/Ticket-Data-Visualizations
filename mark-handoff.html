@@ -76,7 +76,7 @@
     <div class="text">
       <p><strong>Question ID:</strong> None from Ranbir's Pinellas County list. This St. Petersburg figure compares ticket counts by activity group, while Q001 asks for recorded pickup volume.</p>
       <p><strong>Caption:</strong> Stacked daily ticket counts compare ordinary construction-and-demolition or vegetative collection, citizen drop-off, other special services, and household hazardous waste. Dates use local LoadDate.</p>
-      <p><strong>Takeaway:</strong> October 22, 2024 has the most records in this static snapshot: 1,179 tickets, including 719 other special-service tickets. The snapshot ends October 23; the endpoint is not a clearance date.</p>
+      <p><strong>Takeaway:</strong> October 22, 2024 has the most records in the displayed period: 1,179 tickets, including 719 other special-service tickets.</p>
       <p class="need"><strong>Needs:</strong> Local LoadDate, DocumentFormatID, DebrisType, HazardClass, and ticket identifier.</p>
     </div>
   </section>
@@ -89,7 +89,7 @@
     <div class="text">
       <p><strong>Question ID:</strong> Q003 — when recorded volume crossed 25%, 50%, 75%, and 90% of the extract's total.</p>
       <p><strong>Caption:</strong> The line accumulates each local date's recorded pickup cubic yards (CY). Markers and the table show when the running total first crossed 25%, 50%, 75%, and 90% of this extract's final total.</p>
-      <p><strong>Takeaway:</strong> Recorded volume passed 50% on November 11, 2024 and 90% on December 19, 2024. These percentages describe the ticket extract, not all debris generated or verified cleanup progress.</p>
+      <p><strong>Takeaway:</strong> Cumulative recorded volume reached 50% of the extract's total on November 11, 2024 and 90% on December 19, 2024.</p>
       <p class="need"><strong>Needs:</strong> LoadDate, Volume, Eastern-time date conversion, and a defined extraction endpoint and total.</p>
     </div>
   </section>
@@ -102,7 +102,7 @@
     <div class="text">
       <p><strong>Question IDs:</strong> Q032 (partial) — blank collection addresses; Q035 (partial) — disagreement between GPS text and numeric coordinates. Neither full data-quality question is answered here.</p>
       <p><strong>Caption:</strong> Points flag tickets with no collection address and the one ticket whose GPS text differs from its numeric latitude and longitude. The street-map view lets reviewers inspect locations and exact values.</p>
-      <p><strong>Takeaway:</strong> There are 114 tickets with blank collection addresses and one GPS-text/numeric-coordinate conflict. These are review flags, not confirmed incorrect pickup locations.</p>
+      <p><strong>Takeaway:</strong> The map locates 114 tickets with blank collection addresses and one ticket whose GPS text conflicts with its numeric coordinates.</p>
       <p class="need"><strong>Needs:</strong> CollAddress, GPS text, numeric Lat and Lng, and Volume. Authoritative address or geocoding data are needed to validate positions; affected CY and GPS precision require further analysis.</p>
     </div>
   </section>
@@ -114,7 +114,7 @@
     <div class="text">
       <p><strong>Question IDs:</strong> Q001 — weekly recorded pickup volume; Q006 — weeks with no ticket records.</p>
       <p><strong>Caption:</strong> Bars compare the sum of recorded pickup cubic yards (CY) by Monday-start week, including weeks with no ticket rows.</p>
-      <p><strong>Takeaway:</strong> The week beginning October 28, 2024 peaks at 112,592.90 CY. A zero-record week does not establish that crews were idle.</p>
+      <p><strong>Takeaway:</strong> The week beginning October 28, 2024 has the highest recorded pickup volume at 112,592.90 CY.</p>
       <p class="need"><strong>Needs:</strong> LoadDate, Volume, defined time zone, and complete calendar weeks.</p>
     </div>
   </section>
@@ -126,7 +126,7 @@
     <div class="text">
       <p><strong>Question ID:</strong> Q011 — which debris-type labels account for the most recorded pickup volume.</p>
       <p><strong>Caption:</strong> Paired bars compare each debris type's share of ticket count with its share of recorded CY.</p>
-      <p><strong>Takeaway:</strong> Vegetative/Woody accounts for 75.29% of tickets and 73.84% of recorded CY. Keep type labels separate until their definitions are confirmed.</p>
+      <p><strong>Takeaway:</strong> Vegetative/Woody is the largest debris-type label, accounting for 75.29% of tickets and 73.84% of recorded CY.</p>
       <p class="need"><strong>Needs:</strong> DebrisType, Volume, and ticket identifier.</p>
     </div>
   </section>
@@ -139,7 +139,7 @@
     <div class="text">
       <p><strong>Question ID:</strong> Q030 — which repeated address labels have unusually spread pickup coordinates.</p>
       <p><strong>Caption:</strong> Each point represents a repeated collection-address label with at least ten tickets. Its position is the median pickup coordinate; color shows the 90th-percentile distance of that label's ticket points from the median, and point size shows ticket count.</p>
-      <p><strong>Takeaway:</strong> Fifteen repeated address labels have a 90th-percentile pickup-point spread greater than 1 kilometer. Broad roads, parks, and staging labels may legitimately cover many points; spread alone does not prove a GPS error.</p>
+      <p><strong>Takeaway:</strong> Fifteen repeated address labels have pickup points spread more than 1 kilometer from their median point at the 90th percentile.</p>
       <p class="need"><strong>Needs:</strong> CollAddress, ticket coordinates and IDs, a consistent address-normalization rule, and authoritative address geometry to determine whether a spread is problematic.</p>
     </div>
   </section>
@@ -151,7 +151,7 @@
     <div class="text">
       <p><strong>Question IDs:</strong> M04 — recorded activity duration by debris zone. Q025 (partial) asks for duration at each pickup location; Q060 (partial) also asks when each area reached 50% of its recorded volume.</p>
       <p><strong>Caption:</strong> Each zone shows days from its first ticket to the date it reached 90% of its own recorded CY; the detailed view also shows the first-to-last ticket span.</p>
-      <p><strong>Takeaway:</strong> The 90% measure ranges from 32 to 122 days across 30 zones. Neither measure verifies that a zone was cleared.</p>
+      <p><strong>Takeaway:</strong> Across 30 debris zones, the time from first ticket to 90% of each zone's recorded CY ranges from 32 to 122 days.</p>
       <p class="need"><strong>Needs:</strong> Zone1, LoadDate, Volume, ticket identifier, and validated zone meanings.</p>
     </div>
   </section>
@@ -163,7 +163,7 @@
     <div class="text">
       <p><strong>Question ID:</strong> None fully answered. Related Q042 and Q049 require linked movement and final-receipt records; this figure only totals the destination labels on pickup tickets.</p>
       <p><strong>Caption:</strong> Bars compare pickup-ticket CY under each of six DisposalSite labels.</p>
-      <p><strong>Takeaway:</strong> SOD FARM SOUTH has the largest labeled total, 289,309.45 CY. A ticket label is a stated destination; receipt, later transfers, and final disposal require separate evidence.</p>
+      <p><strong>Takeaway:</strong> SOD FARM SOUTH has the largest pickup-ticket total among the six destination labels, at 289,309.45 CY.</p>
       <p class="need"><strong>Needs:</strong> DisposalSite, Volume, and ticket identifier. A true debris-flow view also needs linked unload and haulout records.</p>
     </div>
   </section>
@@ -178,7 +178,7 @@
     <div class="text">
       <p><strong>Question ID:</strong> None fully answered. Related Q041 and Q048 need dated, comparable estimates and independent evidence of remaining debris.</p>
       <p><strong>Caption:</strong> The two original dashboard charts show initial and remaining debris estimates. A future aligned view would compare them by district and debris type with estimate date and unit visible.</p>
-      <p><strong>Takeaway:</strong> The paired view could reveal where estimated work remains. A completion percentage is not ready until the two layers have matching area, type, units, and time definitions.</p>
+      <p><strong>Takeaway:</strong> Vegetative estimates appear across nearly every zone in the initial chart, while visible remaining-estimate bars appear in fewer zones.</p>
       <p class="need"><strong>Needs:</strong> District ID, type, initial estimate, remaining estimate, unit, estimate dates, update cadence, and methods. The captured charts do not show a clear vertical-axis unit.</p>
     </div>
   </section>
@@ -190,7 +190,7 @@
     <div class="text">
       <p><strong>Question ID:</strong> Q041 (partial) — the county's area-status categories give context, but this captured map does not identify verified remaining debris or all targets still needing collection.</p>
       <p><strong>Caption:</strong> The original county map colors work areas by the county's recorded pass or status category. A report version should include the status update date.</p>
-      <p><strong>Takeaway:</strong> The captured dashboard displays categories such as in progress and complete–final. Those are agency statuses, not statuses calculated from ticket dates.</p>
+      <p><strong>Takeaway:</strong> The dashboard organizes pickup status by labeled zone and distinguishes in-progress, pass-1-complete, and final-pass-in-progress categories.</p>
       <p class="need"><strong>Needs:</strong> Official zone polygons, status code and definition, status date, responsible agency, and source refresh timestamp. A live app should show the current API value and last update.</p>
     </div>
   </section>
