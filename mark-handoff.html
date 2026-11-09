@@ -28,6 +28,7 @@
     .visual.pair figcaption{text-align:center;font-size:.88rem;color:#465963}
     .chart{width:100%;min-height:430px}
     #neighborhoodChart{min-height:540px}
+    #neighborhoodTimeline{min-height:680px;min-width:820px}
     .text{max-width:1000px}
     .text p{margin:7px 0}
     .need{color:#364b52}
@@ -54,7 +55,7 @@
   </style>
   <script defer src="plotly-cartesian.min.js"></script>
   <script defer src="st-petersburg.js"></script>
-  <script defer src="mark-handoff.js"></script>
+  <script defer src="mark-handoff.js?v=2"></script>
 </head>
 <body>
 <main>
@@ -130,16 +131,21 @@
   <section class="figure" id="figure-6">
     <h2>6. Neighborhood ticket-activity times — St. Petersburg</h2>
     <p class="tag">Neighborhood timing question · <a href="st-petersburg.html#neighborhood-dates">Compare dates in the activity calendar</a></p>
-    <p class="table-note"><strong>Read this as recorded activity, not verified cleanup time.</strong> “First” and “last” are ticket dates in the October 3–23, 2024 snapshot. The span counts both endpoint dates. The city has not supplied an official cleared date for these neighborhoods.</p>
-    <div class="table-wrap">
+    <p class="table-note"><strong>Read this as recorded activity, not verified cleanup time.</strong> Each line runs from the first to the last matching ticket date in the October 3–23, 2024 snapshot. The city has not supplied an official cleared date for these neighborhoods.</p>
+    <label for="timelineScope">Show neighborhoods <select id="timelineScope"><option value="top">12 longest observed windows</option><option value="all">All 42 with matched tickets</option></select></label>
+    <div id="neighborhoodTimeline" class="chart visual" role="img" aria-label="First-to-last ordinary collection ticket dates by St. Petersburg neighborhood"></div>
+    <details>
+      <summary>Show exact dates and counts for all neighborhoods</summary>
+      <div class="table-wrap">
       <table aria-label="St. Petersburg neighborhood ticket-activity times">
         <thead><tr><th scope="col">Neighborhood</th><th scope="col">First ticket</th><th scope="col">Last ticket</th><th scope="col">Observed span (days)</th><th scope="col">Dates with tickets</th><th scope="col">Longest gap (days)</th><th scope="col">Tickets</th><th scope="col">Official cleared date</th></tr></thead>
         <tbody id="neighborhoodTimes"><tr><td colspan="8">Loading neighborhood records…</td></tr></tbody>
       </table>
-    </div>
+      </div>
+    </details>
     <p id="neighborhoodTableCount" class="table-note"></p>
     <div class="text">
-      <p><strong>Caption:</strong> Neighborhoods are ordered by the inclusive span between their first and last matching ordinary-collection tickets. The table also shows active ticket dates and the longest internal gap to distinguish steady from intermittent records.</p>
+      <p><strong>Caption:</strong> Horizontal lines compare the first and last recorded ordinary-collection ticket dates for each neighborhood. Hover or tap an endpoint for exact dates, inclusive span, active dates, gaps, and ticket count. The table below contains all 42 neighborhoods.</p>
       <p><strong>Takeaway:</strong> Shore Acres and Coquina Key both have 20-day observed spans, yet Shore Acres has tickets on 17 dates and Coquina Key on 10. A longer span does not by itself mean cleanup took longer.</p>
       <p class="need"><strong>Needs:</strong> TicketDate, ordinary-collection classification, pickup coordinates, neighborhood boundaries, and matching rules. To report when an area was actually cleared and how long cleanup took, add official final-pass or clearance records with dates and definitions.</p>
     </div>
