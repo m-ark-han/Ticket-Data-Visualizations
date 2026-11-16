@@ -56,10 +56,11 @@
   <script defer src="plotly-cartesian.min.js"></script>
   <script defer src="leaflet.js"></script>
   <script defer src="mark-handoff.js?v=5"></script>
+  <script defer src="zone-timing-map.js"></script>
 </head>
 <body>
 <main>
-  <p><a href="index.html">Main ticket figures</a> · <a href="question-guide.html">Question guide</a> · <a href="county-dashboard.html">County dashboard originals</a></p>
+  <p><a href="index.html">Main ticket figures</a> · <a href="question-guide.html">Question guide</a> · <a href="county-dashboard.html">County dashboard originals</a> · <a href="meeting-followups.html">Meeting follow-ups</a></p>
   <h1>DebrisInsight: ten figures for the dashboard and report</h1>
   <p class="intro">Each figure appears here with its question ID, caption, main takeaway, and data needs. Question IDs come from Ranbir's Pinellas County question list; a related ID does not mean a figure fully answers it. The St. Petersburg and Pinellas County ticket extracts are <strong>separate datasets</strong>; their totals should not be combined. These are candidates for Sai's dashboard, pending comparison with its existing figures.</p>
   <p class="note">The daily activity figure uses the separate St. Petersburg snapshot; all other ticket figures below use Pinellas County records. Do not combine their totals.</p>
@@ -135,10 +136,10 @@
     <h2>6. Coordinate spread under repeated address labels — Pinellas County</h2>
     <p class="tag">F26 · Q030 · <a href="index.html#figure-F26">Open the interactive street map</a></p>
     <div class="visual"><div id="spreadMap" class="street-map" role="img" aria-label="Street map of coordinate spread under repeated collection-address labels"></div><img id="spreadFallback" src="figures/F26-address-spread-candidates-map.png" alt="Median pickup points for repeated address labels, colored by coordinate spread and sized by ticket count" hidden></div>
-    <p class="map-key"><i style="background:#247c87"></i>Under 0.25 km <i style="background:#dd8d29"></i>0.25–1 km <i style="background:#ad3f36"></i>Over 1 km · Circle size shows ticket count.</p>
+    <p class="map-key"><i style="background:#247c87"></i>Under 0.25 km <i style="background:#dd8d29"></i>0.25–1 km <i style="background:#ad3f36"></i>Over 1 km · Circle size shows ticket count, not debris volume.</p>
     <div class="text">
       <p><strong>Question ID:</strong> Q030 — which repeated address labels have unusually spread pickup coordinates.</p>
-      <p><strong>Caption:</strong> Each point represents a repeated collection-address label with at least ten tickets. Its position is the median pickup coordinate; color shows the 90th-percentile distance of that label's ticket points from the median, and point size shows ticket count.</p>
+      <p><strong>Caption:</strong> Each point represents a repeated collection-address label with at least ten tickets. Its position is the median pickup coordinate; color shows the 90th-percentile distance of that label's ticket points from the median, and point size shows the number of ticket records. The figure does not sum cubic yards by address.</p>
       <p><strong>Takeaway:</strong> Fifteen repeated address labels have pickup points spread more than 1 kilometer from their median point at the 90th percentile.</p>
       <p class="need"><strong>Needs:</strong> CollAddress, ticket coordinates and IDs, a consistent address-normalization rule, and authoritative address geometry to determine whether a spread is problematic.</p>
     </div>
@@ -146,13 +147,13 @@
 
   <section class="figure" id="figure-7">
     <h2>7. Zone activity duration — Pinellas County</h2>
-    <p class="tag">F21 · M04 and Q025 (partial) · <a href="index.html#figure-F21">Open the interactive grid</a></p>
-    <div class="visual"><img src="figures/F21-zone-duration-grid.svg" alt="Grid comparing days to 90 percent of recorded cubic yards and first-to-last ticket days for each debris zone" loading="lazy"></div>
+    <p class="tag">F21 · M04 and Q025 (partial) · <a href="zone-timing-map.html">Open the full interactive map and exact-value table</a></p>
+    <div class="visual"><div id="zoneTimingMap" class="street-map" role="img" aria-label="Official Pinellas debris-zone polygons colored by days to 90 percent of recorded ticket volume"></div></div>
     <div class="text">
       <p><strong>Question IDs:</strong> M04 — recorded activity duration by debris zone. Q025 (partial) asks for duration at each pickup location; Q060 (partial) also asks when each area reached 50% of its recorded volume.</p>
-      <p><strong>Caption:</strong> Each zone shows days from its first ticket to the date it reached 90% of its own recorded CY; the detailed view also shows the first-to-last ticket span.</p>
+      <p><strong>Caption:</strong> Official debris-zone polygons are colored by days from the zone's first ticket to 90% of its own recorded CY. Click a zone for its exact value, first and last ticket dates, ticket count, and first-to-last ticket span.</p>
       <p><strong>Takeaway:</strong> Across 30 debris zones, the time from first ticket to 90% of each zone's recorded CY ranges from 32 to 122 days.</p>
-      <p class="need"><strong>Needs:</strong> Zone1, LoadDate, Volume, ticket identifier, and validated zone meanings.</p>
+      <p class="need"><strong>Needs:</strong> Zone1, LoadDate, Volume, ticket identifier, and the county's zone polygons. The color is our ticket-derived measure, not a verified clearance date.</p>
     </div>
   </section>
 

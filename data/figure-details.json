@@ -87,7 +87,7 @@
   "F18": {
     "question": "Q18 asks how often the same recorded address appears.",
     "variables": "nonblank CollAddress normalized to uppercase with repeated spaces collapsed, ticket count per normalized address, and frequency buckets 1 through 9 and 10+.",
-    "interpretation": "The extract contains 11,033 normalized nonblank addresses. 2,890 have at least two tickets; 93 have ten or more. Repeated tickets are common enough to investigate as a normal operational pattern or a data-quality issue."
+    "interpretation": "The extract contains 11,033 normalized nonblank addresses. 2,890 have at least two tickets; 93 have ten or more. These are counts of ticket records, not sums of debris volume. Repeats can reflect normal operations or an address-label issue."
   },
   "F19": {
     "question": "Q021: How much time passes between successive recorded collection dates at the same location? F19 uses normalized addresses.",
@@ -127,7 +127,7 @@
   "F26": {
     "question": "Q030: Which repeated address labels have unusually spread-out pickup coordinates? Q045 remains unresolved.",
     "variables": "Whitespace-normalized CollAddress, Lat/Lng, TicketId. For labels with 10+ tickets, distance from each coordinate to that label's median coordinate; color shows 90th percentile in km.",
-    "interpretation": "93 labels have 10+ tickets; 15 have a 90th-percentile coordinate spread above 1 km. Broad road and park labels can legitimately span large areas. Authoritative address geometry is needed before calling these GPS/address mismatches."
+    "interpretation": "93 labels have 10+ tickets; 15 have a 90th-percentile coordinate spread above 1 km. Circle size is ticket count, not recorded debris volume. Broad road and park labels can legitimately span large areas; authoritative address geometry is needed before calling these GPS/address mismatches."
   },
   "F27": {
     "question": "M01: How many tickets, truck IDs, and recorded CY are associated with each Contractor label?",
