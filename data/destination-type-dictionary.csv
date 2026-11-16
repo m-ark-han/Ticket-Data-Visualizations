@@ -1,0 +1,7 @@
+source,field,raw_label,proposed_destination_type,verification_status,evidence_or_required_check
+Pinellas County,DisposalSite,SOD FARM SOUTH,unknown_named_site,unverified,Match to county site registry and operating dates
+Pinellas County,DisposalSite,SOUTHWEST COUNTY DMS,temporary_debris_management_site,provisional_name_based,Confirm county site authorization and linked haulout records
+Pinellas County,DisposalSite,MCKAY CREEK TREATMENT FACILITY DMS,temporary_debris_management_site,provisional_name_based,Confirm county site authorization and actual treatment activity
+Pinellas County,DisposalSite,KEYSTONE NORTH,unknown_named_site,unverified,Match to county site registry and operating dates
+Pinellas County,DisposalSite,FORT DESOTO PARK DMS,temporary_debris_management_site,provisional_name_based,Confirm county site authorization and linked haulout records
+Pinellas County,DisposalSite,ANGELOS RECYCLED MATERIALS LARGO FDS,recycling_facility_candidate,provisional_facility_list,County commercial-hauler list names Angelo's; confirm FDS code and each load's final handling
